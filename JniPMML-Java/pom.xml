@@ -22,7 +22,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.testSource>${java.version}</maven.compiler.testSource>
         <maven.compiler.testTarget>${java.version}</maven.compiler.testTarget>
-        <jackson.version>2.9.8</jackson.version>
+        <jackson.version>2.9.9</jackson.version>
         <HDF5.version>1.10.5</HDF5.version>
         <HDF5.lib>C:/HDF5/${HDF5.version}/lib</HDF5.lib>
         <HDFView.version>3.1.0</HDFView.version>
