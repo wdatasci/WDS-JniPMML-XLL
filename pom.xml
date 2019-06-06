@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.WDataSci</groupId>
+    <artifactId>WDS-JniPMML</artifactId>
+    <packaging>pom</packaging>
+    <version>0.5.0</version>
+    <modules>
+        <module>WDS-Java</module>
+        <module>JniPMML-Java</module>
+    </modules>
+
+
+    <build>
+
+        <plugins>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.1.0</version>
+        <!--
+        <configuration>
+            <doclet>com.microsoft.doclet.DocFxDoclet</doclet>
+            <docletArtifact>
+                <groupId>com.microsoft</groupId>
+                <artifactId>docfx-doclet</artifactId>
+                <version>1.0-SNAPSHOT</version>
+            </docletArtifact>
+            <docletPath>${user.home}\.m2\repository\com\microsoft\docfx-doclet\1.0-SNAPSHOT\docfx-doclet-1.0-SNAPSHOT-jar-with-dependencies.jar</docletPath>
+            <useStandardDocletOptions>false</useStandardDocletOptions>
+            <encoding>UTF-8</encoding>
+            <outputDirectory>./WDS-JniPMML-Doc/obj/api-Java</outputDirectory>
+            <sourcepath>./src/main/java</sourcepath>
+            <subpackages>com.WDataSci.JniPMML</subpackages>
+        </configuration>
+        -->
+    </plugin>
+        </plugins>
+
+    </build>
+
+</project>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="ExcelDnaProps">
+
+  <PropertyGroup>
+    <RunExcelDnaSetDebuggerOptions Condition="'$(RunExcelDnaSetDebuggerOptions)' == ''">false</RunExcelDnaSetDebuggerOptions>
+    <ExcelDnaExcelExePath Condition="'$(ExcelDnaExcelExePath)' == ''"></ExcelDnaExcelExePath>
+    <ExcelDnaAddInForDebugging Condition="'$(ExcelDnaAddInForDebugging)' == ''"></ExcelDnaAddInForDebugging>
+  </PropertyGroup>
+
+  <PropertyGroup>
+  <!--
+
+    -->
+    <ExcelDnaCreate32BitAddIn Condition="'$(ExcelDnaCreate32BitAddIn)' == ''">true</ExcelDnaCreate32BitAddIn>
+    <ExcelDna32BitAddInSuffix Condition="'$(ExcelDna32BitAddInSuffix)' == ''">-x32</ExcelDna32BitAddInSuffix>
+
+    <ExcelDnaCreate64BitAddIn Condition="'$(ExcelDnaCreate64BitAddIn)' == ''">true</ExcelDnaCreate64BitAddIn>
+    <ExcelDna64BitAddInSuffix Condition="'$(ExcelDna64BitAddInSuffix)' == ''">-x64</ExcelDna64BitAddInSuffix>
+
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <RunExcelDnaPack Condition="'$(RunExcelDnaPack)' == ''">true</RunExcelDnaPack>
+    <ExcelDnaPackXllSuffix Condition="'$(ExcelDnaPackXllSuffix)' == ''">-packed</ExcelDnaPackXllSuffix>
+  </PropertyGroup>
+
+</Project>
+

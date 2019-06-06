@@ -1,0 +1,126 @@
+<LocalTransformations>
+ <DerivedField name="d_Age" dataType="double" optype="continuous">
+  <NormContinuous field="Age">
+   <LinearNorm orig="38.3066164604626" norm="0"/>
+   <LinearNorm orig="51.3084634067139" norm="1"/>
+  </NormContinuous>
+ </DerivedField>
+ <DerivedField name="d_Income" dataType="double" optype="continuous">
+  <NormContinuous field="Income">
+   <LinearNorm orig="84216.3438407746" norm="0"/>
+   <LinearNorm orig="153852.056577084" norm="1"/>
+  </NormContinuous>
+ </DerivedField>
+ <DerivedField name="d_Deductions" dataType="double" optype="continuous">
+  <NormContinuous field="Deductions">
+   <LinearNorm orig="68.0477084454008" norm="0"/>
+   <LinearNorm orig="405.532965699481" norm="1"/>
+  </NormContinuous>
+ </DerivedField>
+ <DerivedField name="d_Hours" dataType="double" optype="continuous">
+  <NormContinuous field="Hours">
+   <LinearNorm orig="40.6331360946746" norm="0"/>
+   <LinearNorm orig="52.2245799626924" norm="1"/>
+  </NormContinuous>
+ </DerivedField>
+ <DerivedField name="dd_Age" dataType="double" optype="continuous">
+  <NormContinuous field="d_Age">
+   <LinearNorm orig="-1.63873767692718" norm="0"/>
+   <LinearNorm orig="3.43746420983855" norm="1"/>
+  </NormContinuous>
+ </DerivedField>
+ <DerivedField name="dd_Income" dataType="double" optype="continuous">
+  <NormContinuous field="d_Income">
+   <LinearNorm orig="-1.20062853606983" norm="0"/>
+   <LinearNorm orig="5.70171741707757" norm="1"/>
+  </NormContinuous>
+ </DerivedField>
+ <DerivedField name="dd_Deductions" dataType="double" optype="continuous">
+  <NormContinuous field="d_Deductions">
+   <LinearNorm orig="-0.201631647554222" norm="0"/>
+   <LinearNorm orig="7.24559736757223" norm="1"/>
+  </NormContinuous>
+ </DerivedField>
+ <DerivedField name="dd_Hours" dataType="double" optype="continuous">
+  <NormContinuous field="d_Hours">
+   <LinearNorm orig="-3.41917163607436" norm="0"/>
+   <LinearNorm orig="5.03534025354396" norm="1"/>
+  </NormContinuous>
+ </DerivedField>
+ <DerivedField name="ddd_Age" dataType="double" optype="continuous">
+  <NormContinuous field="dd_Age">
+   <LinearNorm orig="0.322827522128221" norm="0"/>
+   <LinearNorm orig="0.519825203132029" norm="1"/>
+  </NormContinuous>
+ </DerivedField>
+ <DerivedField name="ddd_Income" dataType="double" optype="continuous">
+  <NormContinuous field="dd_Income">
+   <LinearNorm orig="0.173944995544936" norm="0"/>
+   <LinearNorm orig="0.318823274145853" norm="1"/>
+  </NormContinuous>
+ </DerivedField>
+ <DerivedField name="ddd_Deductions" dataType="double" optype="continuous">
+  <NormContinuous field="dd_Deductions">
+   <LinearNorm orig="0.0270747209659698" norm="0"/>
+   <LinearNorm orig="0.161352852868299" norm="1"/>
+  </NormContinuous>
+ </DerivedField>
+ <DerivedField name="ddd_Hours" dataType="double" optype="continuous">
+  <NormContinuous field="dd_Hours">
+   <LinearNorm orig="0.404419756068108" norm="0"/>
+   <LinearNorm orig="0.522699795537677" norm="1"/>
+  </NormContinuous>
+ </DerivedField>
+ <DerivedField name="Employment_Private" dataType="double" optype="continuous">
+  <NormDiscrete field="Employment" value="Private"/>
+ </DerivedField>
+ <DerivedField name="Employment_Consultant" dataType="double" optype="continuous">
+  <NormDiscrete field="Employment" value="Consultant"/>
+ </DerivedField>
+ <DerivedField name="Employment_SelfEmp" dataType="double" optype="continuous">
+  <NormDiscrete field="Employment" value="SelfEmp"/>
+ </DerivedField>
+ <DerivedField name="Employment_PSLocal" dataType="double" optype="continuous">
+  <NormDiscrete field="Employment" value="PSLocal"/>
+ </DerivedField>
+ <DerivedField name="Employment_PSState" dataType="double" optype="continuous">
+  <NormDiscrete field="Employment" value="PSState"/>
+ </DerivedField>
+ <DerivedField name="Employment_PSFederal" dataType="double" optype="continuous">
+  <NormDiscrete field="Employment" value="PSFederal"/>
+ </DerivedField>
+ <DerivedField name="Employment_Volunteer" dataType="double" optype="continuous">
+  <NormDiscrete field="Employment" value="Volunteer"/>
+ </DerivedField>
+ <DerivedField name="d_Marital" dataType="double" optype="continuous">
+  <MapValues mapMissingTo="1" defaultValue="-1" outputColumn="output">
+   <FieldColumnPair field="Marital" column="input1"/>
+   <InlineTable>
+    <row>
+     <input1>Unmarried</input1>
+     <output>1</output>
+    </row>
+    <row>
+     <input1>Absent</input1>
+     <output>2</output>
+    </row>
+    <row>
+     <input1>Divorced</input1>
+     <output>3</output>
+    </row>
+    <row>
+     <input1>Married</input1>
+     <output>4</output>
+    </row>
+    <row>
+     <input1>Widowed</input1>
+     <output>5</output>
+    </row>
+    <row>
+     <input1>Married-spouse-absent</input1>
+     <output>6</output>
+    </row>
+   </InlineTable>
+  </MapValues>
+ </DerivedField>
+</LocalTransformations>

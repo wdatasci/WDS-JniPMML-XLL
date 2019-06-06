@@ -1,0 +1,29 @@
+- name: Cover Page
+  href: ../cover.md
+  homepage: ../cover.md
+- name: ReadMe
+  href: ../../../README.md
+  homepage: ../../../README.md
+- name: TODO
+  href: ../../../TODO.md
+  homepage: ../../../TODO.md
+- name: LICENSE
+  href: ../../../LICENSE.md
+  homepage: ../../../LICENSE.md
+- name: Articles
+  href: ../articles/toc.yml
+  homepage: ../articles/index.md
+- name: API Documentation
+  href: ../api/index.md
+  homepage: ../api/index.md
+  items:
+    - name: C#
+      href: ../api/Cs/index.md
+      homepage: ../api/Cs/index.md
+      items:
+        - name: JniPMML-Cs
+          homepage: ../JniPMML-Cs/index.md
+          href: ../../obj/JniPMML-Cs/toc.yml
+        - name: WDS-Cs
+          homepage: ../WDS-Cs/index.md
+          href: ../../obj/WDS-Cs/toc.yml

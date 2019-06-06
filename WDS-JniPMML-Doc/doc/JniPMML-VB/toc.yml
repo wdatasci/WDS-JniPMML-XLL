@@ -1,0 +1,33 @@
+- name: Cover Page
+  href: ../cover.md
+  homepage: ../cover.md
+- name: ReadMe
+  href: ../../../README.md
+  homepage: ../../../README.md
+- name: TODO
+  href: ../../../TODO.md
+  homepage: ../../../TODO.md
+- name: LICENSE
+  href: ../../../LICENSE.md
+  homepage: ../../../LICENSE.md
+- name: Articles
+  href: ../articles/toc.yml
+  homepage: ../articles/index.md
+- name: API Documentation
+  href: ../api/index.md
+  homepage: ../api/index.md
+  items:
+    - name: VB
+      homepage: ../api/VB/index.md
+      items:
+        - name: JniPMML-VB
+          homepage: ../JniPMML-VB/index.md
+          href: ../../obj/JniPMML-VB/toc.yml
+        - name: WDS-VB
+          homepage: ../WDS-VB/index.md
+          href: ../../obj/WDS-VB/toc.yml
+    - name: VBA
+      homepage: ../api/VBA/index.md
+      items:
+        - name: WDS-VBA
+          homepage: ../WDS-VB/index.md

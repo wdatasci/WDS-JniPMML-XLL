@@ -1,0 +1,13 @@
+{
+    "metadata": [
+
+        { "src": [ { "files": [ "JniPMML-Cs/JniPMML-Cs.csproj" ], "srcs" : [ "src", "src-JNICode" ], "cwd": ".." } ], "dest": "obj/JniPMML-Cs" },
+
+        { "src": [ { "files": [ "WDS-Cs/WDS-Cs.csproj" ], "cwd": ".." } ], "dest": "obj/WDS-Cs" },
+
+        { "src": [ { "files": [ "JniPMML-VB/JniPMML-VB.vbproj" ], "cwd": ".." } ], "dest": "obj/JniPMML-VB" },
+
+        { "src": [ { "files": [ "WDS-VB/WDS-VB.vbproj" ], "cwd": ".." } ], "dest": "obj/WDS-VB" }
+
+    ]
+}

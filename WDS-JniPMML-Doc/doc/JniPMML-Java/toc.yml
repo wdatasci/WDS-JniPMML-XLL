@@ -1,0 +1,29 @@
+- name: Cover Page
+  href: ../cover.md
+  homepage: ../cover.md
+- name: ReadMe
+  href: ../../../README.md
+  homepage: ../../../README.md
+- name: TODO
+  href: ../../../TODO.md
+  homepage: ../../../TODO.md
+- name: LICENSE
+  href: ../../../LICENSE.md
+  homepage: ../../../LICENSE.md
+- name: Articles
+  href: ../articles/toc.yml
+  homepage: ../articles/index.md
+- name: API Documentation
+  href: ../api/index.md
+  homepage: ../api/index.md
+  items:
+    - name: Java
+      href: ../api/Java/index.md
+      homepage: ../api/Java/index.md
+      items:
+        - name: JniPMML-Java
+          homepage: ../JniPMML-Java/index.md
+          href: ../../obj/JniPMML-Java/toc.yml
+        - name: WDS-Java
+          homepage: ../WDS-Java/index.md
+          href: ../../obj/WDS-Java/toc.yml

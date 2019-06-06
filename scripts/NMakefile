@@ -1,0 +1,94 @@
+
+EXCEL="C:\Program Files\Microsoft Office\Root\Office16\EXCEL.EXE"
+
+!ifndef SolutionDir
+SolutionDir=$(MAKEDIR)\..
+!endif
+
+!ifndef Configuration
+Configuration=Release
+!endif
+
+!if "$(Configuration)"=="Debug"
+DBG=-dbg
+!else
+DBG=
+!endif
+
+run:
+	$(EXCEL) /p "$(SolutionDir)" /x "$(SolutionDir)\lib\WDS-JniPMML-x64.xll" "$(SolutionDir)\lib\WDS-JniPMML-VB-x64.xll" "$(SolutionDir)\WDS-JniPMML-XLL-Test.xlsm"  /o:WDS:hey
+
+run_build:
+	$(EXCEL) /p "$(SolutionDir)" /x "$(SolutionDir)\JniPMML-Cs\bin\$(Configuration)\JniPMML-Cs-x64-packed.xll" "$(SolutionDir)\JniPMML-VB\bin\$(Configuration)\JniPMML-VB-x64-packed.xll" "$(SolutionDir)\WDS-JniPMML-XLL-Test.xlsm"  /o:WDS:hey
+
+build:dirs
+	copy "$(SolutionDir)\JniPMML-Cs\bin\$(Configuration)\Resources\WDS-JniPMML-0.5.0.jar" "$(SolutionDir)\lib\WDS-JniPMML-0.5.0$(DBG).jar"
+	copy "$(SolutionDir)\JniPMML-Cs\bin\$(Configuration)\JniPMML-Cs-x64-packed.xll" "$(SolutionDir)\lib\WDS-JniPMML-x64$(DBG).xll"
+	copy "$(SolutionDir)\JniPMML-VB\bin\$(Configuration)\JniPMML-VB-x64-packed.xll" "$(SolutionDir)\lib\WDS-JniPMML-VB-x64$(DBG).xll"
+	copy "$(SolutionDir)\WDS-Cs\bin\$(Configuration)\WDS-Cs-x64-packed.xll" "$(SolutionDir)\lib\WDS-x64$(DBG).xll"
+	copy "$(SolutionDir)\WDS-VB\bin\$(Configuration)\WDS-VB-x64-packed.xll" "$(SolutionDir)\lib\WDS-VB-x64$(DBG).xll"
+	copy "$(SolutionDir)\WDS-VBA\*.bas" "$(SolutionDir)\lib\VBA"
+
+copy_docs:
+	copy "$(SolutionDir)\WDS-JniPMML-Doc\docfx_pdf\JniPMML-Cs\WDS-JniPMML-Cs.pdf" "$(SolutionDir)\lib"
+	copy "$(SolutionDir)\WDS-JniPMML-Doc\docfx_pdf\JniPMML-Java\WDS-JniPMML-Java.pdf" "$(SolutionDir)\lib"
+	copy "$(SolutionDir)\WDS-JniPMML-Doc\docfx_pdf\JniPMML-VB\WDS-JniPMML-VB.pdf" "$(SolutionDir)\lib"
+
+clean:
+	del /F /Q "$(SolutionDir)\scripts\obj"
+
+clean_all_but_lib:clean_doc clean_test_output
+
+clean_all:clean_doc
+	del /F /Q "$(SolutionDir)\lib"
+
+clean_bin:
+	del /F /Q "$(SolutionDir)\JniPMML-Cs\bin"
+	del /F /Q "$(SolutionDir)\JniPMML-VB\bin"
+	del /F /Q "$(SolutionDir)\WDS-Cs\bin"
+	del /F /Q "$(SolutionDir)\WDS-VB\bin"
+
+clean_obj:
+	del /F /Q "$(SolutionDir)\scripts\obj"
+	del /F /Q "$(SolutionDir)\JniPMML-Cs\obj"
+	del /F /Q "$(SolutionDir)\JniPMML-VB\obj"
+	del /F /Q "$(SolutionDir)\WDS-Cs\obj"
+	del /F /Q "$(SolutionDir)\WDS-VB\obj"
+	del /F /Q "$(SolutionDir)\scripts\obj"
+	del /F /Q "$(SolutionDir)\scripts\test"
+
+clean_deep:clean_all clean_bin clean_obj
+
+clean_lib:
+	del /F /Q "$(SolutionDir)\lib"
+
+clean_test_output:
+	del /F /Q "$(SolutionDir)\test\output\*"
+
+clean_doc:
+	del /F /Q /S "$(SolutionDir)\WDS-JniPMML-Doc\docfx_pdf\*"
+	del /F /Q /S "$(SolutionDir)\WDS-JniPMML-Doc\obj\*"
+
+doc:dirs
+	cd $(SolutionDir)\WDS-JniPMML-Doc
+	$(SolutionDir)\packages\docfx.console.2.42.0\tools\docfx.exe docfx-metadata.json
+	$(SolutionDir)\packages\docfx.console.2.42.0\tools\docfx.exe docfx-JniPMML-VB.json
+	$(SolutionDir)\packages\docfx.console.2.42.0\tools\docfx.exe docfx-JniPMML-Cs.json
+	$(SolutionDir)\packages\docfx.console.2.42.0\tools\docfx.exe docfx-JniPMML-Java.json
+
+rebuild:clean_all_but_lib dirs build
+
+rebuild_doc:clean_doc dirs build
+
+dirs:"$(SolutionDir)\lib" "$(SolutionDir)\lib\VBA" "$(SolutionDir)\WDS-JniPMML-Doc\docfx_pdf" "$(SolutionDir)\test\output"
+
+"$(SolutionDir)\lib\VBA":	
+	mkdir "$(SolutionDir)\lib\VBA"
+
+"$(SolutionDir)\WDS-JniPMML-Doc\docfx_pdf":	
+	mkdir "$(SolutionDir)\WDS-JniPMML-Doc\docfx_pdf"
+
+"$(SolutionDir)\test\output":	
+	mkdir "$(SolutionDir)\test\output"
+
+

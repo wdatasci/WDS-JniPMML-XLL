@@ -1,0 +1,2386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PMML version="4.1" xmlns="http://www.dmg.org/PMML-4_1">
+  <Header copyright="KNIME">
+    <Application name="KNIME" version="2.8.0"/>
+  </Header>
+  <DataDictionary numberOfFields="10">
+    <DataField dataType="integer" name="Age" optype="continuous">
+      <Interval closure="closedClosed" leftMargin="17.0" rightMargin="90.0"/>
+    </DataField>
+    <DataField dataType="string" name="Employment" optype="categorical">
+      <Value value="Private"/>
+      <Value value="Consultant"/>
+      <Value value="SelfEmp"/>
+      <Value value="PSLocal"/>
+      <Value value="PSState"/>
+      <Value value="PSFederal"/>
+      <Value value="Unemployed"/>
+      <Value value="NA"/>
+      <Value value="Volunteer"/>
+    </DataField>
+    <DataField dataType="string" name="Education" optype="categorical">
+      <Value value="College"/>
+      <Value value="Associate"/>
+      <Value value="HSgrad"/>
+      <Value value="Bachelor"/>
+      <Value value="Yr12"/>
+      <Value value="Vocational"/>
+      <Value value="Master"/>
+      <Value value="Yr11"/>
+      <Value value="Yr10"/>
+      <Value value="Doctorate"/>
+      <Value value="Yr9"/>
+      <Value value="Yr5t6"/>
+      <Value value="Professional"/>
+      <Value value="Yr7t8"/>
+      <Value value="Preschool"/>
+      <Value value="Yr1t4"/>
+    </DataField>
+    <DataField dataType="string" name="Marital" optype="categorical">
+      <Value value="Unmarried"/>
+      <Value value="Absent"/>
+      <Value value="Divorced"/>
+      <Value value="Married"/>
+      <Value value="Widowed"/>
+      <Value value="Married-spouse-absent"/>
+    </DataField>
+    <DataField dataType="string" name="Occupation" optype="categorical">
+      <Value value="Service"/>
+      <Value value="Transport"/>
+      <Value value="Clerical"/>
+      <Value value="Repair"/>
+      <Value value="Executive"/>
+      <Value value="Machinist"/>
+      <Value value="Sales"/>
+      <Value value="Professional"/>
+      <Value value="Support"/>
+      <Value value="Cleaner"/>
+      <Value value="Farming"/>
+      <Value value="NA"/>
+      <Value value="Protective"/>
+      <Value value="Home"/>
+      <Value value="Military"/>
+    </DataField>
+    <DataField dataType="double" name="Income" optype="continuous">
+      <Interval closure="closedClosed" leftMargin="609.72" rightMargin="481259.5"/>
+    </DataField>
+    <DataField dataType="string" name="Gender" optype="categorical">
+      <Value value="Female"/>
+      <Value value="Male"/>
+    </DataField>
+    <DataField dataType="double" name="Deductions" optype="continuous">
+      <Interval closure="closedClosed" leftMargin="0.0" rightMargin="2904.0"/>
+    </DataField>
+    <DataField dataType="integer" name="Hours" optype="continuous">
+      <Interval closure="closedClosed" leftMargin="1.0" rightMargin="99.0"/>
+    </DataField>
+    <DataField dataType="integer" name="TARGET_Adjusted" optype="continuous">
+      <Interval closure="closedClosed" leftMargin="0.0" rightMargin="1.0"/>
+    </DataField>
+  </DataDictionary>
+  <MiningModel functionName="clustering">
+    <MiningSchema>
+      <MiningField invalidValueTreatment="asIs" name="Age"/>
+      <MiningField invalidValueTreatment="asIs" name="Income"/>
+      <MiningField invalidValueTreatment="asIs" name="Deductions"/>
+      <MiningField invalidValueTreatment="asIs" name="Hours"/>
+      <MiningField invalidValueTreatment="asIs" name="Employment"/>
+      <MiningField invalidValueTreatment="asIs" name="Education"/>
+      <MiningField invalidValueTreatment="asIs" name="Marital"/>
+      <MiningField invalidValueTreatment="asIs" name="Occupation"/>
+      <MiningField invalidValueTreatment="asIs" name="Gender"/>
+    </MiningSchema>
+    <Segmentation multipleModelMethod="majorityVote">
+      <Segment>
+        <True/>
+        <ClusteringModel functionName="clustering" modelClass="centerBased" modelName="k-means" numberOfClusters="4">
+          <MiningSchema>
+            <MiningField invalidValueTreatment="asIs" name="Age"/>
+            <MiningField invalidValueTreatment="asIs" name="Income"/>
+            <MiningField invalidValueTreatment="asIs" name="Deductions"/>
+            <MiningField invalidValueTreatment="asIs" name="Hours"/>
+            <MiningField invalidValueTreatment="asIs" name="Employment"/>
+            <MiningField invalidValueTreatment="asIs" name="Education"/>
+            <MiningField invalidValueTreatment="asIs" name="Marital"/>
+            <MiningField invalidValueTreatment="asIs" name="Occupation"/>
+            <MiningField invalidValueTreatment="asIs" name="Gender"/>
+          </MiningSchema>
+          <LocalTransformations>
+            <DerivedField dataType="integer" name="Private_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Private"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Consultant_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Consultant"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="SelfEmp_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="SelfEmp"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSLocal_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSLocal"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSState_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSState"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSFederal_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSFederal"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Unemployed_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Unemployed"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="NA_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="NA"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Volunteer_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Volunteer"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="College_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="College"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Associate_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Associate"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="HSgrad_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="HSgrad"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Bachelor_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Bachelor"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr12_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr12"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Vocational_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Vocational"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Master_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Master"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr11_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr11"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr10_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr10"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Doctorate_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Doctorate"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr9_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr9"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr5t6_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr5t6"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Professional_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Professional"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr7t8_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr7t8"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Preschool_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Preschool"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr1t4_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr1t4"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Unmarried_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Unmarried"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Absent_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Absent"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Divorced_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Divorced"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Married_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Married"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Widowed_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Widowed"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Married-spouse-absent_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Married-spouse-absent"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Service_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Service"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Transport_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Transport"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Clerical_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Clerical"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Repair_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Repair"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Executive_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Executive"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Machinist_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Machinist"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Sales_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Sales"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Professional_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Professional"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Support_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Support"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Cleaner_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Cleaner"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Farming_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Farming"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="NA_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="NA"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Protective_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Protective"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Home_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Home"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Military_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Military"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Female_Gender" optype="ordinal">
+              <NormDiscrete field="Gender" mapMissingTo="0.0" value="Female"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Male_Gender" optype="ordinal">
+              <NormDiscrete field="Gender" mapMissingTo="0.0" value="Male"/>
+            </DerivedField>
+          </LocalTransformations>
+          <ComparisonMeasure kind="distance">
+            <squaredEuclidean/>
+          </ComparisonMeasure>
+          <ClusteringField compareFunction="absDiff" field="Age"/>
+          <ClusteringField compareFunction="absDiff" field="Income"/>
+          <ClusteringField compareFunction="absDiff" field="Deductions"/>
+          <ClusteringField compareFunction="absDiff" field="Hours"/>
+          <ClusteringField compareFunction="absDiff" field="Private_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Consultant_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="SelfEmp_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSLocal_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSState_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSFederal_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Unemployed_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="NA_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Volunteer_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="College_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Associate_Education"/>
+          <ClusteringField compareFunction="absDiff" field="HSgrad_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Bachelor_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr12_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Vocational_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Master_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr11_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr10_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Doctorate_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr9_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr5t6_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Professional_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr7t8_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Preschool_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr1t4_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Unmarried_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Absent_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Divorced_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Married_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Widowed_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Married-spouse-absent_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Service_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Transport_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Clerical_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Repair_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Executive_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Machinist_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Sales_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Professional_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Support_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Cleaner_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Farming_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="NA_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Protective_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Home_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Military_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Female_Gender"/>
+          <ClusteringField compareFunction="absDiff" field="Male_Gender"/>
+          <Cluster name="cluster_0" size="30">
+            <Array n="52" type="real">37.36666666666667 154895.08966666664 0.0 38.43333333333333 0.7 0.06666666666666667 0.0 0.16666666666666666 0.0 0.03333333333333333 0.03333333333333333 0.0 0.0 0.2 0.13333333333333333 0.26666666666666666 0.1 0.0 0.03333333333333333 0.03333333333333333 0.06666666666666667 0.0 0.03333333333333333 0.03333333333333333 0.03333333333333333 0.0 0.03333333333333333 0.03333333333333333 0.0 0.03333333333333333 0.4666666666666667 0.23333333333333334 0.13333333333333333 0.06666666666666667 0.06666666666666667 0.06666666666666667 0.03333333333333333 0.1 0.1 0.13333333333333333 0.2 0.06666666666666667 0.13333333333333333 0.06666666666666667 0.06666666666666667 0.0 0.03333333333333333 0.0 0.0 0.0 0.6333333333333333 0.36666666666666664</Array>
+          </Cluster>
+          <Cluster name="cluster_1" size="60">
+            <Array n="52" type="real">37.21666666666667 82580.94016666667 57.988888888889 41.38333333333333 0.75 0.03333333333333333 0.016666666666666666 0.06666666666666667 0.08333333333333333 0.03333333333333333 0.0 0.016666666666666666 0.0 0.25 0.05 0.26666666666666666 0.2 0.016666666666666666 0.03333333333333333 0.03333333333333333 0.016666666666666666 0.03333333333333333 0.016666666666666666 0.03333333333333333 0.016666666666666666 0.03333333333333333 0.0 0.0 0.0 0.03333333333333333 0.6333333333333333 0.15 0.1 0.06666666666666667 0.016666666666666666 0.11666666666666667 0.06666666666666667 0.13333333333333333 0.06666666666666667 0.21666666666666667 0.11666666666666667 0.08333333333333333 0.11666666666666667 0.0 0.05 0.016666666666666666 0.016666666666666666 0.0 0.0 0.0 0.5166666666666667 0.48333333333333334</Array>
+          </Cluster>
+          <Cluster name="cluster_2" size="11">
+            <Array n="52" type="real">41.72727272727273 259307.45636363633 0.0 35.81818181818182 0.6363636363636364 0.09090909090909091 0.09090909090909091 0.18181818181818182 0.0 0.0 0.0 0.0 0.0 0.18181818181818182 0.0 0.45454545454545453 0.18181818181818182 0.0 0.0 0.0 0.09090909090909091 0.0 0.0 0.0 0.09090909090909091 0.0 0.0 0.0 0.0 0.09090909090909091 0.36363636363636365 0.2727272727272727 0.18181818181818182 0.09090909090909091 0.0 0.36363636363636365 0.0 0.18181818181818182 0.0 0.0 0.0 0.0 0.2727272727272727 0.0 0.09090909090909091 0.09090909090909091 0.0 0.0 0.0 0.0 0.6363636363636364 0.36363636363636365</Array>
+          </Cluster>
+          <Cluster name="cluster_3" size="99">
+            <Array n="52" type="real">41.43434343434343 32255.94898989898 80.92929292929293 41.686868686868685 0.7474747474747475 0.06060606060606061 0.06060606060606061 0.04040404040404041 0.030303030303030304 0.050505050505050504 0.0 0.0 0.010101010101010102 0.20202020202020202 0.020202020202020204 0.3838383838383838 0.20202020202020202 0.010101010101010102 0.06060606060606061 0.04040404040404041 0.010101010101010102 0.030303030303030304 0.020202020202020204 0.0 0.0 0.010101010101010102 0.010101010101010102 0.0 0.0 0.010101010101010102 0.12121212121212122 0.0707070707070707 0.7777777777777778 0.020202020202020204 0.0 0.0707070707070707 0.050505050505050504 0.10101010101010101 0.1717171717171717 0.20202020202020202 0.10101010101010101 0.10101010101010101 0.1111111111111111 0.050505050505050504 0.010101010101010102 0.030303030303030304 0.0 0.0 0.0 0.0 0.13131313131313133 0.8686868686868687</Array>
+          </Cluster>
+        </ClusteringModel>
+      </Segment>
+      <Segment>
+        <True/>
+        <ClusteringModel functionName="clustering" modelClass="centerBased" modelName="k-means" numberOfClusters="4">
+          <MiningSchema>
+            <MiningField invalidValueTreatment="asIs" name="Age"/>
+            <MiningField invalidValueTreatment="asIs" name="Income"/>
+            <MiningField invalidValueTreatment="asIs" name="Deductions"/>
+            <MiningField invalidValueTreatment="asIs" name="Hours"/>
+            <MiningField invalidValueTreatment="asIs" name="Employment"/>
+            <MiningField invalidValueTreatment="asIs" name="Education"/>
+            <MiningField invalidValueTreatment="asIs" name="Marital"/>
+            <MiningField invalidValueTreatment="asIs" name="Occupation"/>
+            <MiningField invalidValueTreatment="asIs" name="Gender"/>
+          </MiningSchema>
+          <LocalTransformations>
+            <DerivedField dataType="integer" name="Private_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Private"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Consultant_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Consultant"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="SelfEmp_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="SelfEmp"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSLocal_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSLocal"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSState_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSState"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSFederal_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSFederal"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Unemployed_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Unemployed"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="NA_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="NA"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Volunteer_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Volunteer"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="College_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="College"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Associate_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Associate"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="HSgrad_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="HSgrad"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Bachelor_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Bachelor"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr12_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr12"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Vocational_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Vocational"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Master_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Master"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr11_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr11"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr10_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr10"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Doctorate_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Doctorate"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr9_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr9"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr5t6_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr5t6"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Professional_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Professional"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr7t8_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr7t8"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Preschool_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Preschool"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr1t4_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr1t4"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Unmarried_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Unmarried"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Absent_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Absent"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Divorced_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Divorced"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Married_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Married"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Widowed_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Widowed"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Married-spouse-absent_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Married-spouse-absent"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Service_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Service"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Transport_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Transport"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Clerical_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Clerical"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Repair_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Repair"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Executive_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Executive"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Machinist_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Machinist"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Sales_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Sales"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Professional_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Professional"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Support_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Support"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Cleaner_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Cleaner"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Farming_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Farming"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="NA_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="NA"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Protective_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Protective"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Home_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Home"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Military_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Military"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Female_Gender" optype="ordinal">
+              <NormDiscrete field="Gender" mapMissingTo="0.0" value="Female"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Male_Gender" optype="ordinal">
+              <NormDiscrete field="Gender" mapMissingTo="0.0" value="Male"/>
+            </DerivedField>
+          </LocalTransformations>
+          <ComparisonMeasure kind="distance">
+            <squaredEuclidean/>
+          </ComparisonMeasure>
+          <ClusteringField compareFunction="absDiff" field="Age"/>
+          <ClusteringField compareFunction="absDiff" field="Income"/>
+          <ClusteringField compareFunction="absDiff" field="Deductions"/>
+          <ClusteringField compareFunction="absDiff" field="Hours"/>
+          <ClusteringField compareFunction="absDiff" field="Private_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Consultant_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="SelfEmp_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSLocal_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSState_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSFederal_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Unemployed_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="NA_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Volunteer_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="College_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Associate_Education"/>
+          <ClusteringField compareFunction="absDiff" field="HSgrad_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Bachelor_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr12_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Vocational_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Master_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr11_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr10_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Doctorate_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr9_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr5t6_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Professional_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr7t8_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Preschool_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr1t4_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Unmarried_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Absent_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Divorced_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Married_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Widowed_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Married-spouse-absent_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Service_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Transport_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Clerical_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Repair_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Executive_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Machinist_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Sales_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Professional_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Support_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Cleaner_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Farming_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="NA_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Protective_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Home_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Military_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Female_Gender"/>
+          <ClusteringField compareFunction="absDiff" field="Male_Gender"/>
+          <Cluster name="cluster_0" size="20">
+            <Array n="52" type="real">33.4 238538.42500000005 0.0 36.85 0.75 0.05 0.05 0.1 0.0 0.0 0.0 0.05 0.0 0.3 0.05 0.35 0.05 0.1 0.0 0.05 0.05 0.05 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.05 0.5 0.1 0.3 0.0 0.05 0.15 0.0 0.15 0.05 0.1 0.1 0.1 0.15 0.0 0.05 0.1 0.05 0.0 0.0 0.0 0.65 0.35</Array>
+          </Cluster>
+          <Cluster name="cluster_1" size="42">
+            <Array n="52" type="real">34.833333333333336 134008.16047619045 27.285714285714285 36.476190476190474 0.6190476190476191 0.047619047619047616 0.0 0.14285714285714285 0.047619047619047616 0.047619047619047616 0.0 0.09523809523809523 0.0 0.2619047619047619 0.0 0.42857142857142855 0.09523809523809523 0.07142857142857142 0.0 0.0 0.047619047619047616 0.047619047619047616 0.023809523809523808 0.023809523809523808 0.0 0.0 0.0 0.0 0.0 0.0 0.5 0.30952380952380953 0.09523809523809523 0.07142857142857142 0.023809523809523808 0.14285714285714285 0.07142857142857142 0.11904761904761904 0.09523809523809523 0.023809523809523808 0.07142857142857142 0.09523809523809523 0.14285714285714285 0.0 0.07142857142857142 0.023809523809523808 0.09523809523809523 0.047619047619047616 0.0 0.0 0.4523809523809524 0.5476190476190477</Array>
+          </Cluster>
+          <Cluster name="cluster_2" size="84">
+            <Array n="52" type="real">42.57142857142857 30249.70154761906 112.68253968253964 40.226190476190474 0.6309523809523809 0.14285714285714285 0.047619047619047616 0.05952380952380952 0.05952380952380952 0.03571428571428571 0.0 0.023809523809523808 0.0 0.23809523809523808 0.023809523809523808 0.34523809523809523 0.15476190476190477 0.0 0.05952380952380952 0.08333333333333333 0.011904761904761904 0.023809523809523808 0.023809523809523808 0.03571428571428571 0.0 0.0 0.0 0.0 0.0 0.0 0.11904761904761904 0.03571428571428571 0.8214285714285714 0.011904761904761904 0.011904761904761904 0.011904761904761904 0.13095238095238096 0.047619047619047616 0.13095238095238096 0.14285714285714285 0.09523809523809523 0.08333333333333333 0.20238095238095238 0.011904761904761904 0.023809523809523808 0.08333333333333333 0.023809523809523808 0.011904761904761904 0.0 0.0 0.09523809523809523 0.9047619047619048</Array>
+          </Cluster>
+          <Cluster name="cluster_3" size="54">
+            <Array n="52" type="real">35.407407407407405 72721.88185185187 24.444444444444443 39.81481481481482 0.7407407407407407 0.09259259259259259 0.0 0.07407407407407407 0.018518518518518517 0.0 0.0 0.07407407407407407 0.0 0.18518518518518517 0.0 0.37037037037037035 0.16666666666666666 0.0 0.07407407407407407 0.07407407407407407 0.037037037037037035 0.037037037037037035 0.018518518518518517 0.018518518518518517 0.018518518518518517 0.0 0.0 0.0 0.0 0.05555555555555555 0.48148148148148145 0.2222222222222222 0.16666666666666666 0.05555555555555555 0.018518518518518517 0.09259259259259259 0.037037037037037035 0.1111111111111111 0.12962962962962962 0.14814814814814814 0.12962962962962962 0.037037037037037035 0.1111111111111111 0.018518518518518517 0.07407407407407407 0.0 0.07407407407407407 0.018518518518518517 0.018518518518518517 0.0 0.4074074074074074 0.5925925925925926</Array>
+          </Cluster>
+        </ClusteringModel>
+      </Segment>
+      <Segment>
+        <True/>
+        <ClusteringModel functionName="clustering" modelClass="centerBased" modelName="k-means" numberOfClusters="4">
+          <MiningSchema>
+            <MiningField invalidValueTreatment="asIs" name="Age"/>
+            <MiningField invalidValueTreatment="asIs" name="Income"/>
+            <MiningField invalidValueTreatment="asIs" name="Deductions"/>
+            <MiningField invalidValueTreatment="asIs" name="Hours"/>
+            <MiningField invalidValueTreatment="asIs" name="Employment"/>
+            <MiningField invalidValueTreatment="asIs" name="Education"/>
+            <MiningField invalidValueTreatment="asIs" name="Marital"/>
+            <MiningField invalidValueTreatment="asIs" name="Occupation"/>
+            <MiningField invalidValueTreatment="asIs" name="Gender"/>
+          </MiningSchema>
+          <LocalTransformations>
+            <DerivedField dataType="integer" name="Private_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Private"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Consultant_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Consultant"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="SelfEmp_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="SelfEmp"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSLocal_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSLocal"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSState_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSState"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSFederal_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSFederal"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Unemployed_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Unemployed"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="NA_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="NA"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Volunteer_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Volunteer"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="College_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="College"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Associate_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Associate"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="HSgrad_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="HSgrad"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Bachelor_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Bachelor"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr12_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr12"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Vocational_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Vocational"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Master_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Master"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr11_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr11"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr10_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr10"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Doctorate_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Doctorate"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr9_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr9"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr5t6_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr5t6"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Professional_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Professional"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr7t8_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr7t8"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Preschool_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Preschool"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr1t4_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr1t4"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Unmarried_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Unmarried"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Absent_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Absent"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Divorced_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Divorced"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Married_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Married"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Widowed_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Widowed"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Married-spouse-absent_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Married-spouse-absent"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Service_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Service"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Transport_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Transport"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Clerical_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Clerical"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Repair_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Repair"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Executive_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Executive"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Machinist_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Machinist"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Sales_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Sales"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Professional_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Professional"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Support_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Support"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Cleaner_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Cleaner"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Farming_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Farming"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="NA_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="NA"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Protective_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Protective"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Home_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Home"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Military_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Military"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Female_Gender" optype="ordinal">
+              <NormDiscrete field="Gender" mapMissingTo="0.0" value="Female"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Male_Gender" optype="ordinal">
+              <NormDiscrete field="Gender" mapMissingTo="0.0" value="Male"/>
+            </DerivedField>
+          </LocalTransformations>
+          <ComparisonMeasure kind="distance">
+            <squaredEuclidean/>
+          </ComparisonMeasure>
+          <ClusteringField compareFunction="absDiff" field="Age"/>
+          <ClusteringField compareFunction="absDiff" field="Income"/>
+          <ClusteringField compareFunction="absDiff" field="Deductions"/>
+          <ClusteringField compareFunction="absDiff" field="Hours"/>
+          <ClusteringField compareFunction="absDiff" field="Private_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Consultant_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="SelfEmp_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSLocal_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSState_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSFederal_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Unemployed_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="NA_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Volunteer_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="College_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Associate_Education"/>
+          <ClusteringField compareFunction="absDiff" field="HSgrad_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Bachelor_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr12_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Vocational_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Master_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr11_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr10_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Doctorate_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr9_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr5t6_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Professional_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr7t8_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Preschool_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr1t4_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Unmarried_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Absent_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Divorced_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Married_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Widowed_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Married-spouse-absent_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Service_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Transport_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Clerical_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Repair_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Executive_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Machinist_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Sales_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Professional_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Support_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Cleaner_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Farming_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="NA_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Protective_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Home_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Military_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Female_Gender"/>
+          <ClusteringField compareFunction="absDiff" field="Male_Gender"/>
+          <Cluster name="cluster_0" size="10">
+            <Array n="52" type="real">37.7 299332.75800000003 0.0 33.8 0.8 0.0 0.0 0.0 0.1 0.0 0.0 0.1 0.0 0.2 0.0 0.4 0.1 0.0 0.3 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.1 0.2 0.4 0.3 0.0 0.0 0.2 0.0 0.2 0.0 0.1 0.3 0.0 0.1 0.0 0.0 0.0 0.1 0.0 0.0 0.0 0.7 0.3</Array>
+          </Cluster>
+          <Cluster name="cluster_1" size="113">
+            <Array n="52" type="real">44.203539823008846 37908.105309734514 87.40707964601778 42.203539823008846 0.5929203539823009 0.08849557522123894 0.08849557522123894 0.11504424778761062 0.04424778761061947 0.04424778761061947 0.0 0.02654867256637168 0.0 0.13274336283185842 0.017699115044247787 0.37168141592920356 0.23008849557522124 0.0 0.02654867256637168 0.08849557522123894 0.017699115044247787 0.035398230088495575 0.008849557522123894 0.02654867256637168 0.02654867256637168 0.017699115044247787 0.0 0.0 0.0 0.008849557522123894 0.12389380530973451 0.07964601769911504 0.7522123893805309 0.02654867256637168 0.008849557522123894 0.035398230088495575 0.07964601769911504 0.08849557522123894 0.19469026548672566 0.19469026548672566 0.04424778761061947 0.07079646017699115 0.1592920353982301 0.008849557522123894 0.02654867256637168 0.035398230088495575 0.02654867256637168 0.035398230088495575 0.0 0.0 0.1504424778761062 0.8495575221238938</Array>
+          </Cluster>
+          <Cluster name="cluster_2" size="46">
+            <Array n="52" type="real">35.0 91169.03630434783 107.65217391304348 35.84782608695652 0.8260869565217391 0.08695652173913043 0.043478260869565216 0.021739130434782608 0.0 0.0 0.0 0.021739130434782608 0.0 0.2391304347826087 0.10869565217391304 0.1956521739130435 0.21739130434782608 0.021739130434782608 0.06521739130434782 0.0 0.06521739130434782 0.043478260869565216 0.021739130434782608 0.0 0.0 0.021739130434782608 0.0 0.0 0.0 0.043478260869565216 0.5217391304347826 0.2608695652173913 0.13043478260869565 0.043478260869565216 0.0 0.2608695652173913 0.021739130434782608 0.08695652173913043 0.0 0.13043478260869565 0.021739130434782608 0.21739130434782608 0.06521739130434782 0.043478260869565216 0.06521739130434782 0.0 0.021739130434782608 0.043478260869565216 0.021739130434782608 0.0 0.5217391304347826 0.4782608695652174</Array>
+          </Cluster>
+          <Cluster name="cluster_3" size="31">
+            <Array n="52" type="real">34.32258064516129 176276.18161290325 0.0 38.38709677419355 0.8709677419354839 0.0 0.03225806451612903 0.03225806451612903 0.03225806451612903 0.0 0.0 0.03225806451612903 0.0 0.22580645161290322 0.03225806451612903 0.3225806451612903 0.22580645161290322 0.03225806451612903 0.0 0.03225806451612903 0.0967741935483871 0.0 0.0 0.03225806451612903 0.0 0.0 0.0 0.0 0.0 0.06451612903225806 0.5483870967741935 0.1935483870967742 0.12903225806451613 0.03225806451612903 0.03225806451612903 0.22580645161290322 0.0 0.16129032258064516 0.06451612903225806 0.0967741935483871 0.0967741935483871 0.16129032258064516 0.06451612903225806 0.06451612903225806 0.03225806451612903 0.0 0.03225806451612903 0.0 0.0 0.0 0.6774193548387096 0.3225806451612903</Array>
+          </Cluster>
+        </ClusteringModel>
+      </Segment>
+      <Segment>
+        <True/>
+        <ClusteringModel functionName="clustering" modelClass="centerBased" modelName="k-means" numberOfClusters="4">
+          <MiningSchema>
+            <MiningField invalidValueTreatment="asIs" name="Age"/>
+            <MiningField invalidValueTreatment="asIs" name="Income"/>
+            <MiningField invalidValueTreatment="asIs" name="Deductions"/>
+            <MiningField invalidValueTreatment="asIs" name="Hours"/>
+            <MiningField invalidValueTreatment="asIs" name="Employment"/>
+            <MiningField invalidValueTreatment="asIs" name="Education"/>
+            <MiningField invalidValueTreatment="asIs" name="Marital"/>
+            <MiningField invalidValueTreatment="asIs" name="Occupation"/>
+            <MiningField invalidValueTreatment="asIs" name="Gender"/>
+          </MiningSchema>
+          <LocalTransformations>
+            <DerivedField dataType="integer" name="Private_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Private"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Consultant_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Consultant"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="SelfEmp_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="SelfEmp"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSLocal_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSLocal"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSState_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSState"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSFederal_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSFederal"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Unemployed_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Unemployed"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="NA_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="NA"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Volunteer_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Volunteer"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="College_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="College"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Associate_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Associate"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="HSgrad_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="HSgrad"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Bachelor_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Bachelor"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr12_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr12"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Vocational_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Vocational"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Master_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Master"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr11_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr11"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr10_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr10"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Doctorate_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Doctorate"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr9_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr9"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr5t6_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr5t6"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Professional_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Professional"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr7t8_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr7t8"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Preschool_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Preschool"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr1t4_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr1t4"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Unmarried_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Unmarried"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Absent_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Absent"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Divorced_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Divorced"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Married_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Married"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Widowed_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Widowed"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Married-spouse-absent_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Married-spouse-absent"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Service_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Service"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Transport_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Transport"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Clerical_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Clerical"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Repair_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Repair"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Executive_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Executive"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Machinist_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Machinist"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Sales_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Sales"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Professional_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Professional"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Support_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Support"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Cleaner_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Cleaner"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Farming_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Farming"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="NA_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="NA"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Protective_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Protective"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Home_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Home"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Military_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Military"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Female_Gender" optype="ordinal">
+              <NormDiscrete field="Gender" mapMissingTo="0.0" value="Female"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Male_Gender" optype="ordinal">
+              <NormDiscrete field="Gender" mapMissingTo="0.0" value="Male"/>
+            </DerivedField>
+          </LocalTransformations>
+          <ComparisonMeasure kind="distance">
+            <squaredEuclidean/>
+          </ComparisonMeasure>
+          <ClusteringField compareFunction="absDiff" field="Age"/>
+          <ClusteringField compareFunction="absDiff" field="Income"/>
+          <ClusteringField compareFunction="absDiff" field="Deductions"/>
+          <ClusteringField compareFunction="absDiff" field="Hours"/>
+          <ClusteringField compareFunction="absDiff" field="Private_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Consultant_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="SelfEmp_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSLocal_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSState_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSFederal_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Unemployed_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="NA_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Volunteer_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="College_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Associate_Education"/>
+          <ClusteringField compareFunction="absDiff" field="HSgrad_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Bachelor_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr12_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Vocational_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Master_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr11_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr10_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Doctorate_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr9_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr5t6_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Professional_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr7t8_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Preschool_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr1t4_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Unmarried_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Absent_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Divorced_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Married_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Widowed_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Married-spouse-absent_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Service_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Transport_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Clerical_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Repair_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Executive_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Machinist_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Sales_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Professional_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Support_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Cleaner_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Farming_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="NA_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Protective_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Home_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Military_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Female_Gender"/>
+          <ClusteringField compareFunction="absDiff" field="Male_Gender"/>
+          <Cluster name="cluster_0" size="54">
+            <Array n="52" type="real">34.666666666666664 89866.90685185182 53.246913580246854 41.111111111111114 0.7592592592592593 0.05555555555555555 0.0 0.07407407407407407 0.05555555555555555 0.037037037037037035 0.0 0.018518518518518517 0.0 0.18518518518518517 0.018518518518518517 0.37037037037037035 0.1111111111111111 0.0 0.05555555555555555 0.07407407407407407 0.037037037037037035 0.037037037037037035 0.0 0.018518518518518517 0.018518518518518517 0.018518518518518517 0.037037037037037035 0.018518518518518517 0.0 0.1111111111111111 0.6481481481481481 0.16666666666666666 0.05555555555555555 0.018518518518518517 0.0 0.1111111111111111 0.018518518518518517 0.12962962962962962 0.07407407407407407 0.07407407407407407 0.07407407407407407 0.05555555555555555 0.2037037037037037 0.05555555555555555 0.07407407407407407 0.05555555555555555 0.018518518518518517 0.037037037037037035 0.018518518518518517 0.0 0.4074074074074074 0.5925925925925926</Array>
+          </Cluster>
+          <Cluster name="cluster_1" size="14">
+            <Array n="52" type="real">32.142857142857146 259179.99142857146 0.0 34.0 0.8571428571428571 0.07142857142857142 0.07142857142857142 0.0 0.0 0.0 0.0 0.0 0.0 0.14285714285714285 0.07142857142857142 0.2857142857142857 0.21428571428571427 0.0 0.0 0.07142857142857142 0.0 0.07142857142857142 0.0 0.07142857142857142 0.0 0.07142857142857142 0.0 0.0 0.0 0.0 0.21428571428571427 0.21428571428571427 0.5 0.0 0.07142857142857142 0.14285714285714285 0.0 0.2857142857142857 0.07142857142857142 0.0 0.07142857142857142 0.07142857142857142 0.21428571428571427 0.07142857142857142 0.07142857142857142 0.0 0.0 0.0 0.0 0.0 0.7857142857142857 0.21428571428571427</Array>
+          </Cluster>
+          <Cluster name="cluster_2" size="100">
+            <Array n="52" type="real">41.31 35995.33730000001 139.11333333333332 43.12 0.68 0.05 0.06 0.05 0.04 0.03 0.0 0.09 0.0 0.2 0.04 0.27 0.16 0.0 0.06 0.1 0.04 0.04 0.03 0.0 0.03 0.0 0.02 0.0 0.01 0.0 0.17 0.03 0.76 0.02 0.02 0.09 0.05 0.05 0.1 0.18 0.05 0.12 0.13 0.04 0.06 0.04 0.09 0.0 0.0 0.0 0.13 0.87</Array>
+          </Cluster>
+          <Cluster name="cluster_3" size="32">
+            <Array n="52" type="real">33.21875 159772.43749999997 92.75 37.46875 0.875 0.03125 0.0 0.0 0.0625 0.0 0.0 0.03125 0.0 0.21875 0.0 0.5 0.03125 0.0 0.0625 0.03125 0.03125 0.0 0.03125 0.03125 0.0 0.0 0.0625 0.0 0.0 0.0625 0.5 0.15625 0.15625 0.125 0.0 0.15625 0.09375 0.15625 0.03125 0.09375 0.09375 0.15625 0.03125 0.03125 0.0625 0.0625 0.03125 0.0 0.0 0.0 0.5 0.5</Array>
+          </Cluster>
+        </ClusteringModel>
+      </Segment>
+      <Segment>
+        <True/>
+        <ClusteringModel functionName="clustering" modelClass="centerBased" modelName="k-means" numberOfClusters="4">
+          <MiningSchema>
+            <MiningField invalidValueTreatment="asIs" name="Age"/>
+            <MiningField invalidValueTreatment="asIs" name="Income"/>
+            <MiningField invalidValueTreatment="asIs" name="Deductions"/>
+            <MiningField invalidValueTreatment="asIs" name="Hours"/>
+            <MiningField invalidValueTreatment="asIs" name="Employment"/>
+            <MiningField invalidValueTreatment="asIs" name="Education"/>
+            <MiningField invalidValueTreatment="asIs" name="Marital"/>
+            <MiningField invalidValueTreatment="asIs" name="Occupation"/>
+            <MiningField invalidValueTreatment="asIs" name="Gender"/>
+          </MiningSchema>
+          <LocalTransformations>
+            <DerivedField dataType="integer" name="Private_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Private"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Consultant_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Consultant"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="SelfEmp_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="SelfEmp"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSLocal_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSLocal"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSState_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSState"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSFederal_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSFederal"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Unemployed_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Unemployed"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="NA_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="NA"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Volunteer_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Volunteer"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="College_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="College"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Associate_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Associate"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="HSgrad_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="HSgrad"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Bachelor_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Bachelor"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr12_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr12"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Vocational_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Vocational"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Master_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Master"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr11_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr11"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr10_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr10"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Doctorate_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Doctorate"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr9_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr9"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr5t6_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr5t6"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Professional_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Professional"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr7t8_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr7t8"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Preschool_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Preschool"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr1t4_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr1t4"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Unmarried_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Unmarried"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Absent_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Absent"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Divorced_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Divorced"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Married_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Married"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Widowed_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Widowed"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Married-spouse-absent_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Married-spouse-absent"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Service_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Service"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Transport_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Transport"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Clerical_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Clerical"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Repair_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Repair"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Executive_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Executive"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Machinist_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Machinist"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Sales_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Sales"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Professional_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Professional"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Support_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Support"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Cleaner_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Cleaner"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Farming_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Farming"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="NA_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="NA"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Protective_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Protective"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Home_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Home"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Military_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Military"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Female_Gender" optype="ordinal">
+              <NormDiscrete field="Gender" mapMissingTo="0.0" value="Female"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Male_Gender" optype="ordinal">
+              <NormDiscrete field="Gender" mapMissingTo="0.0" value="Male"/>
+            </DerivedField>
+          </LocalTransformations>
+          <ComparisonMeasure kind="distance">
+            <squaredEuclidean/>
+          </ComparisonMeasure>
+          <ClusteringField compareFunction="absDiff" field="Age"/>
+          <ClusteringField compareFunction="absDiff" field="Income"/>
+          <ClusteringField compareFunction="absDiff" field="Deductions"/>
+          <ClusteringField compareFunction="absDiff" field="Hours"/>
+          <ClusteringField compareFunction="absDiff" field="Private_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Consultant_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="SelfEmp_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSLocal_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSState_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSFederal_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Unemployed_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="NA_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Volunteer_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="College_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Associate_Education"/>
+          <ClusteringField compareFunction="absDiff" field="HSgrad_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Bachelor_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr12_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Vocational_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Master_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr11_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr10_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Doctorate_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr9_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr5t6_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Professional_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr7t8_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Preschool_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr1t4_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Unmarried_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Absent_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Divorced_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Married_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Widowed_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Married-spouse-absent_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Service_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Transport_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Clerical_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Repair_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Executive_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Machinist_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Sales_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Professional_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Support_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Cleaner_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Farming_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="NA_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Protective_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Home_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Military_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Female_Gender"/>
+          <ClusteringField compareFunction="absDiff" field="Male_Gender"/>
+          <Cluster name="cluster_0" size="59">
+            <Array n="52" type="real">44.94915254237288 23568.01016949153 110.06214689265542 40.86440677966102 0.6440677966101694 0.05084745762711865 0.06779661016949153 0.06779661016949153 0.03389830508474576 0.06779661016949153 0.0 0.06779661016949153 0.0 0.2033898305084746 0.0 0.3559322033898305 0.1864406779661017 0.0 0.0847457627118644 0.03389830508474576 0.03389830508474576 0.03389830508474576 0.01694915254237288 0.01694915254237288 0.0 0.03389830508474576 0.0 0.0 0.0 0.0 0.05084745762711865 0.05084745762711865 0.864406779661017 0.01694915254237288 0.01694915254237288 0.0847457627118644 0.06779661016949153 0.0847457627118644 0.1864406779661017 0.11864406779661017 0.06779661016949153 0.05084745762711865 0.11864406779661017 0.03389830508474576 0.0847457627118644 0.01694915254237288 0.06779661016949153 0.01694915254237288 0.0 0.0 0.03389830508474576 0.9661016949152542</Array>
+          </Cluster>
+          <Cluster name="cluster_1" size="44">
+            <Array n="52" type="real">30.886363636363637 199818.99136363633 0.0 33.25 0.7954545454545454 0.045454545454545456 0.022727272727272728 0.022727272727272728 0.022727272727272728 0.022727272727272728 0.0 0.06818181818181818 0.0 0.3409090909090909 0.0 0.5 0.13636363636363635 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.022727272727272728 0.0 0.0 0.022727272727272728 0.6136363636363636 0.20454545454545456 0.1590909090909091 0.0 0.0 0.22727272727272727 0.022727272727272728 0.20454545454545456 0.09090909090909091 0.11363636363636363 0.06818181818181818 0.06818181818181818 0.022727272727272728 0.022727272727272728 0.06818181818181818 0.022727272727272728 0.06818181818181818 0.0 0.0 0.0 0.5227272727272727 0.4772727272727273</Array>
+          </Cluster>
+          <Cluster name="cluster_2" size="38">
+            <Array n="52" type="real">33.0 98893.38289473683 0.0 38.63157894736842 0.5526315789473685 0.10526315789473684 0.02631578947368421 0.15789473684210525 0.02631578947368421 0.02631578947368421 0.0 0.10526315789473684 0.0 0.2894736842105263 0.02631578947368421 0.2631578947368421 0.18421052631578946 0.02631578947368421 0.07894736842105263 0.07894736842105263 0.02631578947368421 0.0 0.0 0.0 0.02631578947368421 0.0 0.0 0.0 0.0 0.02631578947368421 0.6052631578947368 0.13157894736842105 0.18421052631578946 0.02631578947368421 0.02631578947368421 0.13157894736842105 0.02631578947368421 0.13157894736842105 0.10526315789473684 0.10526315789473684 0.0 0.10526315789473684 0.10526315789473684 0.0 0.0 0.07894736842105263 0.10526315789473684 0.07894736842105263 0.0 0.02631578947368421 0.5263157894736842 0.47368421052631576</Array>
+          </Cluster>
+          <Cluster name="cluster_3" size="59">
+            <Array n="52" type="real">40.559322033898304 52698.90949152543 64.47457627118644 43.101694915254235 0.6440677966101694 0.03389830508474576 0.05084745762711865 0.03389830508474576 0.06779661016949153 0.05084745762711865 0.0 0.11864406779661017 0.0 0.23728813559322035 0.05084745762711865 0.22033898305084745 0.15254237288135594 0.01694915254237288 0.05084745762711865 0.05084745762711865 0.05084745762711865 0.03389830508474576 0.03389830508474576 0.05084745762711865 0.01694915254237288 0.0 0.0 0.01694915254237288 0.01694915254237288 0.0 0.2711864406779661 0.0847457627118644 0.576271186440678 0.05084745762711865 0.01694915254237288 0.0847457627118644 0.05084745762711865 0.05084745762711865 0.0847457627118644 0.23728813559322035 0.03389830508474576 0.1694915254237288 0.1016949152542373 0.0 0.0 0.05084745762711865 0.11864406779661017 0.01694915254237288 0.0 0.0 0.23728813559322035 0.7627118644067796</Array>
+          </Cluster>
+        </ClusteringModel>
+      </Segment>
+      <Segment>
+        <True/>
+        <ClusteringModel functionName="clustering" modelClass="centerBased" modelName="k-means" numberOfClusters="4">
+          <MiningSchema>
+            <MiningField invalidValueTreatment="asIs" name="Age"/>
+            <MiningField invalidValueTreatment="asIs" name="Income"/>
+            <MiningField invalidValueTreatment="asIs" name="Deductions"/>
+            <MiningField invalidValueTreatment="asIs" name="Hours"/>
+            <MiningField invalidValueTreatment="asIs" name="Employment"/>
+            <MiningField invalidValueTreatment="asIs" name="Education"/>
+            <MiningField invalidValueTreatment="asIs" name="Marital"/>
+            <MiningField invalidValueTreatment="asIs" name="Occupation"/>
+            <MiningField invalidValueTreatment="asIs" name="Gender"/>
+          </MiningSchema>
+          <LocalTransformations>
+            <DerivedField dataType="integer" name="Private_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Private"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Consultant_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Consultant"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="SelfEmp_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="SelfEmp"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSLocal_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSLocal"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSState_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSState"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSFederal_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSFederal"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Unemployed_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Unemployed"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="NA_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="NA"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Volunteer_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Volunteer"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="College_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="College"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Associate_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Associate"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="HSgrad_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="HSgrad"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Bachelor_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Bachelor"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr12_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr12"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Vocational_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Vocational"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Master_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Master"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr11_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr11"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr10_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr10"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Doctorate_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Doctorate"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr9_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr9"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr5t6_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr5t6"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Professional_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Professional"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr7t8_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr7t8"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Preschool_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Preschool"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr1t4_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr1t4"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Unmarried_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Unmarried"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Absent_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Absent"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Divorced_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Divorced"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Married_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Married"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Widowed_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Widowed"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Married-spouse-absent_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Married-spouse-absent"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Service_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Service"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Transport_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Transport"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Clerical_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Clerical"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Repair_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Repair"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Executive_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Executive"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Machinist_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Machinist"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Sales_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Sales"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Professional_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Professional"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Support_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Support"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Cleaner_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Cleaner"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Farming_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Farming"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="NA_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="NA"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Protective_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Protective"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Home_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Home"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Military_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Military"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Female_Gender" optype="ordinal">
+              <NormDiscrete field="Gender" mapMissingTo="0.0" value="Female"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Male_Gender" optype="ordinal">
+              <NormDiscrete field="Gender" mapMissingTo="0.0" value="Male"/>
+            </DerivedField>
+          </LocalTransformations>
+          <ComparisonMeasure kind="distance">
+            <squaredEuclidean/>
+          </ComparisonMeasure>
+          <ClusteringField compareFunction="absDiff" field="Age"/>
+          <ClusteringField compareFunction="absDiff" field="Income"/>
+          <ClusteringField compareFunction="absDiff" field="Deductions"/>
+          <ClusteringField compareFunction="absDiff" field="Hours"/>
+          <ClusteringField compareFunction="absDiff" field="Private_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Consultant_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="SelfEmp_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSLocal_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSState_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSFederal_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Unemployed_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="NA_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Volunteer_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="College_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Associate_Education"/>
+          <ClusteringField compareFunction="absDiff" field="HSgrad_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Bachelor_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr12_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Vocational_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Master_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr11_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr10_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Doctorate_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr9_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr5t6_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Professional_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr7t8_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Preschool_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr1t4_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Unmarried_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Absent_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Divorced_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Married_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Widowed_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Married-spouse-absent_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Service_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Transport_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Clerical_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Repair_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Executive_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Machinist_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Sales_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Professional_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Support_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Cleaner_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Farming_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="NA_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Protective_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Home_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Military_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Female_Gender"/>
+          <ClusteringField compareFunction="absDiff" field="Male_Gender"/>
+          <Cluster name="cluster_0" size="15">
+            <Array n="52" type="real">39.266666666666666 292893.8113333333 161.0 33.46666666666667 0.7333333333333333 0.06666666666666667 0.0 0.06666666666666667 0.06666666666666667 0.0 0.0 0.06666666666666667 0.0 0.3333333333333333 0.06666666666666667 0.2 0.0 0.0 0.06666666666666667 0.13333333333333333 0.0 0.0 0.0 0.13333333333333333 0.0 0.0 0.06666666666666667 0.0 0.0 0.0 0.3333333333333333 0.3333333333333333 0.26666666666666666 0.06666666666666667 0.0 0.06666666666666667 0.0 0.2 0.06666666666666667 0.13333333333333333 0.06666666666666667 0.2 0.06666666666666667 0.0 0.06666666666666667 0.0 0.06666666666666667 0.06666666666666667 0.0 0.0 0.6 0.4</Array>
+          </Cluster>
+          <Cluster name="cluster_1" size="98">
+            <Array n="52" type="real">41.30612244897959 35488.91326530614 112.48639455782316 42.683673469387756 0.5816326530612245 0.10204081632653061 0.061224489795918366 0.09183673469387756 0.05102040816326531 0.07142857142857142 0.0 0.04081632653061224 0.0 0.24489795918367346 0.02040816326530612 0.2653061224489796 0.25510204081632654 0.0 0.02040816326530612 0.08163265306122448 0.01020408163265306 0.030612244897959183 0.02040816326530612 0.01020408163265306 0.0 0.02040816326530612 0.02040816326530612 0.0 0.0 0.030612244897959183 0.16326530612244897 0.05102040816326531 0.7346938775510204 0.01020408163265306 0.01020408163265306 0.04081632653061224 0.05102040816326531 0.10204081632653061 0.12244897959183673 0.24489795918367346 0.061224489795918366 0.061224489795918366 0.14285714285714285 0.05102040816326531 0.030612244897959183 0.02040816326530612 0.04081632653061224 0.030612244897959183 0.0 0.0 0.1836734693877551 0.8163265306122449</Array>
+          </Cluster>
+          <Cluster name="cluster_2" size="26">
+            <Array n="52" type="real">31.153846153846153 196359.25538461536 0.0 36.0 0.8461538461538461 0.07692307692307693 0.0 0.0 0.038461538461538464 0.0 0.0 0.038461538461538464 0.0 0.2692307692307692 0.038461538461538464 0.38461538461538464 0.11538461538461539 0.0 0.07692307692307693 0.0 0.07692307692307693 0.038461538461538464 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.07692307692307693 0.5769230769230769 0.3076923076923077 0.038461538461538464 0.0 0.0 0.07692307692307693 0.0 0.23076923076923078 0.19230769230769232 0.0 0.11538461538461539 0.07692307692307693 0.19230769230769232 0.0 0.038461538461538464 0.038461538461538464 0.038461538461538464 0.0 0.0 0.0 0.46153846153846156 0.5384615384615384</Array>
+          </Cluster>
+          <Cluster name="cluster_3" size="61">
+            <Array n="52" type="real">36.114754098360656 89041.79540983608 35.69398907103836 38.42622950819672 0.6885245901639344 0.08196721311475409 0.01639344262295082 0.03278688524590164 0.06557377049180328 0.06557377049180328 0.0 0.04918032786885246 0.0 0.2786885245901639 0.03278688524590164 0.26229508196721313 0.16393442622950818 0.0 0.01639344262295082 0.06557377049180328 0.11475409836065574 0.03278688524590164 0.0 0.01639344262295082 0.0 0.0 0.01639344262295082 0.0 0.0 0.11475409836065574 0.45901639344262296 0.26229508196721313 0.11475409836065574 0.04918032786885246 0.0 0.21311475409836064 0.04918032786885246 0.14754098360655737 0.06557377049180328 0.11475409836065574 0.06557377049180328 0.04918032786885246 0.13114754098360656 0.03278688524590164 0.01639344262295082 0.03278688524590164 0.04918032786885246 0.03278688524590164 0.0 0.0 0.4262295081967213 0.5737704918032787</Array>
+          </Cluster>
+        </ClusteringModel>
+      </Segment>
+      <Segment>
+        <True/>
+        <ClusteringModel functionName="clustering" modelClass="centerBased" modelName="k-means" numberOfClusters="4">
+          <MiningSchema>
+            <MiningField invalidValueTreatment="asIs" name="Age"/>
+            <MiningField invalidValueTreatment="asIs" name="Income"/>
+            <MiningField invalidValueTreatment="asIs" name="Deductions"/>
+            <MiningField invalidValueTreatment="asIs" name="Hours"/>
+            <MiningField invalidValueTreatment="asIs" name="Employment"/>
+            <MiningField invalidValueTreatment="asIs" name="Education"/>
+            <MiningField invalidValueTreatment="asIs" name="Marital"/>
+            <MiningField invalidValueTreatment="asIs" name="Occupation"/>
+            <MiningField invalidValueTreatment="asIs" name="Gender"/>
+          </MiningSchema>
+          <LocalTransformations>
+            <DerivedField dataType="integer" name="Private_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Private"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Consultant_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Consultant"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="SelfEmp_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="SelfEmp"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSLocal_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSLocal"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSState_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSState"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSFederal_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSFederal"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Unemployed_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Unemployed"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="NA_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="NA"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Volunteer_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Volunteer"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="College_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="College"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Associate_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Associate"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="HSgrad_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="HSgrad"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Bachelor_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Bachelor"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr12_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr12"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Vocational_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Vocational"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Master_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Master"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr11_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr11"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr10_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr10"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Doctorate_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Doctorate"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr9_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr9"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr5t6_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr5t6"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Professional_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Professional"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr7t8_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr7t8"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Preschool_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Preschool"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr1t4_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr1t4"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Unmarried_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Unmarried"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Absent_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Absent"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Divorced_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Divorced"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Married_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Married"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Widowed_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Widowed"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Married-spouse-absent_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Married-spouse-absent"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Service_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Service"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Transport_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Transport"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Clerical_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Clerical"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Repair_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Repair"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Executive_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Executive"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Machinist_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Machinist"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Sales_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Sales"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Professional_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Professional"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Support_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Support"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Cleaner_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Cleaner"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Farming_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Farming"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="NA_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="NA"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Protective_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Protective"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Home_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Home"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Military_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Military"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Female_Gender" optype="ordinal">
+              <NormDiscrete field="Gender" mapMissingTo="0.0" value="Female"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Male_Gender" optype="ordinal">
+              <NormDiscrete field="Gender" mapMissingTo="0.0" value="Male"/>
+            </DerivedField>
+          </LocalTransformations>
+          <ComparisonMeasure kind="distance">
+            <squaredEuclidean/>
+          </ComparisonMeasure>
+          <ClusteringField compareFunction="absDiff" field="Age"/>
+          <ClusteringField compareFunction="absDiff" field="Income"/>
+          <ClusteringField compareFunction="absDiff" field="Deductions"/>
+          <ClusteringField compareFunction="absDiff" field="Hours"/>
+          <ClusteringField compareFunction="absDiff" field="Private_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Consultant_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="SelfEmp_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSLocal_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSState_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSFederal_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Unemployed_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="NA_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Volunteer_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="College_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Associate_Education"/>
+          <ClusteringField compareFunction="absDiff" field="HSgrad_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Bachelor_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr12_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Vocational_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Master_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr11_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr10_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Doctorate_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr9_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr5t6_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Professional_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr7t8_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Preschool_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr1t4_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Unmarried_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Absent_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Divorced_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Married_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Widowed_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Married-spouse-absent_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Service_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Transport_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Clerical_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Repair_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Executive_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Machinist_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Sales_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Professional_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Support_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Cleaner_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Farming_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="NA_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Protective_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Home_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Military_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Female_Gender"/>
+          <ClusteringField compareFunction="absDiff" field="Male_Gender"/>
+          <Cluster name="cluster_0" size="87">
+            <Array n="52" type="real">41.59770114942529 33065.668620689656 62.229885057471265 43.40229885057471 0.5977011494252874 0.1724137931034483 0.06896551724137931 0.04597701149425287 0.011494252873563218 0.05747126436781609 0.0 0.04597701149425287 0.0 0.12643678160919541 0.04597701149425287 0.3103448275862069 0.22988505747126436 0.011494252873563218 0.06896551724137931 0.06896551724137931 0.011494252873563218 0.022988505747126436 0.022988505747126436 0.0 0.022988505747126436 0.011494252873563218 0.04597701149425287 0.0 0.0 0.011494252873563218 0.13793103448275862 0.034482758620689655 0.8045977011494253 0.011494252873563218 0.0 0.08045977011494253 0.09195402298850575 0.06896551724137931 0.12643678160919541 0.08045977011494253 0.11494252873563218 0.10344827586206896 0.14942528735632185 0.034482758620689655 0.011494252873563218 0.04597701149425287 0.04597701149425287 0.04597701149425287 0.0 0.0 0.10344827586206896 0.896551724137931</Array>
+          </Cluster>
+          <Cluster name="cluster_1" size="39">
+            <Array n="52" type="real">30.923076923076923 140581.81256410253 22.9059829059829 34.30769230769231 0.7692307692307693 0.05128205128205128 0.02564102564102564 0.0 0.07692307692307693 0.02564102564102564 0.0 0.05128205128205128 0.0 0.358974358974359 0.0 0.38461538461538464 0.05128205128205128 0.02564102564102564 0.0 0.02564102564102564 0.10256410256410256 0.0 0.0 0.0 0.0 0.02564102564102564 0.02564102564102564 0.0 0.0 0.02564102564102564 0.7692307692307693 0.1794871794871795 0.02564102564102564 0.0 0.0 0.1282051282051282 0.05128205128205128 0.3076923076923077 0.05128205128205128 0.02564102564102564 0.02564102564102564 0.10256410256410256 0.10256410256410256 0.0 0.07692307692307693 0.02564102564102564 0.05128205128205128 0.05128205128205128 0.0 0.0 0.5384615384615384 0.46153846153846156</Array>
+          </Cluster>
+          <Cluster name="cluster_2" size="22">
+            <Array n="52" type="real">33.04545454545455 227799.31863636358 0.0 31.59090909090909 0.8636363636363636 0.09090909090909091 0.0 0.0 0.0 0.0 0.0 0.045454545454545456 0.0 0.2727272727272727 0.045454545454545456 0.36363636363636365 0.09090909090909091 0.0 0.045454545454545456 0.0 0.13636363636363635 0.0 0.0 0.0 0.0 0.0 0.045454545454545456 0.0 0.0 0.09090909090909091 0.5454545454545454 0.09090909090909091 0.2727272727272727 0.0 0.0 0.09090909090909091 0.045454545454545456 0.18181818181818182 0.0 0.0 0.13636363636363635 0.22727272727272727 0.13636363636363635 0.045454545454545456 0.09090909090909091 0.0 0.045454545454545456 0.0 0.0 0.0 0.6363636363636364 0.36363636363636365</Array>
+          </Cluster>
+          <Cluster name="cluster_3" size="52">
+            <Array n="52" type="real">36.44230769230769 78285.68461538461 88.69230769230762 39.11538461538461 0.8269230769230769 0.038461538461538464 0.019230769230769232 0.019230769230769232 0.038461538461538464 0.038461538461538464 0.0 0.019230769230769232 0.0 0.23076923076923078 0.0 0.34615384615384615 0.21153846153846154 0.038461538461538464 0.0 0.057692307692307696 0.07692307692307693 0.038461538461538464 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.07692307692307693 0.5384615384615384 0.17307692307692307 0.17307692307692307 0.038461538461538464 0.0 0.1346153846153846 0.038461538461538464 0.09615384615384616 0.1346153846153846 0.15384615384615385 0.057692307692307696 0.09615384615384616 0.11538461538461539 0.038461538461538464 0.038461538461538464 0.038461538461538464 0.019230769230769232 0.038461538461538464 0.0 0.0 0.40384615384615385 0.5961538461538461</Array>
+          </Cluster>
+        </ClusteringModel>
+      </Segment>
+      <Segment>
+        <True/>
+        <ClusteringModel functionName="clustering" modelClass="centerBased" modelName="k-means" numberOfClusters="4">
+          <MiningSchema>
+            <MiningField invalidValueTreatment="asIs" name="Age"/>
+            <MiningField invalidValueTreatment="asIs" name="Income"/>
+            <MiningField invalidValueTreatment="asIs" name="Deductions"/>
+            <MiningField invalidValueTreatment="asIs" name="Hours"/>
+            <MiningField invalidValueTreatment="asIs" name="Employment"/>
+            <MiningField invalidValueTreatment="asIs" name="Education"/>
+            <MiningField invalidValueTreatment="asIs" name="Marital"/>
+            <MiningField invalidValueTreatment="asIs" name="Occupation"/>
+            <MiningField invalidValueTreatment="asIs" name="Gender"/>
+          </MiningSchema>
+          <LocalTransformations>
+            <DerivedField dataType="integer" name="Private_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Private"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Consultant_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Consultant"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="SelfEmp_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="SelfEmp"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSLocal_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSLocal"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSState_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSState"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSFederal_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSFederal"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Unemployed_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Unemployed"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="NA_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="NA"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Volunteer_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Volunteer"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="College_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="College"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Associate_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Associate"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="HSgrad_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="HSgrad"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Bachelor_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Bachelor"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr12_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr12"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Vocational_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Vocational"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Master_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Master"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr11_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr11"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr10_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr10"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Doctorate_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Doctorate"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr9_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr9"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr5t6_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr5t6"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Professional_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Professional"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr7t8_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr7t8"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Preschool_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Preschool"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr1t4_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr1t4"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Unmarried_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Unmarried"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Absent_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Absent"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Divorced_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Divorced"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Married_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Married"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Widowed_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Widowed"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Married-spouse-absent_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Married-spouse-absent"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Service_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Service"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Transport_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Transport"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Clerical_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Clerical"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Repair_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Repair"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Executive_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Executive"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Machinist_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Machinist"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Sales_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Sales"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Professional_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Professional"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Support_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Support"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Cleaner_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Cleaner"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Farming_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Farming"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="NA_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="NA"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Protective_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Protective"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Home_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Home"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Military_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Military"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Female_Gender" optype="ordinal">
+              <NormDiscrete field="Gender" mapMissingTo="0.0" value="Female"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Male_Gender" optype="ordinal">
+              <NormDiscrete field="Gender" mapMissingTo="0.0" value="Male"/>
+            </DerivedField>
+          </LocalTransformations>
+          <ComparisonMeasure kind="distance">
+            <squaredEuclidean/>
+          </ComparisonMeasure>
+          <ClusteringField compareFunction="absDiff" field="Age"/>
+          <ClusteringField compareFunction="absDiff" field="Income"/>
+          <ClusteringField compareFunction="absDiff" field="Deductions"/>
+          <ClusteringField compareFunction="absDiff" field="Hours"/>
+          <ClusteringField compareFunction="absDiff" field="Private_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Consultant_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="SelfEmp_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSLocal_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSState_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSFederal_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Unemployed_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="NA_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Volunteer_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="College_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Associate_Education"/>
+          <ClusteringField compareFunction="absDiff" field="HSgrad_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Bachelor_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr12_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Vocational_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Master_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr11_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr10_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Doctorate_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr9_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr5t6_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Professional_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr7t8_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Preschool_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr1t4_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Unmarried_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Absent_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Divorced_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Married_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Widowed_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Married-spouse-absent_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Service_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Transport_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Clerical_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Repair_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Executive_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Machinist_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Sales_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Professional_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Support_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Cleaner_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Farming_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="NA_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Protective_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Home_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Military_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Female_Gender"/>
+          <ClusteringField compareFunction="absDiff" field="Male_Gender"/>
+          <Cluster name="cluster_0" size="24">
+            <Array n="52" type="real">29.083333333333332 166114.44333333336 0.0 37.125 0.75 0.0 0.0 0.041666666666666664 0.041666666666666664 0.041666666666666664 0.0 0.125 0.0 0.2916666666666667 0.041666666666666664 0.4166666666666667 0.041666666666666664 0.0 0.08333333333333333 0.0 0.041666666666666664 0.041666666666666664 0.0 0.0 0.041666666666666664 0.0 0.0 0.0 0.0 0.041666666666666664 0.625 0.16666666666666666 0.16666666666666666 0.0 0.0 0.041666666666666664 0.08333333333333333 0.25 0.08333333333333333 0.16666666666666666 0.0 0.0 0.041666666666666664 0.041666666666666664 0.125 0.041666666666666664 0.125 0.0 0.0 0.0 0.4166666666666667 0.5833333333333334</Array>
+          </Cluster>
+          <Cluster name="cluster_1" size="13">
+            <Array n="52" type="real">37.61538461538461 277517.1923076923 223.3846153846154 36.53846153846154 0.9230769230769231 0.0 0.0 0.0 0.0 0.0 0.0 0.07692307692307693 0.0 0.23076923076923078 0.07692307692307693 0.38461538461538464 0.07692307692307693 0.0 0.0 0.0 0.0 0.07692307692307693 0.0 0.0 0.0 0.07692307692307693 0.07692307692307693 0.0 0.0 0.15384615384615385 0.3076923076923077 0.23076923076923078 0.23076923076923078 0.07692307692307693 0.0 0.23076923076923078 0.0 0.3076923076923077 0.0 0.07692307692307693 0.15384615384615385 0.07692307692307693 0.07692307692307693 0.0 0.0 0.0 0.07692307692307693 0.0 0.0 0.0 0.6923076923076923 0.3076923076923077</Array>
+          </Cluster>
+          <Cluster name="cluster_2" size="106">
+            <Array n="52" type="real">42.320754716981135 33232.56424528303 72.19811320754717 42.613207547169814 0.6792452830188679 0.08490566037735849 0.03773584905660377 0.08490566037735849 0.03773584905660377 0.03773584905660377 0.0 0.03773584905660377 0.0 0.1320754716981132 0.03773584905660377 0.36792452830188677 0.16981132075471697 0.0 0.05660377358490566 0.11320754716981132 0.018867924528301886 0.018867924528301886 0.009433962264150943 0.018867924528301886 0.0 0.018867924528301886 0.02830188679245283 0.009433962264150943 0.0 0.018867924528301886 0.1509433962264151 0.03773584905660377 0.7735849056603774 0.018867924528301886 0.0 0.09433962264150944 0.12264150943396226 0.0660377358490566 0.16981132075471697 0.14150943396226415 0.05660377358490566 0.09433962264150944 0.1320754716981132 0.018867924528301886 0.03773584905660377 0.0 0.03773584905660377 0.02830188679245283 0.0 0.0 0.08490566037735849 0.9150943396226415</Array>
+          </Cluster>
+          <Cluster name="cluster_3" size="57">
+            <Array n="52" type="real">34.473684210526315 89478.52842105263 64.30994152046789 39.01754385964912 0.6666666666666666 0.12280701754385964 0.03508771929824561 0.03508771929824561 0.05263157894736842 0.03508771929824561 0.0 0.05263157894736842 0.0 0.2631578947368421 0.017543859649122806 0.3508771929824561 0.15789473684210525 0.017543859649122806 0.05263157894736842 0.017543859649122806 0.03508771929824561 0.03508771929824561 0.0 0.017543859649122806 0.017543859649122806 0.0 0.0 0.017543859649122806 0.0 0.05263157894736842 0.5263157894736842 0.2807017543859649 0.08771929824561403 0.05263157894736842 0.0 0.12280701754385964 0.05263157894736842 0.08771929824561403 0.10526315789473684 0.19298245614035087 0.07017543859649122 0.10526315789473684 0.08771929824561403 0.017543859649122806 0.03508771929824561 0.05263157894736842 0.05263157894736842 0.017543859649122806 0.0 0.0 0.38596491228070173 0.6140350877192983</Array>
+          </Cluster>
+        </ClusteringModel>
+      </Segment>
+      <Segment>
+        <True/>
+        <ClusteringModel functionName="clustering" modelClass="centerBased" modelName="k-means" numberOfClusters="4">
+          <MiningSchema>
+            <MiningField invalidValueTreatment="asIs" name="Age"/>
+            <MiningField invalidValueTreatment="asIs" name="Income"/>
+            <MiningField invalidValueTreatment="asIs" name="Deductions"/>
+            <MiningField invalidValueTreatment="asIs" name="Hours"/>
+            <MiningField invalidValueTreatment="asIs" name="Employment"/>
+            <MiningField invalidValueTreatment="asIs" name="Education"/>
+            <MiningField invalidValueTreatment="asIs" name="Marital"/>
+            <MiningField invalidValueTreatment="asIs" name="Occupation"/>
+            <MiningField invalidValueTreatment="asIs" name="Gender"/>
+          </MiningSchema>
+          <LocalTransformations>
+            <DerivedField dataType="integer" name="Private_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Private"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Consultant_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Consultant"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="SelfEmp_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="SelfEmp"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSLocal_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSLocal"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSState_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSState"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSFederal_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSFederal"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Unemployed_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Unemployed"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="NA_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="NA"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Volunteer_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Volunteer"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="College_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="College"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Associate_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Associate"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="HSgrad_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="HSgrad"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Bachelor_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Bachelor"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr12_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr12"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Vocational_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Vocational"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Master_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Master"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr11_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr11"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr10_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr10"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Doctorate_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Doctorate"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr9_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr9"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr5t6_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr5t6"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Professional_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Professional"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr7t8_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr7t8"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Preschool_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Preschool"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr1t4_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr1t4"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Unmarried_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Unmarried"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Absent_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Absent"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Divorced_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Divorced"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Married_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Married"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Widowed_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Widowed"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Married-spouse-absent_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Married-spouse-absent"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Service_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Service"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Transport_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Transport"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Clerical_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Clerical"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Repair_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Repair"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Executive_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Executive"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Machinist_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Machinist"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Sales_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Sales"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Professional_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Professional"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Support_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Support"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Cleaner_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Cleaner"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Farming_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Farming"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="NA_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="NA"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Protective_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Protective"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Home_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Home"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Military_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Military"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Female_Gender" optype="ordinal">
+              <NormDiscrete field="Gender" mapMissingTo="0.0" value="Female"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Male_Gender" optype="ordinal">
+              <NormDiscrete field="Gender" mapMissingTo="0.0" value="Male"/>
+            </DerivedField>
+          </LocalTransformations>
+          <ComparisonMeasure kind="distance">
+            <squaredEuclidean/>
+          </ComparisonMeasure>
+          <ClusteringField compareFunction="absDiff" field="Age"/>
+          <ClusteringField compareFunction="absDiff" field="Income"/>
+          <ClusteringField compareFunction="absDiff" field="Deductions"/>
+          <ClusteringField compareFunction="absDiff" field="Hours"/>
+          <ClusteringField compareFunction="absDiff" field="Private_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Consultant_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="SelfEmp_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSLocal_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSState_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSFederal_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Unemployed_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="NA_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Volunteer_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="College_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Associate_Education"/>
+          <ClusteringField compareFunction="absDiff" field="HSgrad_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Bachelor_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr12_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Vocational_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Master_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr11_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr10_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Doctorate_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr9_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr5t6_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Professional_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr7t8_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Preschool_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr1t4_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Unmarried_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Absent_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Divorced_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Married_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Widowed_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Married-spouse-absent_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Service_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Transport_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Clerical_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Repair_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Executive_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Machinist_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Sales_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Professional_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Support_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Cleaner_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Farming_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="NA_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Protective_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Home_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Military_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Female_Gender"/>
+          <ClusteringField compareFunction="absDiff" field="Male_Gender"/>
+          <Cluster name="cluster_0" size="40">
+            <Array n="52" type="real">40.35 69792.10475 47.55 38.325 0.625 0.1 0.025 0.075 0.0 0.075 0.0 0.1 0.0 0.15 0.15 0.325 0.225 0.0 0.025 0.075 0.025 0.0 0.0 0.0 0.0 0.0 0.025 0.0 0.0 0.025 0.425 0.225 0.25 0.05 0.025 0.05 0.05 0.125 0.075 0.175 0.025 0.15 0.2 0.025 0.0 0.025 0.1 0.0 0.0 0.0 0.525 0.475</Array>
+          </Cluster>
+          <Cluster name="cluster_1" size="83">
+            <Array n="52" type="real">43.59036144578313 30892.233012048197 65.7751004016064 44.2289156626506 0.6506024096385542 0.07228915662650602 0.060240963855421686 0.04819277108433735 0.04819277108433735 0.03614457831325301 0.0 0.08433734939759036 0.0 0.2891566265060241 0.03614457831325301 0.2891566265060241 0.18072289156626506 0.0 0.012048192771084338 0.03614457831325301 0.024096385542168676 0.024096385542168676 0.0 0.0 0.03614457831325301 0.03614457831325301 0.024096385542168676 0.012048192771084338 0.0 0.0 0.07228915662650602 0.060240963855421686 0.8433734939759037 0.012048192771084338 0.012048192771084338 0.0963855421686747 0.07228915662650602 0.03614457831325301 0.1566265060240964 0.20481927710843373 0.04819277108433735 0.13253012048192772 0.08433734939759036 0.012048192771084338 0.07228915662650602 0.0 0.08433734939759036 0.0 0.0 0.0 0.060240963855421686 0.9397590361445783</Array>
+          </Cluster>
+          <Cluster name="cluster_2" size="38">
+            <Array n="52" type="real">35.578947368421055 212156.94657894736 39.26315789473684 38.421052631578945 0.7631578947368421 0.05263157894736842 0.0 0.07894736842105263 0.05263157894736842 0.02631578947368421 0.0 0.02631578947368421 0.0 0.2894736842105263 0.10526315789473684 0.39473684210526316 0.07894736842105263 0.0 0.07894736842105263 0.0 0.02631578947368421 0.02631578947368421 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.07894736842105263 0.34210526315789475 0.34210526315789475 0.15789473684210525 0.07894736842105263 0.0 0.13157894736842105 0.02631578947368421 0.3157894736842105 0.05263157894736842 0.13157894736842105 0.02631578947368421 0.07894736842105263 0.07894736842105263 0.02631578947368421 0.07894736842105263 0.02631578947368421 0.02631578947368421 0.0 0.0 0.0 0.6842105263157895 0.3157894736842105</Array>
+          </Cluster>
+          <Cluster name="cluster_3" size="39">
+            <Array n="52" type="real">32.58974358974359 119096.11051282055 69.40170940170924 37.1025641025641 0.717948717948718 0.02564102564102564 0.02564102564102564 0.10256410256410256 0.02564102564102564 0.05128205128205128 0.0 0.05128205128205128 0.0 0.2564102564102564 0.0 0.358974358974359 0.10256410256410256 0.0 0.02564102564102564 0.0 0.05128205128205128 0.07692307692307693 0.02564102564102564 0.0 0.0 0.07692307692307693 0.02564102564102564 0.0 0.0 0.07692307692307693 0.717948717948718 0.15384615384615385 0.05128205128205128 0.0 0.0 0.15384615384615385 0.0 0.15384615384615385 0.07692307692307693 0.07692307692307693 0.02564102564102564 0.10256410256410256 0.15384615384615385 0.05128205128205128 0.07692307692307693 0.02564102564102564 0.05128205128205128 0.02564102564102564 0.02564102564102564 0.0 0.5384615384615384 0.46153846153846156</Array>
+          </Cluster>
+        </ClusteringModel>
+      </Segment>
+      <Segment>
+        <True/>
+        <ClusteringModel functionName="clustering" modelClass="centerBased" modelName="k-means" numberOfClusters="4">
+          <MiningSchema>
+            <MiningField invalidValueTreatment="asIs" name="Age"/>
+            <MiningField invalidValueTreatment="asIs" name="Income"/>
+            <MiningField invalidValueTreatment="asIs" name="Deductions"/>
+            <MiningField invalidValueTreatment="asIs" name="Hours"/>
+            <MiningField invalidValueTreatment="asIs" name="Employment"/>
+            <MiningField invalidValueTreatment="asIs" name="Education"/>
+            <MiningField invalidValueTreatment="asIs" name="Marital"/>
+            <MiningField invalidValueTreatment="asIs" name="Occupation"/>
+            <MiningField invalidValueTreatment="asIs" name="Gender"/>
+          </MiningSchema>
+          <LocalTransformations>
+            <DerivedField dataType="integer" name="Private_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Private"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Consultant_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Consultant"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="SelfEmp_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="SelfEmp"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSLocal_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSLocal"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSState_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSState"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="PSFederal_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="PSFederal"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Unemployed_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Unemployed"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="NA_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="NA"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Volunteer_Employment" optype="ordinal">
+              <NormDiscrete field="Employment" mapMissingTo="0.0" value="Volunteer"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="College_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="College"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Associate_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Associate"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="HSgrad_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="HSgrad"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Bachelor_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Bachelor"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr12_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr12"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Vocational_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Vocational"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Master_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Master"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr11_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr11"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr10_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr10"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Doctorate_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Doctorate"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr9_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr9"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr5t6_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr5t6"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Professional_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Professional"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr7t8_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr7t8"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Preschool_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Preschool"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Yr1t4_Education" optype="ordinal">
+              <NormDiscrete field="Education" mapMissingTo="0.0" value="Yr1t4"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Unmarried_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Unmarried"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Absent_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Absent"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Divorced_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Divorced"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Married_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Married"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Widowed_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Widowed"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Married-spouse-absent_Marital" optype="ordinal">
+              <NormDiscrete field="Marital" mapMissingTo="0.0" value="Married-spouse-absent"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Service_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Service"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Transport_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Transport"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Clerical_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Clerical"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Repair_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Repair"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Executive_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Executive"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Machinist_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Machinist"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Sales_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Sales"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Professional_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Professional"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Support_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Support"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Cleaner_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Cleaner"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Farming_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Farming"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="NA_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="NA"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Protective_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Protective"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Home_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Home"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Military_Occupation" optype="ordinal">
+              <NormDiscrete field="Occupation" mapMissingTo="0.0" value="Military"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Female_Gender" optype="ordinal">
+              <NormDiscrete field="Gender" mapMissingTo="0.0" value="Female"/>
+            </DerivedField>
+            <DerivedField dataType="integer" name="Male_Gender" optype="ordinal">
+              <NormDiscrete field="Gender" mapMissingTo="0.0" value="Male"/>
+            </DerivedField>
+          </LocalTransformations>
+          <ComparisonMeasure kind="distance">
+            <squaredEuclidean/>
+          </ComparisonMeasure>
+          <ClusteringField compareFunction="absDiff" field="Age"/>
+          <ClusteringField compareFunction="absDiff" field="Income"/>
+          <ClusteringField compareFunction="absDiff" field="Deductions"/>
+          <ClusteringField compareFunction="absDiff" field="Hours"/>
+          <ClusteringField compareFunction="absDiff" field="Private_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Consultant_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="SelfEmp_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSLocal_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSState_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="PSFederal_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Unemployed_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="NA_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="Volunteer_Employment"/>
+          <ClusteringField compareFunction="absDiff" field="College_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Associate_Education"/>
+          <ClusteringField compareFunction="absDiff" field="HSgrad_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Bachelor_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr12_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Vocational_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Master_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr11_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr10_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Doctorate_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr9_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr5t6_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Professional_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr7t8_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Preschool_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Yr1t4_Education"/>
+          <ClusteringField compareFunction="absDiff" field="Unmarried_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Absent_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Divorced_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Married_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Widowed_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Married-spouse-absent_Marital"/>
+          <ClusteringField compareFunction="absDiff" field="Service_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Transport_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Clerical_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Repair_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Executive_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Machinist_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Sales_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Professional_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Support_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Cleaner_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Farming_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="NA_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Protective_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Home_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Military_Occupation"/>
+          <ClusteringField compareFunction="absDiff" field="Female_Gender"/>
+          <ClusteringField compareFunction="absDiff" field="Male_Gender"/>
+          <Cluster name="cluster_0" size="79">
+            <Array n="52" type="real">44.10126582278481 29609.10025316456 73.44303797468355 44.22784810126582 0.810126582278481 0.06329113924050633 0.06329113924050633 0.012658227848101266 0.0 0.012658227848101266 0.0 0.0379746835443038 0.0 0.16455696202531644 0.0379746835443038 0.2911392405063291 0.27848101265822783 0.0 0.02531645569620253 0.05063291139240506 0.0 0.012658227848101266 0.0379746835443038 0.0 0.02531645569620253 0.012658227848101266 0.02531645569620253 0.0 0.0379746835443038 0.0 0.10126582278481013 0.0379746835443038 0.8354430379746836 0.012658227848101266 0.012658227848101266 0.06329113924050633 0.02531645569620253 0.05063291139240506 0.16455696202531644 0.27848101265822783 0.0759493670886076 0.1518987341772152 0.08860759493670886 0.012658227848101266 0.02531645569620253 0.0 0.0379746835443038 0.02531645569620253 0.0 0.0 0.08860759493670886 0.9113924050632911</Array>
+          </Cluster>
+          <Cluster name="cluster_1" size="58">
+            <Array n="52" type="real">39.224137931034484 62391.83327586206 114.85057471264378 38.1551724137931 0.6896551724137931 0.08620689655172414 0.05172413793103448 0.08620689655172414 0.0 0.017241379310344827 0.0 0.06896551724137931 0.0 0.2413793103448276 0.06896551724137931 0.25862068965517243 0.15517241379310345 0.017241379310344827 0.034482758620689655 0.017241379310344827 0.06896551724137931 0.06896551724137931 0.0 0.017241379310344827 0.0 0.0 0.034482758620689655 0.0 0.017241379310344827 0.06896551724137931 0.3103448275862069 0.15517241379310345 0.41379310344827586 0.017241379310344827 0.034482758620689655 0.10344827586206896 0.05172413793103448 0.15517241379310345 0.1896551724137931 0.06896551724137931 0.017241379310344827 0.13793103448275862 0.10344827586206896 0.0 0.05172413793103448 0.017241379310344827 0.06896551724137931 0.034482758620689655 0.0 0.0 0.27586206896551724 0.7241379310344828</Array>
+          </Cluster>
+          <Cluster name="cluster_2" size="41">
+            <Array n="52" type="real">34.34146341463415 119549.23512195119 50.032520325203336 39.58536585365854 0.8780487804878049 0.07317073170731707 0.0 0.024390243902439025 0.0 0.0 0.0 0.024390243902439025 0.0 0.1951219512195122 0.0 0.3902439024390244 0.24390243902439024 0.0 0.07317073170731707 0.0 0.04878048780487805 0.024390243902439025 0.0 0.0 0.0 0.0 0.024390243902439025 0.0 0.0 0.04878048780487805 0.6097560975609756 0.21951219512195122 0.04878048780487805 0.04878048780487805 0.024390243902439025 0.14634146341463414 0.0 0.1951219512195122 0.024390243902439025 0.07317073170731707 0.07317073170731707 0.14634146341463414 0.14634146341463414 0.0 0.12195121951219512 0.04878048780487805 0.024390243902439025 0.0 0.0 0.0 0.43902439024390244 0.5609756097560976</Array>
+          </Cluster>
+          <Cluster name="cluster_3" size="22">
+            <Array n="52" type="real">33.31818181818182 213388.8804545454 0.0 36.36363636363637 0.7727272727272727 0.045454545454545456 0.045454545454545456 0.0 0.0 0.0 0.0 0.13636363636363635 0.0 0.22727272727272727 0.045454545454545456 0.18181818181818182 0.18181818181818182 0.0 0.0 0.0 0.13636363636363635 0.045454545454545456 0.045454545454545456 0.0 0.045454545454545456 0.0 0.09090909090909091 0.0 0.0 0.045454545454545456 0.5 0.045454545454545456 0.36363636363636365 0.045454545454545456 0.0 0.13636363636363635 0.0 0.13636363636363635 0.0 0.045454545454545456 0.09090909090909091 0.2727272727272727 0.09090909090909091 0.0 0.045454545454545456 0.0 0.13636363636363635 0.0 0.045454545454545456 0.0 0.7272727272727273 0.2727272727272727</Array>
+          </Cluster>
+        </ClusteringModel>
+      </Segment>
+    </Segmentation>
+  </MiningModel>
+</PMML>

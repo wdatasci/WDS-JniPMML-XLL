@@ -1,0 +1,118 @@
+<LocalTransformations>
+ <DerivedField name="dis_pl" dataType="string" optype="categorical">
+  <Discretize field="petal_length" mapMissingTo="0" defaultValue="1">
+   <DiscretizeBin binValue="0">
+    <Interval closure="openClosed" rightMargin="0"/>
+   </DiscretizeBin>
+   <DiscretizeBin binValue="1">
+    <Interval closure="openClosed" leftMargin="0" rightMargin="1"/>
+   </DiscretizeBin>
+   <DiscretizeBin binValue="2">
+    <Interval closure="openClosed" leftMargin="1" rightMargin="2"/>
+   </DiscretizeBin>
+   <DiscretizeBin binValue="3">
+    <Interval closure="openClosed" leftMargin="2" rightMargin="3"/>
+   </DiscretizeBin>
+   <DiscretizeBin binValue="4">
+    <Interval closure="openClosed" leftMargin="3" rightMargin="4"/>
+   </DiscretizeBin>
+   <DiscretizeBin binValue="5">
+    <Interval closure="openOpen" leftMargin="4"/>
+   </DiscretizeBin>
+  </Discretize>
+ </DerivedField>
+ <DerivedField name="dis_pw" dataType="string" optype="categorical">
+  <Discretize field="petal_width" mapMissingTo="0" defaultValue="1">
+   <DiscretizeBin binValue="0">
+    <Interval closure="openClosed" rightMargin="0"/>
+   </DiscretizeBin>
+   <DiscretizeBin binValue="1">
+    <Interval closure="openClosed" leftMargin="0" rightMargin="1"/>
+   </DiscretizeBin>
+   <DiscretizeBin binValue="2">
+    <Interval closure="openClosed" leftMargin="1" rightMargin="2"/>
+   </DiscretizeBin>
+   <DiscretizeBin binValue="3">
+    <Interval closure="openClosed" leftMargin="2" rightMargin="3"/>
+   </DiscretizeBin>
+   <DiscretizeBin binValue="4">
+    <Interval closure="openClosed" leftMargin="3" rightMargin="4"/>
+   </DiscretizeBin>
+   <DiscretizeBin binValue="5">
+    <Interval closure="openOpen" leftMargin="4"/>
+   </DiscretizeBin>
+  </Discretize>
+ </DerivedField>
+ <DerivedField name="dis_sl" dataType="string" optype="categorical">
+  <Discretize field="sepal_length" mapMissingTo="0" defaultValue="1">
+   <DiscretizeBin binValue="0">
+    <Interval closure="openClosed" rightMargin="0"/>
+   </DiscretizeBin>
+   <DiscretizeBin binValue="1">
+    <Interval closure="openClosed" leftMargin="0" rightMargin="1"/>
+   </DiscretizeBin>
+   <DiscretizeBin binValue="2">
+    <Interval closure="openClosed" leftMargin="1" rightMargin="2"/>
+   </DiscretizeBin>
+   <DiscretizeBin binValue="3">
+    <Interval closure="openClosed" leftMargin="2" rightMargin="3"/>
+   </DiscretizeBin>
+   <DiscretizeBin binValue="4">
+    <Interval closure="openClosed" leftMargin="3" rightMargin="4"/>
+   </DiscretizeBin>
+   <DiscretizeBin binValue="5">
+    <Interval closure="openOpen" leftMargin="4"/>
+   </DiscretizeBin>
+  </Discretize>
+ </DerivedField>
+ <DerivedField name="dis_sw" dataType="string" optype="categorical">
+  <Discretize field="sepal_width" mapMissingTo="0" defaultValue="1">
+   <DiscretizeBin binValue="0">
+    <Interval closure="openClosed" rightMargin="0"/>
+   </DiscretizeBin>
+   <DiscretizeBin binValue="1">
+    <Interval closure="openClosed" leftMargin="0" rightMargin="1"/>
+   </DiscretizeBin>
+   <DiscretizeBin binValue="2">
+    <Interval closure="openClosed" leftMargin="1" rightMargin="2"/>
+   </DiscretizeBin>
+   <DiscretizeBin binValue="3">
+    <Interval closure="openClosed" leftMargin="2" rightMargin="3"/>
+   </DiscretizeBin>
+   <DiscretizeBin binValue="4">
+    <Interval closure="openClosed" leftMargin="3" rightMargin="4"/>
+   </DiscretizeBin>
+   <DiscretizeBin binValue="5">
+    <Interval closure="openOpen" leftMargin="4"/>
+   </DiscretizeBin>
+  </Discretize>
+ </DerivedField>
+ <DerivedField name="d_class" dataType="double" optype="continuous">
+  <MapValues mapMissingTo="1" defaultValue="-1" outputColumn="output">
+   <FieldColumnPair field="class" column="input1"/>
+   <InlineTable>
+    <row>
+     <input1>Iris-setosa</input1>
+     <output>1</output>
+    </row>
+    <row>
+     <input1>Iris-versic</input1>
+     <output>2</output>
+    </row>
+    <row>
+     <input1>Iris-virgin</input1>
+     <output>3</output>
+    </row>
+   </InlineTable>
+  </MapValues>
+ </DerivedField>
+ <DerivedField name="class_Iris_setosa" dataType="double" optype="continuous">
+  <NormDiscrete field="class" value="Iris-setosa"/>
+ </DerivedField>
+ <DerivedField name="class_Iris_versicolor" dataType="double" optype="continuous">
+  <NormDiscrete field="class" value="Iris-versicolor"/>
+ </DerivedField>
+ <DerivedField name="class_Iris_virginica" dataType="double" optype="continuous">
+  <NormDiscrete field="class" value="Iris-virginica"/>
+ </DerivedField>
+</LocalTransformations>

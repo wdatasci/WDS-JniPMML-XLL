@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="doc">
+      <UniqueIdentifier>{bb8df117-05bc-480a-a937-c4a03c178bde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="doc\api">
+      <UniqueIdentifier>{68b4735d-0c51-415c-b601-4f007137573e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="doc\articles">
+      <UniqueIdentifier>{e841972d-dd9b-460a-9543-4d4d63c59a55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="doc\templates">
+      <UniqueIdentifier>{50a1a887-a7bb-4f7f-a89d-7092ba87172e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="doc\pdf">
+      <UniqueIdentifier>{2f66bb85-cb40-48f3-999c-67b0a4788e1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="doc\templates\WDS">
+      <UniqueIdentifier>{b974f58b-ad92-4909-9956-835eb40a1374}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="doc\templates\WDS\layout">
+      <UniqueIdentifier>{f4b4137c-dac8-4c14-8639-401d89675505}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="doc\templates\WDS\partials">
+      <UniqueIdentifier>{700c0062-4bc6-4b9f-80f5-7c4f5f560478}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="doc\templates\WDS\styles">
+      <UniqueIdentifier>{94efcd6a-834b-4417-afb3-8eb8faaecb0c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="doc\index.md">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="doc\ReadMe.md">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="doc\toc.yml">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="doc\api\index.md">
+      <Filter>doc\api</Filter>
+    </None>
+    <None Include="doc\articles\index.md">
+      <Filter>doc\articles</Filter>
+    </None>
+    <None Include="doc\articles\toc.md">
+      <Filter>doc\articles</Filter>
+    </None>
+    <None Include="doc\articles\WDSJniPMMLNotes.md">
+      <Filter>doc\articles</Filter>
+    </None>
+    <None Include="doc\pdf\toc.yml">
+      <Filter>doc\pdf</Filter>
+    </None>
+    <None Include="doc\templates\WDS\WDataSci-Mark1.svg">
+      <Filter>doc\templates\WDS</Filter>
+    </None>
+    <None Include="doc\templates\WDS\layout\_master.tmpl">
+      <Filter>doc\templates\WDS\layout</Filter>
+    </None>
+    <None Include="doc\templates\WDS\styles\docfx.css">
+      <Filter>doc\templates\WDS\styles</Filter>
+    </None>
+    <None Include="doc\templates\WDS\styles\docfx.vendor.css">
+      <Filter>doc\templates\WDS\styles</Filter>
+    </None>
+    <None Include="doc\templates\WDS\partials\_head.liquid">
+      <Filter>doc\templates\WDS\partials</Filter>
+    </None>
+    <None Include="doc\templates\WDS\partials\_logo.liquid">
+      <Filter>doc\templates\WDS\partials</Filter>
+    </None>
+    <None Include="doc\templates\WDS\partials\head.tmpl.partial">
+      <Filter>doc\templates\WDS\partials</Filter>
+    </None>
+    <None Include="doc\templates\WDS\partials\logo.tmpl.partial">
+      <Filter>doc\templates\WDS\partials</Filter>
+    </None>
+    <None Include="docfx.json" />
+    <None Include="..\WDS-Cs\src\WDSJavaXCs.md">
+      <Filter>doc\articles</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="doc\templates\WDS\WDataSci-Mark1-50x50.ico">
+      <Filter>doc\templates\WDS</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

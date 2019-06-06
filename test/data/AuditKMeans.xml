@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<PMML version="3.2" xmlns="http://www.dmg.org/PMML-3_2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.dmg.org/PMML-3_2 http://www.dmg.org/v3-2/pmml-3-2.xsd">
+ <Header copyright="Copyright (c) 2012 DMG" description="KMeans cluster model">
+  <Extension name="user" value="DMG" extender="Rattle/PMML"/>
+  <Application name="Rattle/PMML" version="1.2.29"/>
+  <Timestamp>2012-09-27 13:30:20</Timestamp>
+ </Header>
+ <DataDictionary numberOfFields="4">
+  <DataField name="Age" optype="continuous" dataType="double"/>
+  <DataField name="Income" optype="continuous" dataType="double"/>
+  <DataField name="Deductions" optype="continuous" dataType="double"/>
+  <DataField name="Hours" optype="continuous" dataType="double"/>
+ </DataDictionary>
+ <ClusteringModel modelName="KMeans_Model" functionName="clustering" algorithmName="KMeans: Hartigan and Wong" modelClass="centerBased" numberOfClusters="2">
+  <MiningSchema>
+   <MiningField name="Age" usageType="active"/>
+   <MiningField name="Income" usageType="active"/>
+   <MiningField name="Deductions" usageType="active"/>
+   <MiningField name="Hours" usageType="active"/>
+  </MiningSchema>
+  <ComparisonMeasure kind="distance">
+   <squaredEuclidean/>
+  </ComparisonMeasure>
+  <ClusteringField field="Age" compareFunction="absDiff"/>
+  <ClusteringField field="Income" compareFunction="absDiff"/>
+  <ClusteringField field="Deductions" compareFunction="absDiff"/>
+  <ClusteringField field="Hours" compareFunction="absDiff"/>
+  <Cluster name="1" size="1081">
+   <Array n="4" type="real">40.0074005550416 52168.0953839037 79.8489053345668 41.8205365402405</Array>
+  </Cluster>
+  <Cluster name="2" size="319">
+   <Array n="4" type="real">33.5172413793103 191428.689278997 11.6112852664577 35.6990595611285</Array>
+  </Cluster>
+ </ClusteringModel>
+</PMML>

@@ -1,0 +1,43 @@
+{
+    "metadata": [],
+    "build": {},
+    "pdf": {
+        "content": [
+            { "files": ["**.yml"], "src" : "obj/JniPMML-Cs", "dest" : "JniPMML-Cs/api" },
+            { "files": ["**.yml"], "src" : "obj/WDS-Cs", "dest" : "WDS-Cs/api" },
+            { "files": ["**/sr**/**.md"], "src": "..", "dest": "articles", "exclude":["**.content.md"]},
+            { "files": ["README.md", "TODO.md", "LICENSE.md"], "src": ".." },
+            { "files": ["JniPMML**/**.md", "WDS**/**.md", "api/index.md" , "api/**/index.md", "api/**/**/index.md" ], "src": "doc" },
+            { "files": ["**.md"], "src": "doc/articles", "dest": "articles" },
+            { "files": ["cover.md"], "src": "doc" },
+            { "files": ["toc.yml"], "src": "doc/JniPMML-Cs" }
+        ],
+        "resource" : [
+            { "files": ["images/**.jpg"], "src": "doc/articles", "dest" : "articles" },
+            { "files": ["**.png"], "src": "doc/templates/WDS", "dest" : "images" }
+        ],
+        "overwrite": [
+            { "files": [ "**/**.content.md"], "src": "../JniPMML-Cs"},
+            { "files": [ "**/**.content.md"], "src": "../WDS-Cs"}
+        ],
+        "template": [
+            "doc/templates/WDS",
+            "pdf.default"
+        ],
+        "wkhtmltopdf": {
+            "xsl-style-sheet" : "doc/templates/WDS/xsl/wkhtmltopdf_toc.xsl",
+            "outline-depth" : "3"
+        },
+        "postProcessors": [],
+        "name": "WDS-JniPMML-Cs",
+        "generatesAppendices": "true",
+        "dest": "docfx_pdf/JniPMML-Cs"
+    },
+    "//": {
+        "keepRawFiles": "true",
+        "outline" : "WkDefaultOutline",
+        "note1" : "docf.json note: after valid commands, the parser will ignore //, so packing some notes here",
+        "note2" : "for pdf, each toc generates a new file, so keep only the master in pdf/toc.yml, however, toc.yml pointed to directly do not count",
+        "note3" : "DocFx processes all content files at the same time, and classes with the same name but in different projects/languages were not getting a different uid, so documentation is broken out by Java, Cs, and VB/VBA"
+    }
+}

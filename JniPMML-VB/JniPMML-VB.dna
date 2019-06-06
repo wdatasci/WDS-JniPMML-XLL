@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DnaLibrary Name="JniPMML-VB Add-In" RuntimeVersion="v4.0" xmlns="http://schemas.excel-dna.net/addin/2018/05/dnalibrary">
+
+  <ExternalLibrary Path="JniPMML-VB.dll" ExplicitExports="true" LoadFromBytes="true" Pack="true" IncludePdb="false" />
+  <Reference Path="ExcelDna.Registration.VisualBasic.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  <Reference Path="ExcelDna.Registration.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  <Reference Path="ExcelDna.Utilities.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  <Reference Path="NetOffice.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  <Reference Path="OfficeApi.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  <Reference Path="VBIDEApi.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  <Reference Path="ExcelApi.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  <Reference Path="System.Collections.Immutable.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  <Reference Path="stdole.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  <Reference Path="Microsoft.Office.Interop.Excel.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  <!--
+  <Reference Path="ExcelDna.IntelliSense.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  -->
+</DnaLibrary>

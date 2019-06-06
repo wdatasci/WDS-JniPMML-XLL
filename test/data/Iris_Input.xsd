@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!-- Copyright 2019, Wypasek Data Science, Inc. 
+Author: Christian Wypasek (CJW)
+An example input schema for the ubiquitous Iris data set.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xi="http://www.w3.org/2001/XInclude" attributeFormDefault="unqualified" elementFormDefault="qualified">
+    <xs:simpleType name="Nbr">
+        <xs:union memberTypes="xs:decimal xs:integer xs:negativeInteger xs:nonNegativeInteger xs:positiveInteger xs:nonPositiveInteger xs:long xs:int xs:short xs:byte xs:unsignedLong xs:unsignedShort xs:unsignedInt xs:unsignedByte xs:float xs:double"/>
+    </xs:simpleType>
+    <xs:simpleType name="Dbl">
+        <xs:union memberTypes="xs:decimal xs:long xs:int xs:short xs:byte xs:unsignedLong xs:unsignedShort xs:unsignedInt xs:unsignedByte xs:float xs:double"/>
+    </xs:simpleType>
+    <xs:simpleType name="Lng">
+        <xs:union memberTypes="xs:long"/>
+    </xs:simpleType>
+    <xs:simpleType name="Int">
+        <xs:union memberTypes="xs:integer xs:negativeInteger xs:nonNegativeInteger xs:positiveInteger xs:nonPositiveInteger xs:int xs:short xs:unsignedShort xs:unsignedInt"/>
+    </xs:simpleType>
+    <xs:simpleType name="LoDbl">
+        <xs:list itemType="xs:double"/>
+    </xs:simpleType>
+    <xs:simpleType name="VLS">
+        <xs:union memberTypes="xs:token xs:NMTOKEN xs:normalizedString xs:string"/>
+    </xs:simpleType>
+    <xs:simpleType name="LoVLS">
+        <xs:list itemType="VLS"/>
+    </xs:simpleType>
+    <xs:simpleType name="Str1"><xs:restriction base="xs:string"><xs:whiteSpace value="collapse"/><xs:maxLength value="1"/></xs:restriction></xs:simpleType>
+    <xs:simpleType name="Str2"><xs:restriction base="xs:string"><xs:whiteSpace value="collapse"/><xs:maxLength value="2"/></xs:restriction></xs:simpleType>
+    <xs:simpleType name="Str4"><xs:restriction base="xs:string"><xs:whiteSpace value="collapse"/><xs:maxLength value="4"/></xs:restriction></xs:simpleType>
+    <xs:simpleType name="Str8"><xs:restriction base="xs:string"><xs:whiteSpace value="collapse"/><xs:maxLength value="8"/></xs:restriction></xs:simpleType>
+    <xs:simpleType name="Str16"><xs:restriction base="xs:string"><xs:whiteSpace value="collapse"/><xs:maxLength value="16"/></xs:restriction></xs:simpleType>
+    <xs:simpleType name="Str32"><xs:restriction base="xs:string"><xs:whiteSpace value="collapse"/><xs:maxLength value="32"/></xs:restriction></xs:simpleType>
+    <xs:simpleType name="Str64"><xs:restriction base="xs:string"><xs:whiteSpace value="collapse"/><xs:maxLength value="64"/></xs:restriction></xs:simpleType>
+    <xs:simpleType name="Str128"><xs:restriction base="xs:string"><xs:whiteSpace value="collapse"/><xs:maxLength value="128"/></xs:restriction></xs:simpleType>
+    <xs:simpleType name="Str256"><xs:restriction base="xs:string"><xs:whiteSpace value="collapse"/><xs:maxLength value="256"/></xs:restriction></xs:simpleType>
+    <xs:simpleType name="Str512"><xs:restriction base="xs:string"><xs:whiteSpace value="collapse"/><xs:maxLength value="512"/></xs:restriction></xs:simpleType>
+    <xs:simpleType name="Str1024"><xs:restriction base="xs:string"><xs:whiteSpace value="collapse"/><xs:maxLength value="1024"/></xs:restriction></xs:simpleType>
+    <xs:simpleType name="Str">
+        <xs:union memberTypes="Str1 Str2 Str4 Str8 Str16 Str32 Str64 Str128 Str512 Str1024"/>
+    </xs:simpleType>
+    <xs:simpleType name="LoStr">
+        <xs:list itemType="Str"/>
+    </xs:simpleType>
+    <xs:element name="RecordSet">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Record" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="sepal_length" type="Dbl"/>
+                            <xs:element name="sepal_width" type="Dbl"/>
+                            <xs:element name="petal_length" type="Dbl"/>
+                            <xs:element name="petal_width" type="Dbl"/>
+                            <xs:element name="class" type="VLS"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

@@ -1,0 +1,12 @@
+- name: Brief Introduction
+  href: intro.md
+  homepage: intro.md
+- name: Additional Usage Notes
+  href: notes.md
+  homepage: notes.md
+- name: Notes on JniPMML
+  href: WDSJniPMMLNotes.md
+  homepage: WDSJniPMMLNotes.md
+- name: Notes on Java x Cs
+  href: ../../../WDS-Cs/src/WDSJavaXCs.md
+  homepage: ../../../WDS-Cs/src/WDSJavaXCs.md

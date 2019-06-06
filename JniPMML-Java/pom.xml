@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>WDS-JniPMML</artifactId>
+        <groupId>com.WDataSci</groupId>
+        <version>0.5.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>JniPMML</artifactId>
+    <name>JniPMML</name>
+    <version>0.5.0</version>
+    <url>http://www.WDataSci.com</url>
+
+    <properties>
+        <project.reporting.outputDirectory>target/site</project.reporting.outputDirectory>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>12</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.testSource>${java.version}</maven.compiler.testSource>
+        <maven.compiler.testTarget>${java.version}</maven.compiler.testTarget>
+        <jackson.version>2.9.8</jackson.version>
+        <HDF5.version>1.10.5</HDF5.version>
+        <HDF5.lib>C:/HDF5/${HDF5.version}/lib</HDF5.lib>
+        <HDFView.version>3.1.0</HDFView.version>
+        <HDFView.lib>C:/HDF5/HDFView/${HDFView.version}/lib</HDFView.lib>
+        <java.library.path>C:/HDF5/HDFView/${HDFView.version}/lib</java.library.path>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>sister-module-WDS</id>
+            <url>file:${basedir}/../WDS-Java/target</url>
+        </repository>
+    </repositories>
+
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.WDataSci</groupId>
+            <artifactId>WDS</artifactId>
+            <version>${project.version}</version>
+            <exclusions>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.helpers</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.spi</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-simple</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>hdf.hdflib</groupId>
+            <artifactId>jarhdf</artifactId>
+            <version>4.2.14</version>
+            <scope>system</scope>
+            <systemPath>${HDFView.lib}/jarhdf-4.2.14.jar</systemPath>
+            <exclusions>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.helpers</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.spi</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-simple</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>hdf.hdf5lib</groupId>
+            <artifactId>jarhdf5</artifactId>
+            <version>1.10.5</version>
+            <scope>system</scope>
+            <systemPath>${HDFView.lib}/jarhdf5-${HDF5.version}.jar</systemPath>
+            <exclusions>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.helpers</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.spi</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-simple</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.25</version>
+            <scope>system</scope>
+            <systemPath>${HDF5.lib}/slf4j-simple-1.7.25.jar</systemPath>
+        </dependency>
+
+
+        <dependency>
+            <groupId>hdf.object</groupId>
+            <artifactId>hdfobject</artifactId>
+            <version>3.0.0</version>
+            <scope>system</scope>
+            <systemPath>${HDFView.lib}/hdfobject.jar</systemPath>
+           <exclusions>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.helpers</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.spi</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-simple</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></exclusion>
+            </exclusions>
+        </dependency>
+
+
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>5.2.0</version>
+            <exclusions>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.helpers</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.spi</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-simple</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>1.5</version>
+            <exclusions>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.helpers</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.spi</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-simple</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
+            <exclusions>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.helpers</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.spi</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-simple</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>jcommander</artifactId>
+            <version>1.72</version>
+            <exclusions>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.helpers</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.spi</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-simple</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.codahale.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+            <version>3.0.2</version>
+            <exclusions>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.helpers</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.spi</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-simple</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></exclusion>
+            </exclusions>
+        </dependency>
+        <!--
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>2.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.activation</groupId>
+            <artifactId>jakarta.activation-api</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>2.3.1</version>
+            <exclusions>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.helpers</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.spi</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-simple</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jpmml</groupId>
+            <artifactId>pmml-model</artifactId>
+            <version>1.4.8</version>
+            <exclusions>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.helpers</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.spi</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-simple</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.jpmml</groupId>
+            <artifactId>pmml-evaluator</artifactId>
+            <version>1.4.7</version>
+            <exclusions>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.helpers</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.spi</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-simple</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+            <exclusions>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.helpers</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.spi</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-simple</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+            <exclusions>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.helpers</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.spi</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-simple</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.istack</groupId>
+            <artifactId>istack-commons-runtime</artifactId>
+            <version>3.0.7</version>
+            <exclusions>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.helpers</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.spi</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-simple</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>27.1-jre</version>
+            <exclusions>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.helpers</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.spi</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-simple</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></exclusion>
+            </exclusions>
+        </dependency>
+
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.helpers</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j.spi</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-simple</artifactId></exclusion>
+                <exclusion><groupId>org.slf4j</groupId><artifactId>slf4j-api</artifactId></exclusion>
+            </exclusions>
+        </dependency>
+
+    </dependencies>
+
+
+
+    <build>
+        <finalName>WDS-${project.artifactId}-${project.version}</finalName>
+        <plugins>
+
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <compilerArgs>
+                    </compilerArgs>
+                    <excludes>
+                        <exclude>org.slf4j</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <!--
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.1</version>
+            </plugin>
+            -->
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.5.2</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.7.1</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>3.0.0</version>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <finalName>WDS-${project.artifactId}-${project.version}</finalName>
+                            <minimizeJar>true</minimizeJar>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <manifestEntries>
+                                        <Main-Class>com.WDataSci.JniPMML_Cmd</Main-Class>
+                                        <Build-Number>1.0</Build-Number>
+                                    </manifestEntries>
+                                </transformer>
+                            </transformers>
+                            <filters>
+
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <includes>
+                                        <include>META-INF/**</include>
+                                        <include>com/WDataSci/**</include>
+                                        <include>com/WDataSci/JniPMML/**</include>
+                                        <include>com/WDataSci/WDS/**</include>
+                                        <include>org/w3c/**</include>
+                                        <include>org/xml/sax/**</include>
+
+                                        <include>javax/xml/bind</include>
+                                        <include>javax/xml/bind/**</include>
+                                        <include>javax/activation/**</include>
+                                        <include>javax/xml/xpath/**</include>
+
+                                        <include>org/glassfish/jaxb/**</include>
+                                        <include>com/sun/xml/**</include>
+                                        <include>com/sun/xml/bind</include>
+                                        <include>com/sun/xml/bind/**</include>
+                                        <include>com/sun/xml/bind/v2/**</include>
+                                        <include>com/sun/istack/**</include>
+                                        <include>com/fasterxml/jackson/core/**</include>
+                                        <include>com/fasterxml/jackson/databind/**</include>
+                                        <include>com/fasterxml/jackson/annotation/**</include>
+
+                                        <include>org/apache/commons/io/**</include>
+                                        <include>org/apache/commons/csv/**</include>
+                                        <include>org/apache/xpath/**</include>
+                                        <include>org/apache/xml/**</include>
+                                        <include>org/apache/xalan/templates/**</include>
+                                        <include>org/apache/xalan/extensions/**</include>
+                                        <include>org/apache/xerces/**</include>
+
+                                        <include>com/beust/jcommander/**</include>
+
+                                        <include>org/dmg/**</include>
+                                        <include>org/jpmml/evaluator/**</include>
+                                        <include>org/jpmml/model/**</include>
+                                        <include>org/jpmml/agent/**</include>
+
+                                        <include>com/google/common/cache/**</include>
+                                        <include>com/google/common/util/**</include>
+                                        <include>com/google/common/primitives/**</include>
+                                        <include>com/google/common/base/**</include>
+                                        <include>com/google/common/collect/**</include>
+                                        <include>com/google/common/math/**</include>
+
+                                        <!--
+                                        <include>org/slf4j/**</include>
+                                        -->
+
+                                    </includes>
+                                    <excludes>
+                                        <exclude>META-INF/cocoon/**</exclude>
+                                        <exclude>META-INF/**/org.apache.cocoon/**</exclude>
+                                        <exclude>org/springframework/**</exclude>
+                                        <exclude>**/logger/**</exclude>
+                                    </excludes>
+                                </filter>
+
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <doclet>com.microsoft.doclet.DocFxDoclet</doclet>
+                    <docletArtifact>
+                        <groupId>com.microsoft</groupId>
+                        <artifactId>docfx-doclet</artifactId>
+                        <version>1.0-SNAPSHOT</version>
+                    </docletArtifact>
+                    <docletPath>${user.home}\.m2\repository\com\microsoft\docfx-doclet\1.0-SNAPSHOT\docfx-doclet-1.0-SNAPSHOT-jar-with-dependencies.jar</docletPath>
+                    <useStandardDocletOptions>false</useStandardDocletOptions>
+                    <encoding>UTF-8</encoding>
+                    <sourcepath>./src/main/java</sourcepath>
+                    <subpackages>com.WDataSci.JniPMML</subpackages>
+                    <additionalOptions>
+                        <additionalOption>-outputpath ..\..\..\..\WDS-JniPMML-Doc\obj\JniPMML-Java</additionalOption>
+                    </additionalOptions>
+                </configuration>
+            </plugin>
+
+
+
+        </plugins>
+    </build>
+
+
+
+</project>

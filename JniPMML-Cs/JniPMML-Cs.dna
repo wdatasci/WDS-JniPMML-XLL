@@ -1,0 +1,27 @@
+<DnaLibrary Name="WDS-JniPMML-Cs.xll" RuntimeVersion="v4.0">
+
+  <ExternalLibrary Path="JniPMML-Cs.dll" ExplicitRegistration="true" LoadFromBytes="true" ExplicitExports="true" Pack="true"  IncludePdb="true" />
+
+<!-- only use if the assembly can expose the manifest to the jvm....
+  <Reference Path="WDS-JniPMML-0.5.0.jar" LoadFromBytes="false" ExplicitExports="true" Pack="true" />
+-->
+
+  
+<!-- source code for WDS-Cs is pulled in and included directly in the dll 
+  <Reference Path="WDS-Cs.dll" ExplicitRegistration="true" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+-->
+  
+  
+  <Reference Path="ExcelDna.Registration.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  <Reference Path="ExcelDna.Utilities.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  <Reference Path="ExcelDna.IntelliSense.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  <Reference Path="CsvHelper.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  <Reference Path="System.Memory.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  <Reference Path="System.Runtime.CompilerServices.Unsafe.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  <Reference Path="HDF.PInvoke.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+
+  <Image Name="WDataSciMark1300x240" Path="Resources\\WDataSci-Mark1-300x240.png" Pack="true" />
+  <Image Name="WDataSciMark150x50" Path="Resources\\WDataSci-Mark1-50x50.png" Pack="true" />
+
+
+</DnaLibrary>

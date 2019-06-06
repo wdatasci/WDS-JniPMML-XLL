@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DnaLibrary Name="WDS-VB Add-In" RuntimeVersion="v4.0" xmlns="http://schemas.excel-dna.net/addin/2018/05/dnalibrary">
+
+  <ExternalLibrary Path="WDS-VB.dll" ExplicitExports="true" LoadFromBytes="true" Pack="true" IncludePdb="false" />
+
+</DnaLibrary>

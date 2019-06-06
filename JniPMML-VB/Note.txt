@@ -1,0 +1,10 @@
+﻿Quick notes:  
+
+The usual Visual Studio VB "My Project" location for properties is renames "Properties".  
+However, unlike usual folders, Visual Studio may not present an Expand/Collapse icon.   
+In Solution Explorer, use the "Show Files" toggle to view contents.
+
+Because of some Public/Private conflicts with ExcelDna exports, the default VS provided
+Settings and Resources constructors and handlers are not used.  Rebuilding the Designer.vb
+files may undo this.
+

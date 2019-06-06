@@ -1,0 +1,17 @@
+{
+  "homepages": [],
+  "files": [],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": true,
+        "details": "Can support incremental post processing.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {}
+}
