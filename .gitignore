@@ -40,5 +40,6 @@
 *.junk*
 *.bak*
 *.back*
+*.swp*
 knime-workspace
 
