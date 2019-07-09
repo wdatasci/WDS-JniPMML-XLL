@@ -1,5 +1,6 @@
 '''Wypasek Data Science, Inc., Copyright 2019
 '''Author: Christian Wypasek
+Attribute VB_Name = "WDSCore"
 Option Base 1
 Const WDSCoreContextID = 40001
 Const WDSVBAModuleName = "WDSCore"
@@ -103,6 +104,377 @@ Function IsASheetName(ByVal s As String, ByRef arg As Range) As Boolean
     Next x
 
 End Function
+
+Private Function fArray_MacroOptions_Array() As Variant
+    fArray_MacroOptions_Array = Array("fArray" _
+    , "Returns a single VBA array from a var-arg of inputs. Region values are taken row-wise." _
+    , "http://WDataSci.com" _
+    , "WDS" _
+    , Array(Array("Input1", "A value or range") _
+    , Array("Input2", "A value or range") _
+    ) _
+    )
+End Function
+'simple test for up to 3 dims
+Private Function zfNDims(ByRef arg As Variant) As Variant
+    On Error GoTo CatchIt
+TryIt:
+    Dim rv(1 To 4) As Variant
+    If TypeOf arg Is Range Then
+        If arg.Areas.Count = 1 Then
+            rv(1) = 2
+            rv(2) = arg.Rows.Count
+            rv(3) = arg.Columns.Count
+        Else
+            rv(1) = 3
+            rv(2) = 1
+            rv(3) = arg.Areas.Count
+        End If
+    Else
+        For n = 0 To 2
+            rv(1) = n
+            rv(2 + n) = UBound(arg, n + 1)
+        Next n
+    End If
+CatchIt:
+    zfNDims = rv
+    On Error GoTo 0
+End Function
+Private Function zfArrayCount(ByRef arg As Variant) As Integer
+    d = zfNDims(arg)
+    n = 0
+    Select Case d
+        Case 0
+            If IsArray(arg) Then
+                n = zfArrayCount(arg)
+            Else
+                n = n + 1
+            End If
+        Case 1
+            For i = LBound(arg, 1) To UBound(arg, 1)
+                If IsArray(arg(i)) Then
+                    n = n + zfArrayCount(arg(i))
+                Else
+                    n = n + 1
+                End If
+            Next i
+        Case 2
+            For i = LBound(arg, 1) To UBound(arg, 1)
+                For j = LBound(arg, 2) To UBound(arg, 2)
+                    If IsArray(arg(i, j)) Then
+                        n = n + zfArrayCount(arg(i, j))
+                    Else
+                        n = n + 1
+                    End If
+                Next j
+            Next i
+        Case Else
+            For i = LBound(arg, 1) To UBound(arg, 1)
+                For j = LBound(arg, 2) To UBound(arg, 2)
+                    For k = LBound(arg, 3) To UBound(arg, 3)
+                        If IsArray(arg(i, j, k)) Then
+                            n = n + zfArrayCount(arg(i, j, k))
+                        Else
+                            n = n + 1
+                        End If
+                    Next k
+                Next j
+            Next i
+    End Select
+    zfArrayCount = n
+End Function
+
+Function fArray(ParamArray arg() As Variant) As Variant
+    Dim rv As Variant
+    n = 0
+    Dim rng As Range
+    Dim cllctn As Collection
+    For j = LBound(arg) To UBound(arg)
+        If TypeOf arg(j) Is Range Then
+            Set rng = arg(j)
+            If rng.Areas.Count > 1 Then
+                For k = 1 To rng.Areas.Count
+                    n = n + rng.Areas.Item(k).Cells.Count
+                Next k
+            Else
+                n = n + rng.Cells.Count
+            End If
+        ElseIf TypeOf arg(j) Is Collection Then
+            Set cllctn = arg(j)
+            n = n + cllctn.Count
+        Else
+            n = n + zfArrayCount(arg(j))
+        End If
+    Next j
+    ReDim rv(1 To n) As Variant
+    Dim c As Range
+    Dim v As Variant
+    n = 0
+    For j = LBound(arg) To UBound(arg)
+        If TypeOf arg(j) Is Range Then
+            Set rng = arg(j)
+            If rng.Areas.Count > 1 Then
+                For k = 1 To rng.Areas.Count
+                    For Each c In rng.Cells
+                        n = n + 1
+                        rv(n) = c.Value2
+                    Next c
+                Next k
+            Else
+                For Each c In rng.Cells
+                    n = n + 1
+                    rv(n) = c.Value2
+                Next c
+            End If
+        ElseIf TypeOf arg(j) Is Collection Then
+            Set cllctn = arg(j)
+            For Each v In cllctn
+                n = n + 1
+                rv(n) = v
+            Next v
+        Else
+            d = zfNDims(arg(j))
+            Select Case d
+                Case 0
+                    n = n + 1
+                    rv(n) = arg(j)
+                Case 1
+                    For i = LBound(arg(j), 1) To UBound(arg(j), 1)
+                        n = n + 1
+                        rv(n) = arg(j)(i)
+                    Next i
+                Case 2
+                    For i = LBound(arg(j), 1) To UBound(arg(j), 1)
+                        For jj = LBound(arg(j), 2) To UBound(arg(j), 2)
+                            n = n + 1
+                            rv(n) = arg(j)(i, jj)
+                        Next jj
+                    Next i
+                Case Else
+                    For i = LBound(arg(j), 1) To UBound(arg(j), 1)
+                        For jj = LBound(arg(j), 2) To UBound(arg(j), 2)
+                            For k = LBound(arg(j), 3) To UBound(arg(j), 3)
+                                n = n + 1
+                                rv(n) = arg(j)(i, jj, k)
+                            Next k
+                        Next jj
+                    Next i
+            End Select
+        End If
+    Next j
+    fArray = rv
+End Function
+
+Private Function fKeyValuePairs_MacroOptions_Array() As Variant
+    fKeyValuePairs_MacroOptions_Array = Array("fKeyValuePairs" _
+    , "Returns a VBA array of Scripting.Dictionary object from vararg inputs of the form {""Key1"",Value1} or Key1,Value1,Key2,Value2, etc." _
+    , "http://WDataSci.com" _
+    , "WDS" _
+    , Array(Array("Input1", "Either a pair or a key followed by a value.") _
+    , Array("Input2", "A value associated with an Input1 key or a {""Key"", Value} pair") _
+    ) _
+    )
+End Function
+Function fKeyValuePairs(ParamArray arg() As Variant) As Variant
+    Dim args
+    args = arg
+    Dim d As Dictionary
+    Set d = zfKeyValuePairs(args)
+    Dim rv
+    If d.Exists("SquareUp") Then
+        nrows = 0
+        ncols = 1
+        Dim rvndims As Dictionary
+        Set rvndims = CreateObject("Scripting.Dictionary")
+        For Each ky In d.Keys()
+            rvndims.Add Key:=ky, Item:=zfNDims(d.Item(ky))
+            ndims = rvndims.Item(ky)
+            If ndims(1) = 0 Then
+                nrows = nrows + 1
+            ElseIf ndims(1) = 1 Then
+                If ndims(2) > ncols Then: ncols = ndims(2)
+                nrows = nrows + 1
+            ElseIf ndims(1) = 2 Then
+                If ndims(3) > ncols Then: ncols = ndims(3)
+                nrows = nrows + ndims(2)
+            Else
+                If ndims(2) * ndims(4) > ncols Then: ncols = ndims(2) * ndims(4)
+                nrows = nrows + ndims(3)
+            End If
+        Next ky
+        ReDim rv(1 To nrows, 1 To 1 + ncols) As Variant
+        nrows = 0
+        For Each ky In d.Keys()
+            ndims = rvndims.Item(ky)
+            v = d.Item(ky)
+            If ndims(1) = 0 Then
+                nrows = nrows + 1
+                rv(nrows, 1) = ky
+                rv(nrows, 2) = v
+            ElseIf ndims(1) = 1 Then
+                nrows = nrows + 1
+                rv(nrows, 1) = ky
+                For j = 1 To ndims(2)
+                    rv(nrows, 1 + j) = v(j)
+                Next j
+            ElseIf ndims(1) = 2 Then
+                For i = 1 To ndims(2)
+                    nrows = nrows + 1
+                    rv(nrows, 1) = ky
+                    For j = 1 To ndims(3)
+                        rv(nrows, 1 + j) = v(i, j)
+                    Next j
+                Next i
+            Else
+                For i = 1 To ndims(3)
+                    nrows = nrows + 1
+                    rv(nrows, 1) = ky
+                    ncols = 1
+                    For k = 1 To ndims(2)
+                        For j = 1 To ndims(4)
+                            ncols = ncols + 1
+                            rv(nrows, ncols) = v(i, k, j)
+                        Next j
+                    Next k
+                Next i
+            End If
+        Next ky
+    Else
+        ReDim rv(1 To d.Count, 2) As Variant
+        i = 0
+        For Each ky In d.Keys()
+           i = i + 1
+           rv(i, 1) = ky
+           rv(i, 2) = d.Item(ky)
+        Next ky
+    End If
+    fKeyValuePairs = rv
+End Function
+
+Function zfKeyValuePairs(arg) As Dictionary
+    
+    'Dim rv As Dictionary
+    Set zfKeyValuePairs = CreateObject("Scripting.Dictionary")
+    
+    n = 0
+    ncols = 2
+    key_value = -1
+    ky = "Unk"
+    
+    'returning to Excel requires a squaring up
+    square_up = False
+    
+    Dim rng As Range
+    Dim cllctn As Collection
+    For j = LBound(arg) To UBound(arg)
+        If TypeOf arg(j) Is Range Then
+            Set rng = arg(j)
+            If key_value = -1 Then
+                If rng.Areas.Count > 1 Then
+                    For k = 1 To rng.Areas.Count
+                        If rng.Areas.Item(k).Columns.Count < 2 Then GoTo CatchIt
+                        ky = rng.Areas.Item(k).Cells(1, 1).Value
+                        zfKeyValuePairs.Add Key:=ky, Item:=Range(rng.Areas.Item(k).Cells(1, 2), rng.Areas.Item(k).SpecialCells(xlCellTypeLastCell)).Value
+                    Next k
+                    key_value = -1
+                Else
+                    If rng.Columns.Count = 1 And rng.Rows.Count = 1 Then
+                        ky = rng.Cells(1, 1).Value
+                        key_value = 0
+                    Else
+                        If rng.Columns.Count < 2 Then GoTo CatchIt
+                        For k = 1 To rng.Rows.Count
+                            For jj = 1 To rng.Columns.Count - 1
+                                If IsEmpty(rng.Cells(k, jj + 1)) Then: Exit For
+                            Next jj
+                            zfKeyValuePairs.Add Key:=rng.Cells(k, 1).Value, Item:=Range(rng.Cells(k, 2), rng.Cells(k, jj)).Value
+                        Next k
+                        key_value = -1
+                    End If
+                End If
+            Else
+                For jj = 1 To rng.Columns.Count - 1
+                    If IsEmpty(rng.Cells(1, jj + 1)) Then: Exit For
+                Next jj
+                zfKeyValuePairs.Add Key:=ky, Item:=Range(rng.Cells(1, 1), rng.Cells(rng.Rows.Count, jj)).Value
+                key_value = -1
+            End If
+        ElseIf TypeOf arg(j) Is Collection Then
+            If key_value = -1 Then
+                For k = LBound(arg(j)) To UBound(arg(j))
+                    If key_value = -1 Then
+                        ky = arg(j)(k)
+                        key_value = 0
+                    Else
+                        zfKeyValuePairs.Add Key:=ky, Item:=arg(j)(k)
+                        key_value = -1
+                    End If
+                Next k
+                If key_value <> -1 Then GoTo CatchIt
+            Else
+                zfKeyValuePairs.Add Key:=ky, Item:=arg(j)
+            End If
+            key_value = -1
+        Else
+            d = zfNDims(arg(j))
+            If key_value = 0 Then
+                zfKeyValuePairs.Add Key:=ky, Item:=arg(j)
+                key_value = -1
+            Else
+                Select Case d(1)
+                    Case 0
+                        ky = arg(j)
+                        key_value = 0
+                    Case 1
+                        For i = LBound(arg(j), 1) To UBound(arg(j), 1)
+                            If key_value = -1 Then
+                                ky = arg(j)(i)
+                                key_value = 0
+                            Else
+                                zfKeyValuePairs.Add Key:=ky, Item:=arg(j)(i)
+                                key_value = -1
+                            End If
+                        Next i
+                    Case 2
+                        For i = LBound(arg(j), 1) To UBound(arg(j), 1)
+                            For jj = LBound(arg(j), 2) To UBound(arg(j), 2)
+                                If key_value = -1 Then
+                                    ky = arg(j)(i)
+                                    key_value = 0
+                                Else
+                                    zfKeyValuePairs.Add Key:=ky, Item:=arg(j)(i)
+                                    key_value = -1
+                                End If
+                            Next jj
+                        Next i
+                    Case Else
+                        For i = LBound(arg(j), 1) To UBound(arg(j), 1)
+                            For jj = LBound(arg(j), 2) To UBound(arg(j), 2)
+                                For k = LBound(arg(j), 3) To UBound(arg(j), 3)
+                                    If key_value = -1 Then
+                                        ky = arg(j)(i)
+                                        key_value = 0
+                                    Else
+                                        zfKeyValuePairs.Add Key:=ky, Item:=arg(j)(i)
+                                        key_value = -1
+                                    End If
+                                Next k
+                            Next jj
+                        Next i
+                End Select
+            End If
+        End If
+    Next j
+    If key_value = 0 Then 'ends with unfilled key-value pair
+        GoTo CatchIt
+    End If
+    GoTo ElseIt
+CatchIt:
+    Err.Raise Number:=WDSContextID + 1, Source:=twb.Name & WDSModuleName, Description:="Error in input format, should be (key1,value1) {key1, value1} or KeyValues (a Nx2 range)"
+    Exit Function
+ElseIt:
+End Function
+
 
 Private Function fQuote_MacroOptions_Array() As Variant
     fQuote_MacroOptions_Array = Array("fQuote" _
@@ -422,6 +794,10 @@ Public Function WDSCore_CallMacroOptions_Arrays() As Variant
     i = i + 1
     rv(i) = IsASheetName_MacroOptions_Array()
     i = i + 1
+    rv(i) = fArray_MacroOptions_Array()
+    i = i + 1
+    rv(i) = fKeyValuePairs_MacroOptions_Array()
+    i = i + 1
     rv(i) = fQuote_MacroOptions_Array()
     i = i + 1
     rv(i) = fColumnFromCode_MacroOptions_Array()
@@ -664,6 +1040,8 @@ Public Sub WDSCore_SetMacroOptions(functioninfoarrays)
         + " may not be available until workbook is saved and reopened, but fx (insert function) help should be available.")
 
 End Sub
+
+
 
 
 
