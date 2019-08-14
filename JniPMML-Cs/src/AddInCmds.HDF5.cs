@@ -63,7 +63,7 @@ namespace WDataSci.HDF5
                         aSaveFileDialog.RestoreDirectory = true;
                         aSaveFileDialog.FileName = sFileName;
                         aSaveFileDialog.AddExtension = true;
-                        aSaveFileDialog.CheckFileExists = true;
+                        //aSaveFileDialog.CheckFileExists = true;
                         aSaveFileDialog.CheckPathExists = true;
                         aSaveFileDialog.Title = "Export XmlMap'd ListObject to HDF5 (*.h5) File....";
 

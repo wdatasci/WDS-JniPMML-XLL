@@ -1,6 +1,29 @@
+Attribute VB_Name = "WDSCore"
 '''Wypasek Data Science, Inc., Copyright 2019
 '''Author: Christian Wypasek
-Attribute VB_Name = "WDSCore"
+'''
+'''MIT License
+'''
+'''Copyright (c) 2019 Wypasek Data Science, Inc. (WDataSci, WDS)
+'''
+'''Permission is hereby granted, free of charge, to any person obtaining a copy
+'''of this software and associated documentation files (the "Software"), to deal
+'''in the Software without restriction, including without limitation the rights
+'''to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+'''copies of the Software, and to permit persons to whom the Software is
+'''furnished to do so, subject to the following conditions:
+'''
+'''The above copyright notice and this permission notice shall be included in all
+'''copies or substantial portions of the Software.
+'''
+'''THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+'''IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+'''FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+'''AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+'''LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+'''OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+'''SOFTWARE.
+
 Option Base 1
 Const WDSCoreContextID = 40001
 Const WDSVBAModuleName = "WDSCore"
@@ -74,8 +97,8 @@ Function fWBPath(ByRef arg1 As Range, Optional force = 0)
     fWBPath = arg1.Worksheet.Parent.Path
 End Function
 
-Private Function IsASheetName_MacroOptions_Array() As Variant
-    IsASheetName_MacroOptions_Array = Array("IsASheetName" _
+Private Function fIsASheetName_MacroOptions_Array() As Variant
+    fIsASheetName_MacroOptions_Array = Array("IsASheetName" _
     , "Returns True if input string is a sheetname in the workbook referenced by the second argument" _
     , "http://WDataSci.com" _
     , "WDS" _
@@ -85,7 +108,7 @@ Private Function IsASheetName_MacroOptions_Array() As Variant
     )
 End Function
 
-Function IsASheetName(ByVal s As String, ByRef arg As Range) As Boolean
+Function fIsASheetName(ByVal s As String, ByRef arg As Range) As Boolean
     Dim x As Worksheet
     Dim twb As Workbook
 
@@ -95,10 +118,10 @@ Function IsASheetName(ByVal s As String, ByRef arg As Range) As Boolean
         Set twb = arg.Parent.Parent
     End If
 
-    IsASheetName = False
+    fIsASheetName = False
     For Each x In twb.Sheets
         If x.Name = s Then
-            IsASheetName = True
+            fIsASheetName = True
             Exit For
         End If
     Next x
@@ -613,6 +636,22 @@ Function fMonthID2Date(arg As Integer) As Date
 
 End Function
 
+Function fMonthID2DateArray(ByRef arg As Range) As Variant
+    Dim i, y, m As Integer
+    Dim rv
+    ReDim rv(1 To arg.Rows.Count, 1 To 1) As Date
+    
+    For i = 1 To arg.Rows.Count
+        m = Int(arg(i, 1))
+        y = Int((m - 1) / 12)
+        m = m - 12 * y
+        y = y + 2000
+        rv(i, 1) = DateSerial(y, m, 1)
+    Next i
+    fMonthID2DateArray = rv
+
+End Function
+
 Private Function fMonthN2MonthID_MacroOptions_Array() As Variant
     fMonthN2MonthID_MacroOptions_Array = Array("fMonthN2MonthID" _
     , "Returns a MonthID value from a YYYYMM integer" _
@@ -648,6 +687,22 @@ Function fMonthID2MonthN(arg As Integer) As Long
     m = arg - 12 * y
     y = y + 2000
     fMonthID2MonthN = y * 100 + m
+
+End Function
+
+Function fMonthID2MonthNArray(ByRef arg As Range) As Variant
+    Dim i, y, m As Integer
+    Dim rv
+    ReDim rv(1 To arg.Rows.Count, 1 To 1) As Date
+    
+    For i = 1 To arg.Rows.Count
+        m = Int(arg(i, 1))
+        y = Int((m - 1) / 12)
+        m = m - 12 * y
+        y = y + 2000
+        rv(i, 1) = y * 100 + m
+    Next i
+    fMonthID2MonthNArray = rv
 
 End Function
 
@@ -754,29 +809,193 @@ Private Function FlipSumProduct_MacroOptions_Array() As Variant
     )
 End Function
 
-Function FlipSumProduct(ByRef r As Range, ByRef s As Range) As Double
+Function FlipSumProduct(ByRef r As Range, ByRef s As Range) As Variant
 
-    Dim sm, lcls As Double
+    'Dim sm, lcls As Double
 
-    sm = 0
+    'sm = 0
 
-    Dim i, j, k, l As Integer
+    'Dim i, j, k, l As Integer
 
-    l = r.Rows.Count
-    If l > s.Rows.Count Then
-        l = s.Rows.Count
+    'l = r.Rows.Count
+    'If l > s.Rows.Count Then
+    '    l = s.Rows.Count
+    'End If
+
+    'k = l + 1
+    'For i = 1 To l
+    '    k = k - 1
+    '    lcls = ifnull(r.Cells(k, 1), 0) * ifnull(s.Cells(i, 1), 0)
+    '    sm = sm + lcls
+    'Next
+
+    'FlipSumProduct = sm
+
+    Dim rv
+    ReDim rv(1, 1 To proto.Columns.Count)
+    
+    Dim i, j, k, n As Integer
+    
+    n = feederflow.Rows.Count
+    
+    If n <= proto.Rows.Count Then
+        For i = 1 To n
+            j = n - i + 1
+            For k = 1 To proto.Columns.Count
+                rv(1, k) = rv(1, k) + proto(j, k) * feederflow(i, 1)
+            Next k
+        Next i
+    Else
+        For i = n - proto.Rows.Count + 1 To n
+            j = n - i + 1
+            For k = 1 To proto.Columns.Count
+                rv(1, k) = rv(1, k) + proto(j, k) * feederflow(i, 1)
+            Next k
+        Next i
     End If
-
-    k = l + 1
-    For i = 1 To l
-        k = k - 1
-        lcls = ifnull(r.Cells(k, 1), 0) * ifnull(s.Cells(i, 1), 0)
-        sm = sm + lcls
-    Next
-
-    FlipSumProduct = sm
+    
+    FlipSumProduct = rv
 
 End Function
+
+Sub sCalcCells()
+
+    Dim c As Range
+    For Each c In Selection
+        c.Calculate
+    Next c
+
+End Sub
+
+Function fNVAddress(ByRef r As Range, Optional nrows = -1, Optional ncols = -1)
+
+If nrows > 0 Then
+    If ncols > 0 Then
+        fNVAddress = Range(r.Cells(1, 1), r.Cells(1, 1).Offset(nrows - 1, ncols - 1)).Address(1, 1, xlA1, 1)
+    Else
+        fNVAddress = Range(r.Cells(1, 1), r.Cells(1, r.Columns.Count).Offset(nrows - 1, 0)).Address(1, 1, xlA1, 1)
+    End If
+Else
+    If ncols > 0 Then
+        fNVAddress = Range(r.Cells(1, 1), r.Cells(r.Rows.Count, 1).Offset(0, ncols - 1)).Address(1, 1, xlA1, 1)
+    Else
+        fNVAddress = r.Address(1, 1, xlA1, 1)
+    End If
+End If
+
+End Function
+
+Function fNV3DLookup(col, ByRef rws As Range, ByRef shts As Range) As Variant
+
+Dim rv As Variant
+ReDim rv(1 To rws.Rows.Count, 1 To shts.Columns.Count) As Variant
+
+Dim ws As Worksheet
+
+For j = 1 To shts.Columns.Count
+    If IsEmpty(shts.Cells(1, j)) Or (shts.Cells(1, j).Value = "") Then GoTo Next_j
+    Set ws = Sheets(shts.Cells(1, j).Value)
+    For i = 1 To rws.Rows.Count
+        rv(i, j) = ws.Cells(rws.Cells(i, 1).Value, col).Value
+    Next i
+Next_j:
+Next j
+
+fNV3DLookup = rv
+
+
+End Function
+
+Function Concat_Dlm(ByRef r As Range, ByVal dlm As String) As String
+
+    Dim c As Range
+    Dim rv As String
+    Dim i As Integer
+    rv = ""
+    i = 0
+    For Each c In r
+       If Not IsEmpty(c) Then
+           i = i + 1
+           If i > 1 Then: rv = rv & dlm
+           rv = rv & c.Text
+        End If
+    Next c
+    Concat_Dlm = rv
+
+End Function
+
+Function Concat_Dlm_MultiRange(dlm, ParamArray Rngs() As Variant) As String
+
+Dim r As Range
+rv = ""
+i = 0
+For Each c In Rngs
+    i = i + 1
+    Set r = c
+    If i > 1 Then: rv = rv & dlm
+    rv = rv & Concat_Dlm(r, dlm)
+Next
+Concat_Dlm_MultiRange = rv
+End Function
+
+Function sum_acrossrows(ByRef arg As Range) As Variant
+
+Dim rv As Variant
+ReDim rv(1 To arg.Rows.Count, 1 To 1) As Variant
+For i = 1 To arg.Rows.Count
+    s = 0
+    For j = 1 To arg.Columns.Count
+       s = s + arg(i, j).Value
+    Next j
+    rv(i, 1) = s
+Next i
+
+sum_acrossrows = rv
+
+End Function
+
+Function bIn(arg, ParamArray args() As Variant) As Boolean
+
+bIn = False
+For Each V In args
+    If arg = V Then
+        bIn = True
+        Exit Function
+    End If
+Next V
+
+End Function
+
+
+Sub saa_WorkBookOverview()
+
+
+Dim nws As Worksheet
+
+Call ActivateOrAddSheet("WorkbookOverview")
+
+Set nws = ActiveSheet
+
+Dim i As Integer
+i = 1
+nws.Cells(i, 1) = "Workbook Name"
+nws.Cells(i, 2) = fWBName(nws.Cells(i, 1))
+i = i + 1
+nws.Cells(i, 1) = "Worbook Path"
+nws.Cells(i, 2) = 1
+
+
+
+
+
+
+
+
+
+End Sub
+
+
+
 
 Public Function WDSCore_CallMacroOptions_Arrays() As Variant
 
@@ -792,7 +1011,7 @@ Public Function WDSCore_CallMacroOptions_Arrays() As Variant
     i = i + 1
     rv(i) = fWBPath_MacroOptions_Array()
     i = i + 1
-    rv(i) = IsASheetName_MacroOptions_Array()
+    rv(i) = fIsASheetName_MacroOptions_Array()
     i = i + 1
     rv(i) = fArray_MacroOptions_Array()
     i = i + 1

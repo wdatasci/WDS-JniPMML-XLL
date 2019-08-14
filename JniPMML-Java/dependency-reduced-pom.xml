@@ -270,7 +270,7 @@
   <properties>
     <java.version>12</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
-    <jackson.version>2.9.9</jackson.version>
+    <jackson.version>[2.9.9.2,)</jackson.version>
     <project.reporting.outputDirectory>target/site</project.reporting.outputDirectory>
     <maven.compiler.testSource>${java.version}</maven.compiler.testSource>
     <maven.compiler.target>${java.version}</maven.compiler.target>

@@ -173,22 +173,58 @@ namespace com.WDataSci.JniPMML
                     if ( typl[0] > 0 )
                         cm.StringMaxLength = typl[0];
                     else if ( typl[0] < 0 ) {
-                        xPathQ = "//*[local-name()='simpleType' and @name='" + typ + "']//*[local-name()='MaxLength']";
-                        //Java NodeList xnr = (NodeList) xPath.evaluate(xPathQ, aDoc, XPathConstants.NODESET);
                         //C#
-                        XmlNodeList xnr = aDoc.SelectNodes(xPathQ);
-                        if ( xnr.getLength() == 1 ) {
+                        XmlNode wds_StringMaxLength = xn.Attributes.GetNamedItem("wds:StringMaxLength");
+                        //Java String wds_StringMaxLength = xn.getAttribute("wds:StringMaxLength");
+                        if ( wds_StringMaxLength != null ) {
                             try {
-                                //Java cm.StringMaxLength = Integer.parseInt(((Element) xnr.item(0)).getAttribute("value"));
-                                //Cs
-                                cm.StringMaxLength = int.Parse(xnr[0].Attributes.GetNamedItem("value").Value);
-                            }
-                            catch ( Exception e ) {
-                                cm.StringMaxLength = FieldMD.Default.StringMaxLength;
+                                //C#
+                                cm.StringMaxLength = int.Parse(wds_StringMaxLength.Value);
+                                //Java cm.StringMaxLength = Integer.parseInt(wds_StringMaxLength);
+                            } catch ( Exception e) {
+                                    cm.StringMaxLength = FieldMD.Default.StringMaxLength;
                             }
                         }
-                        else
-                            cm.StringMaxLength = FieldMD.Default.StringMaxLength;
+                        else {
+                            /* Java >>> *
+                            if (xn.hasAttributes()) {
+                                for ( int ani = 0; ani < xn.getAttributes().getLength(); ani++ ) {
+                                    if ( xn.getAttributes().item(ani).getNodeName().toLowerCase().endsWith("maxlength") ) {
+                                        cm.StringMaxLength = Integer.parseInt(xn.getAttributes().item(ani).getNodeValue());
+                                        typl[0] = 0;
+                                        break;
+                                    }
+                                }
+                            }
+                            /* <<< Java */
+                            /* C# >>> */
+                            for (int ani=0 ;ani<xn.Attributes.Count ; ani++ ) {
+                                if ( xn.Attributes.Item(ani).LocalName.toLowerCase().endsWith("maxlength") ) {
+                                    cm.StringMaxLength = int.Parse(xn.Attributes.Item(ani).Value);
+                                    typl[0] = 0;
+                                    break;
+                                }
+                            }
+                            /* <<< C# */
+                            if ( typl[0] < 0 ) {
+                                xPathQ = "//*[local-name()='simpleType' and @name='" + typ + "']//*[local-name()='maxLength']";
+                                //Java NodeList xnr = (NodeList) xPath.evaluate(xPathQ, aDoc, XPathConstants.NODESET);
+                                //C#
+                                XmlNodeList xnr = aDoc.SelectNodes(xPathQ);
+                                if ( xnr.getLength() == 1 ) {
+                                    try {
+                                        //Java cm.StringMaxLength = Integer.parseInt(((Element) xnr.item(0)).getAttribute("value"));
+                                        //Cs
+                                        cm.StringMaxLength = int.Parse(xnr[0].Attributes.GetNamedItem("value").Value);
+                                    }
+                                    catch ( Exception e ) {
+                                        cm.StringMaxLength = FieldMD.Default.StringMaxLength;
+                                    }
+                                }
+                                else
+                                    cm.StringMaxLength = FieldMD.Default.StringMaxLength;
+                            }
+                        }
                     }
 
                     if ( bCheckingAgainstPMML ) {
@@ -218,6 +254,7 @@ namespace com.WDataSci.JniPMML
             String rv = "<?xml version=\"1.0\"?>\n"
                     + "<xs:schema xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" \n"
                     + " xmlns:xi=\"http://www.w3.org/2001/XInclude\" \n"
+                    + " xmlns:wds=\"http://WDataSci.com\" \n"
                     + " attributeFormDefault=\"unqualified\" \n"
                     + " elementFormDefault=\"qualified\">\n";
             /* <<< Java */
@@ -225,6 +262,7 @@ namespace com.WDataSci.JniPMML
             String rv = @"<?xml version=""1.0""?>
                         <xs:schema xmlns:xs=""http://www.w3.org/2001/XMLSchema"" 
                             xmlns:xi=""http://www.w3.org/2001/XInclude"" 
+                            xmlns:wds=""http://WDataSci.com""
                             attributeFormDefault=""unqualified"" 
                             elementFormDefault=""qualified"">";
             /* <<< C# */
@@ -278,8 +316,16 @@ namespace com.WDataSci.JniPMML
                     + "</xs:simpleType>\n"
                     + "<xs:simpleType name=\"Str1\"><xs:restriction base=\"xs:string\"><xs:whiteSpace value=\"collapse\"/><xs:maxLength value=\"1\"/></xs:restriction></xs:simpleType>\n"
                     + "<xs:simpleType name=\"Str2\"><xs:restriction base=\"xs:string\"><xs:whiteSpace value=\"collapse\"/><xs:maxLength value=\"2\"/></xs:restriction></xs:simpleType>\n"
+                    + "<xs:simpleType name=\"Str3\"><xs:restriction base=\"xs:string\"><xs:whiteSpace value=\"collapse\"/><xs:maxLength value=\"3\"/></xs:restriction></xs:simpleType>\n"
                     + "<xs:simpleType name=\"Str4\"><xs:restriction base=\"xs:string\"><xs:whiteSpace value=\"collapse\"/><xs:maxLength value=\"4\"/></xs:restriction></xs:simpleType>\n"
+                    + "<xs:simpleType name=\"Str5\"><xs:restriction base=\"xs:string\"><xs:whiteSpace value=\"collapse\"/><xs:maxLength value=\"5\"/></xs:restriction></xs:simpleType>\n"
+                    + "<xs:simpleType name=\"Str6\"><xs:restriction base=\"xs:string\"><xs:whiteSpace value=\"collapse\"/><xs:maxLength value=\"6\"/></xs:restriction></xs:simpleType>\n"
+                    + "<xs:simpleType name=\"Str7\"><xs:restriction base=\"xs:string\"><xs:whiteSpace value=\"collapse\"/><xs:maxLength value=\"7\"/></xs:restriction></xs:simpleType>\n"
                     + "<xs:simpleType name=\"Str8\"><xs:restriction base=\"xs:string\"><xs:whiteSpace value=\"collapse\"/><xs:maxLength value=\"8\"/></xs:restriction></xs:simpleType>\n"
+                    + "<xs:simpleType name=\"Str9\"><xs:restriction base=\"xs:string\"><xs:whiteSpace value=\"collapse\"/><xs:maxLength value=\"9\"/></xs:restriction></xs:simpleType>\n"
+                    + "<xs:simpleType name=\"Str10\"><xs:restriction base=\"xs:string\"><xs:whiteSpace value=\"collapse\"/><xs:maxLength value=\"10\"/></xs:restriction></xs:simpleType>\n"
+                    + "<xs:simpleType name=\"Str11\"><xs:restriction base=\"xs:string\"><xs:whiteSpace value=\"collapse\"/><xs:maxLength value=\"11\"/></xs:restriction></xs:simpleType>\n"
+                    + "<xs:simpleType name=\"Str12\"><xs:restriction base=\"xs:string\"><xs:whiteSpace value=\"collapse\"/><xs:maxLength value=\"12\"/></xs:restriction></xs:simpleType>\n"
                     + "<xs:simpleType name=\"Str16\"><xs:restriction base=\"xs:string\"><xs:whiteSpace value=\"collapse\"/><xs:maxLength value=\"16\"/></xs:restriction></xs:simpleType>\n"
                     + "<xs:simpleType name=\"Str32\"><xs:restriction base=\"xs:string\"><xs:whiteSpace value=\"collapse\"/><xs:maxLength value=\"32\"/></xs:restriction></xs:simpleType>\n"
                     + "<xs:simpleType name=\"Str64\"><xs:restriction base=\"xs:string\"><xs:whiteSpace value=\"collapse\"/><xs:maxLength value=\"64\"/></xs:restriction></xs:simpleType>\n"
@@ -288,7 +334,7 @@ namespace com.WDataSci.JniPMML
                     + "<xs:simpleType name=\"Str512\"><xs:restriction base=\"xs:string\"><xs:whiteSpace value=\"collapse\"/><xs:maxLength value=\"512\"/></xs:restriction></xs:simpleType>\n"
                     + "<xs:simpleType name=\"Str1024\"><xs:restriction base=\"xs:string\"><xs:whiteSpace value=\"collapse\"/><xs:maxLength value=\"1024\"/></xs:restriction></xs:simpleType>\n"
                     + "<xs:simpleType name=\"Str\">\n"
-                    + "    <xs:union memberTypes=\"Str1 Str2 Str4 Str8 Str16 Str32 Str64 Str128 Str512 Str1024\"/>\n"
+                    + "    <xs:union memberTypes=\"Str1 Str2 Str3 Str4 Str5 Str6 Str7 Str8 Str9 Str10 Str11 Str12 Str16 Str32 Str64 Str128 Str256 Str512 Str1024\"/>\n"
                     + "</xs:simpleType>\n"
                     + "<xs:simpleType name=\"Dbl_List\"><xs:list itemType=\"Dbl\"/></xs:simpleType>\n"
                     + "<xs:simpleType name=\"Int_List\"><xs:list itemType=\"Int\"/></xs:simpleType>\n"
@@ -315,8 +361,16 @@ namespace com.WDataSci.JniPMML
             </xs:simpleType>
             <xs:simpleType name=""Str1""><xs:restriction base=""xs:string""><xs:whiteSpace value=""collapse""/><xs:maxLength value=""1""/></xs:restriction></xs:simpleType>
             <xs:simpleType name=""Str2""><xs:restriction base=""xs:string""><xs:whiteSpace value=""collapse""/><xs:maxLength value=""2""/></xs:restriction></xs:simpleType>
+            <xs:simpleType name=""Str3""><xs:restriction base=""xs:string""><xs:whiteSpace value=""collapse""/><xs:maxLength value=""3""/></xs:restriction></xs:simpleType>
             <xs:simpleType name=""Str4""><xs:restriction base=""xs:string""><xs:whiteSpace value=""collapse""/><xs:maxLength value=""4""/></xs:restriction></xs:simpleType>
+            <xs:simpleType name=""Str5""><xs:restriction base=""xs:string""><xs:whiteSpace value=""collapse""/><xs:maxLength value=""5""/></xs:restriction></xs:simpleType>
+            <xs:simpleType name=""Str6""><xs:restriction base=""xs:string""><xs:whiteSpace value=""collapse""/><xs:maxLength value=""6""/></xs:restriction></xs:simpleType>
+            <xs:simpleType name=""Str7""><xs:restriction base=""xs:string""><xs:whiteSpace value=""collapse""/><xs:maxLength value=""7""/></xs:restriction></xs:simpleType>
             <xs:simpleType name=""Str8""><xs:restriction base=""xs:string""><xs:whiteSpace value=""collapse""/><xs:maxLength value=""8""/></xs:restriction></xs:simpleType>
+            <xs:simpleType name=""Str9""><xs:restriction base=""xs:string""><xs:whiteSpace value=""collapse""/><xs:maxLength value=""9""/></xs:restriction></xs:simpleType>
+            <xs:simpleType name=""Str10""><xs:restriction base=""xs:string""><xs:whiteSpace value=""collapse""/><xs:maxLength value=""10""/></xs:restriction></xs:simpleType>
+            <xs:simpleType name=""Str11""><xs:restriction base=""xs:string""><xs:whiteSpace value=""collapse""/><xs:maxLength value=""11""/></xs:restriction></xs:simpleType>
+            <xs:simpleType name=""Str12""><xs:restriction base=""xs:string""><xs:whiteSpace value=""collapse""/><xs:maxLength value=""12""/></xs:restriction></xs:simpleType>
             <xs:simpleType name=""Str16""><xs:restriction base=""xs:string""><xs:whiteSpace value=""collapse""/><xs:maxLength value=""16""/></xs:restriction></xs:simpleType>
             <xs:simpleType name=""Str32""><xs:restriction base=""xs:string""><xs:whiteSpace value=""collapse""/><xs:maxLength value=""32""/></xs:restriction></xs:simpleType>
             <xs:simpleType name=""Str64""><xs:restriction base=""xs:string""><xs:whiteSpace value=""collapse""/><xs:maxLength value=""64""/></xs:restriction></xs:simpleType>
@@ -325,7 +379,7 @@ namespace com.WDataSci.JniPMML
             <xs:simpleType name=""Str512""><xs:restriction base=""xs:string""><xs:whiteSpace value=""collapse""/><xs:maxLength value=""512""/></xs:restriction></xs:simpleType>
             <xs:simpleType name=""Str1024""><xs:restriction base=""xs:string""><xs:whiteSpace value=""collapse""/><xs:maxLength value=""1024""/></xs:restriction></xs:simpleType>
             <xs:simpleType name=""Str"">
-                <xs:union memberTypes=""Str1 Str2 Str4 Str8 Str16 Str32 Str64 Str128 Str512 Str1024""/>
+                <xs:union memberTypes=""Str1 Str2 Str3 Str4 Str5 Str6 Str7 Str8 Str9 Str10 Str11 Str12 Str16 Str32 Str64 Str128 Str256 Str512 Str1024""/>
             </xs:simpleType>
             <xs:simpleType name=""Dbl_List""><xs:list itemType=""Dbl""/></xs:simpleType>
             <xs:simpleType name=""Int_List""><xs:list itemType=""Int""/></xs:simpleType>

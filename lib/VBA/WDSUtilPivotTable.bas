@@ -1,4 +1,29 @@
 Attribute VB_Name = "WDSUtilPivotTable"
+'''Wypasek Data Science, Inc., Copyright 2019
+'''Author: Christian Wypasek
+'''
+'''MIT License
+'''
+'''Copyright (c) 2019 Wypasek Data Science, Inc. (WDataSci, WDS)
+'''
+'''Permission is hereby granted, free of charge, to any person obtaining a copy
+'''of this software and associated documentation files (the "Software"), to deal
+'''in the Software without restriction, including without limitation the rights
+'''to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+'''copies of the Software, and to permit persons to whom the Software is
+'''furnished to do so, subject to the following conditions:
+'''
+'''The above copyright notice and this permission notice shall be included in all
+'''copies or substantial portions of the Software.
+'''
+'''THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+'''IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+'''FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+'''AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+'''LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+'''OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+'''SOFTWARE.
+
 Dim vLPT_SpecPage As String
 Sub nnn_LoadPivotTableNotes()
     notes = "WDS VBACode to load data into a PivotTable " & Chr(10) & Chr(10) & _
@@ -8,7 +33,7 @@ Sub nnn_LoadPivotTableNotes()
     MsgBox (notes)
 End Sub
 
-Sub cab_LoadPivotTableODBCSpecProtoType()
+Sub pvt_LoadPivotTableODBCSpecProtoType()
     WDSCore.ActivateOrAddSheet ("PivotTableODBCSpec")
     Range("A1").Value = "DSN or 'Existing'"
     Range("A2").Value = "Database or SourceSheet.Name"
@@ -45,21 +70,21 @@ Sub cab_LoadPivotTableODBCSpecProtoType()
     ActiveSheet.Cells.EntireColumn.AutoFit
    
 End Sub
-Sub caa_LoadPivotTableODBCSpec()
+Sub xpvt_LoadPivotTableODBCSpec()
     
     vLPT_SpecPage = "PivotTableODBCSpec"
     
     xxx_LoadPivotTableODBCSpecSub
     
 End Sub
-Sub caa_LoadPivotTableODBCSpecFromThisPage()
+Sub pvt_LoadPivotTableODBCSpecFromThisPage()
     
     vLPT_SpecPage = ActiveSheet.Name
     
     xxx_LoadPivotTableODBCSpecSub
     
 End Sub
-Sub caa_LoadPivotTableODBCSpecResetAllToSameSource()
+Sub pvt_LoadPivotTableODBCSpecResetAllToSameSource()
 
 ' not ready for prime time
 
@@ -90,20 +115,49 @@ Sub caa_LoadPivotTableODBCSpecResetAllToSameSource()
 '    ActiveWindow.SmallScroll Down:=45
 End Sub
 
-Sub xxx_LoadPivotTableODBCSpecSub()
+Private Function CheckFor(arg As String, arg2 As Variant)
+
+Dim larg As String
+
+larg = arg
+
+For Each x In arg2
+    'If InStr(larg, LCase(x)) > 0 Then
+    If InStr(arg, x) > 0 Then
+        CheckFor = True
+        Exit Function
+    End If
+Next x
+
+CheckFor = False
+
+
+End Function
+
+Private Sub xxx_LoadPivotTableODBCSpecSub()
+    
+    Dim s As String
+    
+    Dim r As Range
+    Set r = Selection
+    Dim c, d As Range
+    
+    Dim con As ADODB.Connection
+    Dim rs As ADODB.Recordset
+    
+    Set con = New ADODB.Connection
+    Set rs = New ADODB.Recordset
+    
+    Call xsql_ProcessODBCConnectionString
+    con.Open ConnectionString:=[ODBCConnectionString]
+
+
+    
+    
     
     WDSCore.ActivateOrAddSheet (Range(vLPT_SpecPage & "!B5").Text)
     ActiveSheet.Cells.Clear
-    
-    thisUID = Range(vLPT_SpecPage & "!H1").Text
-    thisPWD = Range(vLPT_SpecPage & "!H2").Text
-    If thisUID = "??" Then
-        thisUID = InputBox("UserID for this target server?")
-    End If
-    If thisPWD = "??" Then
-        thisPWD = InputBox("Password for this target server?")
-    End If
-    
+        
 
     cs = "ODBC;" & _
         "DSN=" & Range(vLPT_SpecPage & "!B1").Text & ";" & _
@@ -115,29 +169,120 @@ Sub xxx_LoadPivotTableODBCSpecSub()
         "OPTION=0"
 
     If Range(vLPT_SpecPage & "!B1").Text <> "Existing" Then
+        
+        Dim q1, q2, q3 As String
+        q1 = ""
+        q2 = ""
+        q3 = ""
+        i = 0
+        For Each g In Array(Range(vLPT_SpecPage & "!7:7"), Range(vLPT_SpecPage & "!8:8"), Range(vLPT_SpecPage & "!9:9"))
+            For Each x In Range(vLPT_SpecPage & "!7:7")
+                If IsEmpty(x) Then GoTo BreakNxt0
+                If Not bIn(x.Text, "Pages", "RowFields", "ColumnFields", "Data") Then
+                    i = i + 1
+                    If i > 1 Then
+                        q1 = q1 & ","
+                        q2 = q2 & ","
+                        q3 = q3 & ","
+                    End If
+                    If InStr(x.Text, " as ") > 0 Then
+                        xs = Split(x.Text, " as ")
+                        xs = xs(UBound(xs))
+                    Else
+                        xs = x.Text
+                    End If
+                    q1 = q1 & x.Text
+                    q2 = q2 & i
+                    q3 = q3 & i
+                End If
+            Next x
+BreakNxt0:
+        Next g
+        
+        
+        
+        Dim q As String
+        q = "SELECT column_name from v_catalog.columns where table_schema='" & Range(vLPT_SpecPage & "!B2").Text & "' and table_name='" & Range(vLPT_SpecPage & "!B3").Text & "' order by ordinal_position"
+        rs.Open q, ActiveConnection:=con
+        n = rs.RecordCount
+        If n < 1 Then
+            rs.Close
+            q = "SELECT column_name from v_catalog.view_columns where table_schema='" & Range(vLPT_SpecPage & "!B2").Text & "' and table_name='" & Range(vLPT_SpecPage & "!B3").Text & "' order by ordinal_position"
+            rs.Open q, ActiveConnection:=con
+            n = rs.RecordCount
+        End If
+            
+        
+        q = ""
+        Do Until rs.EOF
+            For Each fld In rs.Fields
+                If Left(fld.Value, 1) = "_" Then
+                    q = q & ", sum(" & fld.Value & ") as " & fld.Value
+                End If
+            Next fld
+            rs.MoveNext
+        Loop
+        rs.Close
+
+        
         With ActiveWorkbook.PivotCaches.Add(SourceType:=xlExternal)
-            .Connection = cs
+            .Connection = "ODBC;" & [ODBCConnectionString]
             .CommandType = xlCmdSql
-            .CommandText = Array("select * from " & Range(vLPT_SpecPage & "!B2").Text & _
-            "." & Range(vLPT_SpecPage & "!B3").Text)
-            .CreatePivotTable TableDestination:=Range(vLPT_SpecPage & "!B5").Text & _
-            "!" & Range(vLPT_SpecPage & "!B6").Text, _
-            TableName:=Range(vLPT_SpecPage & "!B4").Text, _
-            DefaultVersion:=xlPivotTableVersion10
+            .CommandText = "select " & q1 & q & " from " & Range(vLPT_SpecPage & "!B2").Text & "." & Range(vLPT_SpecPage & "!B3").Text & " group by " & q2
+            .CreatePivotTable TableDestination:=Range(vLPT_SpecPage & "!B5").Text & "!" & Range(vLPT_SpecPage & "!B6").Text, TableName:=Range(vLPT_SpecPage & "!B4").Text, DefaultVersion:=xlPivotTableVersion10
         End With
+    
     Else
-        ActiveWorkbook.Worksheets(Range(vLPT_SpecPage & "!B2").Text). _
-            PivotTables(Range(vLPT_SpecPage & "!B3").Text).PivotCache. _
-            CreatePivotTable TableDestination:=Range(vLPT_SpecPage & "!B5").Text & _
-            "!" & Range(vLPT_SpecPage & "!B6").Text, _
-            TableName:=Range(vLPT_SpecPage & "!B4").Text, _
-            DefaultVersion:=xlPivotTableVersion10
+
+        ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:=Range(vLPT_SpecPage & "!B3").Text, _
+            Version:=6).CreatePivotTable Range(vLPT_SpecPage & "!B5").Text & "!" & Range(vLPT_SpecPage & "!B6").Text, _
+            TableName:=Range(vLPT_SpecPage & "!B4").Text, DefaultVersion:=6
+        With ActiveSheet.PivotTables(Range(vLPT_SpecPage & "!B4").Text)
+  '          .ColumnGrand = True
+            .HasAutoFormat = True
+            .DisplayErrorString = False
+            .DisplayNullString = True
+            .EnableDrilldown = True
+            .ErrorString = ""
+            .MergeLabels = False
+            .NullString = ""
+            .PageFieldOrder = 2
+            .PageFieldWrapCount = 0
+            .PreserveFormatting = True
+ '           .RowGrand = True
+            .SaveData = True
+            .PrintTitles = False
+            .RepeatItemsOnEachPrintedPage = True
+            .TotalsAnnotation = False
+            .CompactRowIndent = 1
+            .InGridDropZones = False
+            .DisplayFieldCaptions = True
+            .DisplayMemberPropertyTooltips = False
+            .DisplayContextTooltips = True
+            .ShowDrillIndicators = True
+            .PrintDrillIndicators = False
+            .AllowMultipleFilters = False
+            .SortUsingCustomLists = True
+            .FieldListSortAscending = False
+            .ShowValuesRow = False
+            .CalculatedMembersInFilters = False
+'            .RowAxisLayout xlCompactRow
+        
+        .ColumnGrand = False
+        .RowGrand = False
+        .InGridDropZones = True
+        .RowAxisLayout xlTabularRow
+        
+        End With
+
+
     End If
     
     Sheets(Range(vLPT_SpecPage & "!B5").Text).Activate
     
-    For Each x In Range(vLPT_SpecPage & "!A12:A100").Cells
+    For Each x In Range(vLPT_SpecPage & "!A12:A1000").Cells
 
+        If IsEmpty(x) Then GoTo BreakNxt_x
         On Error Resume Next
         
         If x.Text <> "" Then
@@ -147,6 +292,7 @@ Sub xxx_LoadPivotTableODBCSpecSub()
         End If
         
     Next
+BreakNxt_x:
    
    
    
@@ -157,37 +303,52 @@ Sub xxx_LoadPivotTableODBCSpecSub()
     dataoncolumn = 0
    
    
+   
     Dim V As Variant
-    For Each x In Range(vLPT_SpecPage & "!B10:AZ10")
-    If x.Text <> "" Then
-        Set V = ActiveSheet.PivotTables(Range(vLPT_SpecPage & "!B4").Text).AddDataField(ActiveSheet.PivotTables(Range(vLPT_SpecPage & "!B4").Text).PivotFields(x.Text), "Sum of " & x.Text, xlSum)
+    For Each x In Range(vLPT_SpecPage & "!10:10")
+    If IsEmpty(x) Then GoTo BreakNxt1
+    If x.Text <> "DataFields" Then
+        If Left(x.Text, 1) = "_" Then
+            Set V = ActiveSheet.PivotTables(Range(vLPT_SpecPage & "!B4").Text).AddDataField(ActiveSheet.PivotTables(Range(vLPT_SpecPage & "!B4").Text).PivotFields(x.Text), Mid(x.Text, 2), xlSum)
+        Else
+            Set V = ActiveSheet.PivotTables(Range(vLPT_SpecPage & "!B4").Text).AddDataField(ActiveSheet.PivotTables(Range(vLPT_SpecPage & "!B4").Text).PivotFields(x.Text), "Sum of " & x.Text, xlSum)
+        End If
+        
         If _
             (Len(x.Text) > 3 And Left(x.Text, 3) = "Avg") Or _
             (Len(x.Text) > 3 And Left(x.Text, 3) = "Ave") Or _
-            x.Text = "n" Or x.Text = "N" Or _
+            x.Text = "_N" Or _
             x.Text = "Count" Or x.Text = "count" Then
             V.NumberFormat = "#,###"
-            
         End If
-        If Len(x.Text) > 2 And (Left(x.Text, 2) = "st" Or Left(x.Text, 2) = "ft" Or Left(x.Text, 6) = "atCred") Then
+        If InStr(x.Text, "Amt") > 0 Or InStr(x.Text, "Bal") > 0 Then
             V.NumberFormat = "#,###,"
+        End If
+        If CheckFor(x.Text, Array("WAM", "WACS", "WALA")) Then
+            V.NumberFormat = "0.0"
+        ElseIf CheckFor(x.Text, Array("CDR", "CPR", "WAC", "Rate")) Then
+            V.NumberFormat = "0.0%"
         End If
     End If
     Next
+BreakNxt1:
    
-    For Each x In Range(vLPT_SpecPage & "!B7:Z7")
-    If x.Text <> "" Then
+    For Each x In Range(vLPT_SpecPage & "!7:7")
+    If IsEmpty(x) Then GoTo BreakNxt2
+    If x.Text <> "Pages" Then
         With ActiveSheet.PivotTables(Range(vLPT_SpecPage & "!B4").Text).PivotFields(x.Text)
             .Orientation = xlPageField
-            .ShowAllItems = True
+            '.ShowAllItems = True
             .Subtotals = Array(False, False, False, False, False, False, False, False, False, False, False, False)
         End With
     End If
     Next
+BreakNxt2:
         
     k = 0
-    For Each x In Range(vLPT_SpecPage & "!B8:Z8")
-    If x.Text <> "" Then
+    For Each x In Range(vLPT_SpecPage & "!8:8")
+    If IsEmpty(x) Then GoTo BreakNxt3
+    If x.Text <> "RowFields" Then
     k = k + 1
     If x.Text = "Data" Then
         dataonrow = k
@@ -195,15 +356,17 @@ Sub xxx_LoadPivotTableODBCSpecSub()
         With ActiveSheet.PivotTables(Range(vLPT_SpecPage & "!B4").Text).PivotFields(x.Text)
             .Orientation = xlRowField
             .Subtotals = Array(False, False, False, False, False, False, False, False, False, False, False, False)
-            .ShowAllItems = True
+            '.ShowAllItems = True
         End With
     End If
     End If
     Next
+BreakNxt3:
         
     k = 0
-    For Each x In Range(vLPT_SpecPage & "!B9:Z9")
-    If x.Text <> "" Then
+    For Each x In Range(vLPT_SpecPage & "!9:9")
+    If IsEmpty(x) Then GoTo BreakNxt4
+    If x.Text <> "ColumnFields" Then
     k = k + 1
     If x.Text = "Data" Then
         dataoncolumn = k
@@ -211,11 +374,12 @@ Sub xxx_LoadPivotTableODBCSpecSub()
         With ActiveSheet.PivotTables(Range(vLPT_SpecPage & "!B4").Text).PivotFields(x.Text)
             .Orientation = xlColumnField
             .Subtotals = Array(False, False, False, False, False, False, False, False, False, False, False, False)
-            .ShowAllItems = True
+            '.ShowAllItems = True
         End With
     End If
     End If
     Next
+BreakNxt4:
         
         
     If dataonrow > 0 Then
@@ -254,3 +418,4 @@ Sub xxx_LoadPivotTableODBCSpecSub()
 
         
 End Sub
+

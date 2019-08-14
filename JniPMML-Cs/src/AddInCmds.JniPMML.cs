@@ -1313,7 +1313,7 @@ namespace WDataSci.JniPMML
                             MOIE.Range trng3 = tapp.InputBox("Use an XSD as one string contained in a cell, enter cell address (navigable)", "XSD Input", "Entire XSD File as a String",100,100,"",0,8) as MOIE.Range;
                             sFile = trng3.Text;
                             trng3 = null;
-                            if ( !sFile.StartsWith("<?xml") ) {
+                            if ( !( sFile.StartsWith("<?xml") || sFile.StartsWith("<xs:schema") ) ) {
                                 if ( sFile.IndexOf("!") < 0 )
                                     sFile = "'[" + tapp.ActiveWorkbook.Name + "]" + aListObject.DataBodyRange.Worksheet.Name + "'!" + sFile;
                                 ExcelReference rf=XlCall.Excel(XlCall.xlfEvaluate,sFile) as ExcelReference;

@@ -107,8 +107,10 @@ namespace com.WDataSci.JniPMML
                 case "dtm":
                     return FieldMDEnums.eDTyp.DTm;
                 case "vls":
+                    typl[0] = -1;
                     return FieldMDEnums.eDTyp.VLS;
                 case "str":
+                    typl[0] = -1;
                     return FieldMDEnums.eDTyp.Str;
                 case "byt":
                     return FieldMDEnums.eDTyp.Byt;
@@ -120,14 +122,18 @@ namespace com.WDataSci.JniPMML
                 case "numeric":
                 case "double":
                 case "float":
+                case "real":
                 case "decimal":
                 case "dec":
+                case "money":
+                case "smallmoney":
                     return FieldMDEnums.eDTyp.Dbl;
 
                 case "ulong":
                 case "unsignedlong":
                 case "int64":
                 case "uint64":
+                case "timestampnumeric":
                     return FieldMDEnums.eDTyp.Lng;
 
                 case "short":
@@ -142,23 +148,53 @@ namespace com.WDataSci.JniPMML
                 case "nonnegativeinteger":
                 case "positiveinteger":
                 case "nonpositiveinteger":
+                case "bigint":
+                case "smallint":
+                case "tinyint":
                     return FieldMDEnums.eDTyp.Int;
 
                 case "string":
+                case "uniqueidentifier":
                 case "varchar":
+                case "nvarchar":
                 case "normalizedstring":
                 case "token":
                 case "nmtoken":
+                case "text":
+                case "ntext":
+                case "xml":
+                case "xsd":
+                case "xsl":
+                    typl[0] = -1;
                     return FieldMDEnums.eDTyp.VLS;
 
                 case "char":
+                case "nchar":
+                    typl[0] = -1;
                     return FieldMDEnums.eDTyp.Str;
+
+                case "date":
+                    return FieldMDEnums.eDTyp.Dte;
+                case "time":
+                case "datetime":
+                case "datetime2":
+                case "datetimeoffset":
+                case "smalldatetime":
+                case "timestamp":
+                    return FieldMDEnums.eDTyp.DTm;
 
                 case "byte":
                 case "unsignedbyte":
                 case "bytes":
+                case "binary":
+                case "varbinary":
+                case "image":
+                    typl[0] = -1;
                     return FieldMDEnums.eDTyp.Byt;
-                case "Boolean":
+
+                case "boolean":
+                case "bool":
+                case "bit":
                     return FieldMDEnums.eDTyp.Bln;
 
                 default:

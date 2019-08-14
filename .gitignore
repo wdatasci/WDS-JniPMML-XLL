@@ -43,3 +43,6 @@
 *.swp*
 knime-workspace
 
+.DS_Store
+/**/test/output
+~*
