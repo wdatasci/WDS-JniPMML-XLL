@@ -28,6 +28,15 @@ Option Base 1
 Const WDSCoreContextID = 40001
 Const WDSVBAModuleName = "WDSCore"
 
+'References that workbook needs to compile VBAProject with this module
+'Visual Basic For Applications
+'Microsoft Excel 16.0 Object Library
+'OLE Automation
+'Microsoft Office 16.0 Object Library
+'Microsoft Scripting Runtime
+
+
+
 Public Sub ActivateOrAddSheet(ByVal arg1 As String, Optional indx = 1, Optional BeforeOrAfter = 1)
 
 TryIt:
@@ -98,7 +107,7 @@ Function fWBPath(ByRef arg1 As Range, Optional force = 0)
 End Function
 
 Private Function fIsASheetName_MacroOptions_Array() As Variant
-    fIsASheetName_MacroOptions_Array = Array("IsASheetName" _
+    fIsASheetName_MacroOptions_Array = Array("fIsASheetName" _
     , "Returns True if input string is a sheetname in the workbook referenced by the second argument" _
     , "http://WDataSci.com" _
     , "WDS" _
@@ -231,7 +240,7 @@ Function fArray(ParamArray arg() As Variant) As Variant
     Next j
     ReDim rv(1 To n) As Variant
     Dim c As Range
-    Dim v As Variant
+    Dim V As Variant
     n = 0
     For j = LBound(arg) To UBound(arg)
         If TypeOf arg(j) Is Range Then
@@ -251,10 +260,10 @@ Function fArray(ParamArray arg() As Variant) As Variant
             End If
         ElseIf TypeOf arg(j) Is Collection Then
             Set cllctn = arg(j)
-            For Each v In cllctn
+            For Each V In cllctn
                 n = n + 1
-                rv(n) = v
-            Next v
+                rv(n) = V
+            Next V
         Else
             d = zfNDims(arg(j))
             Select Case d
@@ -329,23 +338,23 @@ Function fKeyValuePairs(ParamArray arg() As Variant) As Variant
         nrows = 0
         For Each ky In d.Keys()
             ndims = rvndims.Item(ky)
-            v = d.Item(ky)
+            V = d.Item(ky)
             If ndims(1) = 0 Then
                 nrows = nrows + 1
                 rv(nrows, 1) = ky
-                rv(nrows, 2) = v
+                rv(nrows, 2) = V
             ElseIf ndims(1) = 1 Then
                 nrows = nrows + 1
                 rv(nrows, 1) = ky
                 For j = 1 To ndims(2)
-                    rv(nrows, 1 + j) = v(j)
+                    rv(nrows, 1 + j) = V(j)
                 Next j
             ElseIf ndims(1) = 2 Then
                 For i = 1 To ndims(2)
                     nrows = nrows + 1
                     rv(nrows, 1) = ky
                     For j = 1 To ndims(3)
-                        rv(nrows, 1 + j) = v(i, j)
+                        rv(nrows, 1 + j) = V(i, j)
                     Next j
                 Next i
             Else
@@ -356,7 +365,7 @@ Function fKeyValuePairs(ParamArray arg() As Variant) As Variant
                     For k = 1 To ndims(2)
                         For j = 1 To ndims(4)
                             ncols = ncols + 1
-                            rv(nrows, ncols) = v(i, k, j)
+                            rv(nrows, ncols) = V(i, k, j)
                         Next j
                     Next k
                 Next i
@@ -811,45 +820,25 @@ End Function
 
 Function FlipSumProduct(ByRef r As Range, ByRef s As Range) As Variant
 
-    'Dim sm, lcls As Double
-
-    'sm = 0
-
-    'Dim i, j, k, l As Integer
-
-    'l = r.Rows.Count
-    'If l > s.Rows.Count Then
-    '    l = s.Rows.Count
-    'End If
-
-    'k = l + 1
-    'For i = 1 To l
-    '    k = k - 1
-    '    lcls = ifnull(r.Cells(k, 1), 0) * ifnull(s.Cells(i, 1), 0)
-    '    sm = sm + lcls
-    'Next
-
-    'FlipSumProduct = sm
-
     Dim rv
-    ReDim rv(1, 1 To proto.Columns.Count)
+    ReDim rv(1, 1 To s.Columns.Count)
     
     Dim i, j, k, n As Integer
     
-    n = feederflow.Rows.Count
+    n = r.Rows.Count
     
-    If n <= proto.Rows.Count Then
+    If n <= s.Rows.Count Then
         For i = 1 To n
             j = n - i + 1
-            For k = 1 To proto.Columns.Count
-                rv(1, k) = rv(1, k) + proto(j, k) * feederflow(i, 1)
+            For k = 1 To s.Columns.Count
+                rv(1, k) = rv(1, k) + s(j, k) * r(i, 1)
             Next k
         Next i
     Else
-        For i = n - proto.Rows.Count + 1 To n
+        For i = n - s.Rows.Count + 1 To n
             j = n - i + 1
-            For k = 1 To proto.Columns.Count
-                rv(1, k) = rv(1, k) + proto(j, k) * feederflow(i, 1)
+            For k = 1 To s.Columns.Count
+                rv(1, k) = rv(1, k) + s(j, k) * r(i, 1)
             Next k
         Next i
     End If
@@ -858,7 +847,7 @@ Function FlipSumProduct(ByRef r As Range, ByRef s As Range) As Variant
 
 End Function
 
-Sub sCalcCells()
+Sub wds_CalcCells()
 
     Dim c As Range
     For Each c In Selection
@@ -966,35 +955,138 @@ Next V
 
 End Function
 
-
-Sub saa_WorkBookOverview()
-
-
-Dim nws As Worksheet
-
-Call ActivateOrAddSheet("WorkbookOverview")
-
-Set nws = ActiveSheet
-
-Dim i As Integer
-i = 1
-nws.Cells(i, 1) = "Workbook Name"
-nws.Cells(i, 2) = fWBName(nws.Cells(i, 1))
-i = i + 1
-nws.Cells(i, 1) = "Worbook Path"
-nws.Cells(i, 2) = 1
-
-
-
-
-
-
-
-
+Sub wds_Workbook_Overview()
+    Dim twb As Workbook
+    Dim tws, nws, ows As Worksheet
+    
+    Set twb = ActiveWorkbook
+    Set tws = ActiveSheet
+    
+    If fIsASheetName("WorkbookOverview", tws.Cells(1, 1)) Then
+        MsgBox ("WorkbookOverview sheet exists in activeworkbook " & twb.Name & " and will be cleared")
+    End If
+    Call ActivateOrAddSheet("WorkbookOverview")
+    Set nws = ActiveSheet
+    nws.Cells.Clear
+    Dim i As Integer
+    
+    i = 1
+    nws.Cells(i, 1) = "Workbook Name"
+    nws.Cells(i, 2) = twb.Name
+    i = i + 1
+    nws.Cells(i, 1) = "Workbook Path"
+    nws.Cells(i, 2) = twb.Path
+    i = i + 1
+    nws.Cells(i, 1) = "Application Path"
+    nws.Cells(i, 2) = twb.Parent.Path
+    i = i + 1
+    i = i + 1
+    nws.Cells(i, 1) = "Sheets"
+    For Each ows In twb.Sheets
+        i = i + 1
+        nws.Cells(i, 1) = ows.Name
+    Next ows
+    
+    i = i + 1
+    i = i + 1
+    nws.Cells(i, 1) = "Named Ranges"
+    Dim nmrng As Name
+    For Each nmrng In twb.Names
+        i = i + 1
+        nws.Cells(i, 1) = nmrng.Name
+        nws.Cells(i, 2) = "Workbook Level"
+        nws.Cells(i, 3) = "'" & nmrng.Value
+    Next nmrng
+    For Each ows In twb.Sheets
+        For Each nmrng In ows.Names
+            i = i + 1
+            nws.Cells(i, 1) = nmrng.Name
+            nws.Cells(i, 2) = ows.Name
+            nws.Cells(i, 3) = nmrng.Value
+        Next nmrng
+    Next ows
+    
+    i = i + 1
+    i = i + 1
+    nws.Cells(i, 1) = "Data Connections"
+    Dim wdc As WorkbookConnection
+    For Each wdc In twb.Connections
+        i = i + 1
+        nws.Cells(i, 1) = wdc.Name
+        nws.Cells(i, 1) = wdc.Description
+    Next
+    
+    i = i + 1
+    i = i + 1
+    nws.Cells(i, 1) = "References"
+    For Each wvbref In twb.VBProject.References
+        i = i + 1
+        nws.Cells(i, 1) = wvbref.Name
+        nws.Cells(i, 1) = wvbref.Description
+    Next
 
 End Sub
 
+Sub wds_Workbook_CleanNamedRangesWithRefError()
+    Dim twb As Workbook
+    Dim tws, nws, ows As Worksheet
+    
+    Set twb = ActiveWorkbook
+    Set tws = ActiveSheet
+    
+    Dim i As Integer
+    
+    Dim nmrng As Name
+    For i = twb.Names.Count To 1 Step -1
+        Set nmrng = twb.Names(i)
+        If InStr(nmrng.Value, "#REF") Then
+            nmrng.Delete
+        End If
+    Next i
+    For Each ows In twb.Sheets
+        For i = ows.Names.Count To 1 Step -1
+            Set nmrng = ows.Names(i)
+            If InStr(nmrng.Value, "#REF") Then
+                nmrng.Delete
+            End If
+        Next i
+    Next ows
 
+End Sub
+
+Sub wds_Workbook_CleanNamedRangesSelected()
+    Dim twb As Workbook
+    Dim tws, nws, ows As Worksheet
+    
+    calcprior = Application.Calculation
+    On Error GoTo CatchIt
+    Application.Calculation = xlCalculationManual
+    
+    Set twb = ActiveWorkbook
+    Set tws = ActiveSheet
+    If tws.Name <> "WorkbookOverview" Then
+        MsgBox ("Select cells with named ranges on a sheet ""WorkbookOverview"" as created by Workbook_Overview")
+        Exit Sub
+    End If
+    
+    Dim r, c As Range
+    Set r = Selection
+    For Each c In r.Cells
+        If c.Offset(0, 1).Value = "Workbook Level" Then
+            twb.Names(c.Value).Delete
+        Else
+            If fIsASheetName(c.Offset(0, 1).Value, c) Then
+                twb.Sheets(c.Offset(0, 1).Value).Names(c.Value).Delete
+            End If
+        End If
+    Next c
+    
+CatchIt:
+    Application.Calculation = calcprior
+
+ElseIt:
+    
+End Sub
 
 
 Public Function WDSCore_CallMacroOptions_Arrays() As Variant
