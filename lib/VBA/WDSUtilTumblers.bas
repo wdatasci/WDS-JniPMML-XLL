@@ -27,18 +27,25 @@ Attribute VB_Name = "WDSUtilTumblers"
 Option Base 1
 
 
-Function StringSplit(ByVal arg As String) As Variant
+Function StringSplit(ByVal arg As String, Optional dlm = ",", Optional transp = 0) As Variant
     Dim rv As Variant
-    rv = Split(arg, ",")
+    rv = Split(arg, dlm)
     Dim rv2 As Variant
     Dim n, n0 As Integer
     n0 = LBound(rv)
     n = UBound(rv) - n0 + 1
-    ReDim rv2(1 To n) As Variant
     Dim i As Integer
-    For i = 1 To n
-        rv2(i) = Trim(rv(i - 1 + n0))
-    Next i
+    If transp = 0 Then
+        ReDim rv2(1 To n) As Variant
+        For i = 1 To n
+            rv2(i) = Trim(rv(i - 1 + n0))
+        Next i
+    Else
+        ReDim rv2(1 To n, 1) As Variant
+        For i = 1 To n
+            rv2(i, 1) = Trim(rv(i - 1 + n0))
+        Next i
+    End If
     StringSplit = rv2
 End Function
 Private Sub TumblersInc(ByRef tops, ByRef V, ByRef s, ByVal n As Long)
@@ -88,6 +95,38 @@ Else
     s = V(1) >= tops(1)
 End If
 End Sub
+
+Function TumblersN(ParamArray args()) As Long
+    t = 1
+    For Each n In args
+        t = t * n
+    Next n
+    TumblersN = t
+End Function
+
+Function Tumblers(ParamArray args()) As Variant
+    Dim tops
+    Dim V
+    Dim i, j, t, n As Long
+    n = UBound(args) - LBound(args) + 1
+    ReDim tops(1 To n) As Long
+    ReDim V(1 To n) As Long
+    t = 1
+    For i = 1 To n
+        tops(i) = args(i - 1 + LBound(args))
+        t = t * tops(i)
+    Next i
+    Dim stp As Boolean
+    Dim rv As Variant
+    ReDim rv(1 To t, 1 To n) As Long
+    For i = 1 To t
+        Call TumblersInc(tops, V, stp, n)
+        For j = 1 To n
+            rv(i, j) = V(j)
+        Next j
+    Next i
+    Tumblers = rv
+End Function
 
 Function CrossProdEnum(ParamArray args()) As Variant
     Dim tops

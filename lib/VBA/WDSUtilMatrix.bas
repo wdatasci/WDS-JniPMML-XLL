@@ -151,6 +151,34 @@ ScoredAndNormedBaseOdds = RowNormX(basev, Topology)
 End Function
 
 
+Function MatrixMult(m1, m2) As Variant
+
+
+lm1 = deRange(m1)
+lm2 = deRange(m2)
+
+
+
+Dim rv
+
+If lm1(3) <> lm2(2) Then
+    rv = Error()
+Else
+    ReDim rv(1 To lm1(2), 1 To lm2(3))
+    For i = 1 To lm1(2)
+        For j = 1 To lm2(3)
+            s = 0
+            For k = 1 To lm1(3)
+               s = s + lm1(1)(i, k) * lm2(1)(k, j)
+            Next k
+            rv(i, j) = s
+        Next j
+    Next i
+End If
+
+MatrixMult = rv
+
+End Function
 
 
 
@@ -202,7 +230,7 @@ CatchIt:
     On Error GoTo 0
 End Function
 
-Private Function deRange(arg) As Variant
+Function deRange(arg) As Variant
 Dim rv(1 To 3) As Variant
 If TypeOf arg Is Range Then
     rv(1) = arg.Value
@@ -230,22 +258,24 @@ End If
 deRange = rv
 End Function
 
-Private Function mget(arg, i, j)
+Private Function mget(arg, i, j) As Variant
 
+Dim rv
 If arg(2) = 0 Then
     If arg(3) = 0 Then
-        mget = arg(1)
+        rv = arg(1)
     Else
-        mget = arg(1)(i)
+        rv = arg(1)(i)
     End If
 Else
     If arg(3) = 0 Then
-        mget = arg(1)(i, 1)
+        rv = arg(1)(i, 1)
     Else
-        mget = arg(1)(i, j)
+        rv = arg(1)(i, j)
     End If
 End If
 
+mget = rv
 End Function
 
 

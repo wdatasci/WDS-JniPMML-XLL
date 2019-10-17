@@ -37,7 +37,7 @@ Const WDSVBAModuleName = "WDSCore"
 
 
 
-Public Sub ActivateOrAddSheet(ByVal arg1 As String, Optional indx = 1, Optional BeforeOrAfter = 1)
+Public Sub ActivateOrAddSheet(ByVal arg1 As String, Optional indx = 0, Optional BeforeOrAfter = 1)
 
 TryIt:
 
@@ -47,6 +47,10 @@ TryIt:
 
     GoTo ElseIt
 CatchIt:
+
+    If indx = 0 Then
+        indx = ActiveSheet.Index
+    End If
 
     Dim NewSheet As Worksheet
     Set NewSheet = Sheets.Add
@@ -726,6 +730,18 @@ Private Function ifNull_MacroOptions_Array() As Variant
     )
 End Function
 
+Function if10(arg)
+    If arg = True Then
+        if10 = 1
+    ElseIf arg = False Then
+        if10 = 0
+    ElseIf arg Then
+        if10 = 1
+    Else
+        if10 = 0
+    End If
+End Function
+
 Function ifnull(ByVal arg As Variant, ByVal arg2 As Double)
     On Error Resume Next
     If Application.WorksheetFunction.IsError(arg) Then
@@ -856,41 +872,133 @@ Sub wds_CalcCells()
 
 End Sub
 
+Function fNVBlock(ByRef corner As Range, ByRef dep As Range, Optional nrows = 1, Optional ncols = 1) As Variant
+
+    fNVBlock = Range(corner.Cells(1, 1), corner.Cells(1, 1).Offset(nrows - 1, ncols - 1)).Value
+
+End Function
+
+Function fNVBlockColumn(ByRef corner As Range, Optional ncol = 1, Optional nrows = 0, Optional shift = 0, Optional strict = 0, Optional dep = 1) As Variant
+
+    If nrows <= 0 Or nrows > corner.Rows.Count Then
+        nrows = corner.Rows.Count
+    End If
+    If ncol <= 0 Then
+        ncol = 1
+    End If
+    If strict And (ncol > corner.Columns.Count) Then
+        ncol = corner.Columns.Count
+    End If
+    
+    If shift = 0 Then
+        fNVBlockColumn = Range(corner.Cells(1, ncol), corner.Cells(nrows, 1).Offset(0, ncol - 1)).Value
+    Else
+        fNVBlockColumn = Range(corner.Cells(1, ncol).Offset(shift, 0), corner.Cells(nrows, 1).Offset(0, ncol - 1).Offset(shift, 0)).Value
+    End If
+
+End Function
+
+Function fNVBlockSub(ByRef corner As Range, Optional r1 = 0, Optional c1 = 0, Optional r2 = 0, Optional c2 = 0, Optional shift = 0, Optional strict = 0, Optional dep = 1) As Variant
+
+    If r1 <= 0 Then
+        r1 = 1
+    End If
+    If strict And (r1 >= corner.Rows.Count) Then
+        r1 = corner.Rows.Count
+    End If
+    If c1 <= 0 Then
+        c1 = 1
+    End If
+    If strict And (c1 >= corner.Columns.Count) Then
+        c1 = corner.Columns.Count
+    End If
+    If r2 <= 0 Then
+        r2 = corner.Rows.Count
+    End If
+    If strict And (r2 >= corner.Rows.Count) Then
+        r2 = corner.Rows.Count
+    End If
+    If c2 <= 0 Then
+        c2 = corner.Columns.Count
+    End If
+    If strict And (c2 >= corner.Columns.Count) Then
+        c2 = corner.Columns.Count
+    End If
+    
+    If r2 < r1 Then
+        r3 = r1
+        r1 = r2
+        r2 = r3
+    End If
+    If c2 < c1 Then
+        c3 = c1
+        c1 = c2
+        c2 = c3
+    End If
+        
+    If shift = 0 Then
+        fNVBlockSub = Range(corner.Cells(r1, 1).Offset(0, c1 - 1), corner.Cells(r2, 1).Offset(0, c2 - 1)).Value
+    Else
+        fNVBlockSub = Range(corner.Cells(r1, 1).Offset(0, c1 - 1).Offset(shift, 0), corner.Cells(r1, 1).Offset(0, c2 - 1).Offset(shift, 0)).Value
+    End If
+
+End Function
+
 Function fNVAddress(ByRef r As Range, Optional nrows = -1, Optional ncols = -1)
 
-If nrows > 0 Then
-    If ncols > 0 Then
-        fNVAddress = Range(r.Cells(1, 1), r.Cells(1, 1).Offset(nrows - 1, ncols - 1)).Address(1, 1, xlA1, 1)
+    If nrows > 0 Then
+        If ncols > 0 Then
+            fNVAddress = Range(r.Cells(1, 1), r.Cells(1, 1).Offset(nrows - 1, ncols - 1)).Address(1, 1, xlA1, 1)
+        Else
+            fNVAddress = Range(r.Cells(1, 1), r.Cells(1, r.Columns.Count).Offset(nrows - 1, 0)).Address(1, 1, xlA1, 1)
+        End If
     Else
-        fNVAddress = Range(r.Cells(1, 1), r.Cells(1, r.Columns.Count).Offset(nrows - 1, 0)).Address(1, 1, xlA1, 1)
+        If ncols > 0 Then
+            fNVAddress = Range(r.Cells(1, 1), r.Cells(r.Rows.Count, 1).Offset(0, ncols - 1)).Address(1, 1, xlA1, 1)
+        Else
+            fNVAddress = r.Address(1, 1, xlA1, 1)
+        End If
     End If
-Else
-    If ncols > 0 Then
-        fNVAddress = Range(r.Cells(1, 1), r.Cells(r.Rows.Count, 1).Offset(0, ncols - 1)).Address(1, 1, xlA1, 1)
-    Else
-        fNVAddress = r.Address(1, 1, xlA1, 1)
+    
+End Function
+
+Function fNVFormula(ByRef r As Range) As String
+    
+    Dim rv As String
+        rv = Mid(r.Formula, 2)
+    fNVFormula = rv
+
+End Function
+
+
+Function fNVNamedRangeFormula(ByVal s As String) As String
+    
+    Dim rv As String
+    rv = Application.Names(s).RefersTo
+    If Left(rv, 1) = "=" Then
+        rv = Mid(rv, 2)
     End If
-End If
+    fNVNamedRangeFormula = rv
 
 End Function
 
 Function fNV3DLookup(col, ByRef rws As Range, ByRef shts As Range) As Variant
 
-Dim rv As Variant
-ReDim rv(1 To rws.Rows.Count, 1 To shts.Columns.Count) As Variant
-
-Dim ws As Worksheet
-
-For j = 1 To shts.Columns.Count
-    If IsEmpty(shts.Cells(1, j)) Or (shts.Cells(1, j).Value = "") Then GoTo Next_j
-    Set ws = Sheets(shts.Cells(1, j).Value)
-    For i = 1 To rws.Rows.Count
-        rv(i, j) = ws.Cells(rws.Cells(i, 1).Value, col).Value
-    Next i
+    Dim rv As Variant
+    ReDim rv(1 To rws.Rows.Count, 1 To shts.Columns.Count) As Variant
+    
+    Dim ws As Worksheet
+    
+    For j = 1 To shts.Columns.Count
+        If IsEmpty(shts.Cells(1, j)) Or (shts.Cells(1, j).Value = "") Then GoTo Next_j
+        Set ws = Sheets(shts.Cells(1, j).Value)
+        For i = 1 To rws.Rows.Count
+            rv(i, j) = ws.Cells(rws.Cells(i, 1).Value, col).Value
+        Next i
 Next_j:
-Next j
-
-fNV3DLookup = rv
+    Next j
+    
+    fNV3DLookup = rv
 
 
 End Function
@@ -927,35 +1035,131 @@ Next
 Concat_Dlm_MultiRange = rv
 End Function
 
-Function sum_acrossrows(ByRef arg As Range) As Variant
+Function sum_across_matrix_rows(arg, Optional c1 = 0, Optional c2 = 0) As Variant
 
-Dim rv As Variant
-ReDim rv(1 To arg.Rows.Count, 1 To 1) As Variant
-For i = 1 To arg.Rows.Count
-    s = 0
+    Dim varg
+    varg = deRange(arg)
+    
+    If c1 <= 0 Then
+        c1 = 1
+    ElseIf c1 > varg(3) Then
+        c1 = varg(2)
+    End If
+    
+    If c2 < 0 Then
+        c2 = 1
+    ElseIf c2 = 0 Or c2 > varg(3) Then
+        c2 = varg(2)
+    End If
+    
+    If c2 < c1 Then
+        c3 = c1
+        c1 = c2
+        c2 = c3
+    End If
+    
+    
+    Dim rv As Variant
+    ReDim rv(1 To varg(1), 1 To 1) As Variant
+    For i = 1 To varg(2)
+        s = 0
+        For j = c1 To c2
+           s = s + varg(1)(i, j)
+        Next j
+        rv(i, 1) = s
+    Next i
+    
+    sum_across_matrix_rows = rv
+    
+End Function
+
+
+Function sum_acrossrows(ByRef arg As Range, Optional c1 = 0, Optional c2 = 0, Optional strict = 0, Optional dep = 1) As Variant
+
+    If c1 <= 0 Then
+        c1 = 1
+    End If
+    If strict And (c1 > arg.Columns.Count) Then
+        c1 = arg.Columns.Count
+    End If
+    
+    If c2 <= 0 Then
+        c2 = arg.Columns.Count
+    End If
+    If strict And (c2 > arg.Columns.Count) Then
+        c2 = arg.Columns.Count
+    End If
+    
+    If c2 < c1 Then
+        c3 = c1
+        c1 = c2
+        c2 = c3
+    End If
+    
+    Dim rv As Variant
+    ReDim rv(1 To arg.Rows.Count, 1 To 1) As Variant
+    For i = 1 To arg.Rows.Count
+        s = 0
+        For j = c1 To c2
+           s = s + arg(i, j).Value
+        Next j
+        rv(i, 1) = s
+    Next i
+    
+    sum_acrossrows = rv
+
+End Function
+
+Function sum_acrosscolumns(ByRef arg As Range, Optional r1 = 0, Optional r2 = 0, Optional strict = 0, Optional dep = 1) As Variant
+
+    If r1 <= 0 Then
+        r1 = 1
+    End If
+    If strict And (r1 > arg.Rows.Count) Then
+        r1 = arg.Rows.Count
+    End If
+    
+    If r2 <= 0 Then
+        r2 = arg.Rows.Count
+    End If
+    If strict And (r2 > arg.Rows.Count) Then
+        r2 = arg.Rows.Count
+    End If
+    
+    If r2 < r1 Then
+        r3 = r1
+        r1 = r2
+        r2 = r3
+    End If
+    
+    Dim rv As Variant
+    ReDim rv(1 To 1, 1 To arg.Columns.Count) As Variant
     For j = 1 To arg.Columns.Count
-       s = s + arg(i, j).Value
-    Next j
-    rv(i, 1) = s
-Next i
-
-sum_acrossrows = rv
+        s = 0
+        For i = r1 To r2
+           s = s + arg(i, j).Value
+        Next j
+        rv(1, j) = s
+    Next i
+    
+    sum_acrosscolumns = rv
 
 End Function
 
 Function bIn(arg, ParamArray args() As Variant) As Boolean
 
-bIn = False
-For Each V In args
-    If arg = V Then
-        bIn = True
-        Exit Function
-    End If
-Next V
-
+    bIn = False
+    For Each V In args
+        If arg = V Then
+            bIn = True
+            Exit Function
+        End If
+    Next V
+    
 End Function
 
 Sub wds_Workbook_Overview()
+    
     Dim twb As Workbook
     Dim tws, nws, ows As Worksheet
     
@@ -1028,6 +1232,7 @@ Sub wds_Workbook_Overview()
 End Sub
 
 Sub wds_Workbook_CleanNamedRangesWithRefError()
+    
     Dim twb As Workbook
     Dim tws, nws, ows As Worksheet
     
@@ -1055,6 +1260,7 @@ Sub wds_Workbook_CleanNamedRangesWithRefError()
 End Sub
 
 Sub wds_Workbook_CleanNamedRangesSelected()
+    
     Dim twb As Workbook
     Dim tws, nws, ows As Worksheet
     
@@ -1153,6 +1359,7 @@ Public Sub WDSCore_CallMacroOptions()
 End Sub
 
 Public Function fWBCustomXMLParts(ByRef arg As Range) As Variant
+    
     Dim rv As Variant
     Dim i As Integer
     ReDim rv(1 To arg.Worksheet.Parent.CustomXMLParts.Count) As Variant
@@ -1160,9 +1367,11 @@ Public Function fWBCustomXMLParts(ByRef arg As Range) As Variant
         rv(i) = arg.Worksheet.Parent.CustomXMLParts(i).XML
     Next
     fWBCustomXMLParts = rv
+
 End Function
 
 Public Sub WDSCore_RemoveIntelliSense()
+    
     Dim xmlp As CustomXMLPart
     Dim node As CustomXMLNode
     For Each xmlp In ActiveWorkbook.CustomXMLParts
@@ -1177,6 +1386,7 @@ Public Sub WDSCore_RemoveIntelliSense()
             End If
         End If
     Next xmlp
+
 End Sub
 
 Public Sub WDSCore_SetMacroOptions(functioninfoarrays)
