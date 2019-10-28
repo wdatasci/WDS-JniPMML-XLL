@@ -1,7 +1,7 @@
 # General ReadMe
 
 The primary objective of WDS-JniPMML-XLL is to provide model evaluators to Excel.  In particular, access to the standard PMML evaluator is
-a starting point, both for use or for comparison.  Later versions will be include other model specs and implement other evaluators.
+a starting point, both for use and/or for comparison.  Later versions will be include other model specs and implement other evaluators.
 
 See documentation articles for a brief introduction.
 
@@ -61,7 +61,7 @@ See documentation articles for a brief introduction.
 <li>Compiling environment</li>
     The github configurations are for Visual Studio Community Edition and Intellij Community edition.
 <li>DocFx</li>
-    DocFx is use for the documentation build, including the DocFxDoclet for on the JavaDoc side.
+    DocFx is used for the documentation build, including DocFxDoclet on the JavaDoc side.
 </ul>
     
 
