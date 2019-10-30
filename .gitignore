@@ -34,6 +34,10 @@
 /**/.svn/
 /**/.idea/
 *.log
+Module*.bas
+*.ods
+Book*.xls*
+tmp*
 *.tmp*
 *.temp*
 *.jnk*
