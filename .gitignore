@@ -1,4 +1,6 @@
 /**/DROP/
+/**/data/
+/**/output/
 /**/TEMP/
 /**/packages/
 /**/target/
@@ -33,6 +35,8 @@
 /**/.vs/
 /**/.svn/
 /**/.idea/
+/**/.DS_Store/
+.DS_Store
 *.log
 Module*.bas
 *.ods
@@ -40,13 +44,17 @@ Book*.xls*
 tmp*
 *.tmp*
 *.temp*
+temp*
 *.jnk*
+jnk*
 *.junk*
+junk*
 *.bak*
 *.back*
 *.swp*
 knime-workspace
-
-.DS_Store
+*.pyc
+__pycache__
+/**/build/
 /**/test/output
 ~*

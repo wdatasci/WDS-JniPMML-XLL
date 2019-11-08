@@ -3,7 +3,17 @@
 The primary objective of WDS-JniPMML-XLL is to provide model evaluators to Excel.  In particular, access to the standard PMML evaluator is
 a starting point, both for use and/or for comparison.  Later versions will be include other model specs and implement other evaluators.
 
-See documentation articles for a brief introduction.
+Please see documentation articles for a brief introduction on use.
+
+Other evaluators aside, there is a technical challenge to providing access to the standard PMML evaluator, jpmml, which is cross-programing 
+languages.  Under the hood, to create a fast efficient Excel interface that insulates the user from the technical details, the usual addin 
+languages (C#/VB/VBA) must take data from the workbook (in multiple columns and possibly multiple rows), transform it, call the jpmml in Java, 
+and then return the appropriate data (with possibly multiple columns and rows) back to the workbook.
+
+This effort does not preclude writing a PMML evaluator (or re-writing jpmml, which may be a good idea) in another language.  However, as
+other evalutaors as added, a common Excel based interface than provides a basis for comparison.
+
+
 
 ## Through this version, WDS-JniPMML-XLL provides:
 <ul>
@@ -12,12 +22,12 @@ See documentation articles for a brief introduction.
     <li>Evaluating PMML models</li>
         <ul>
         <li>As an Excel function call</li>
-        <li>Using the <i>de facto</i> standard implementations</li>
+        <li>Using the <i>de facto</i> standard implementation, jpmml.evaluator</li>
         <li>Using input data from an in-worksheet table</li>
             <i>Uses XmlMap'd exportable ListObjects, but provides tools to facilitate</i>
         <li>Can evaluate one or multiple observations (rows) per call</li>
         <li>Results returned as normal function outputs</li>
-        <li>With cachable models for efficiency</li>
+        <li>With cacheable models for efficiency</li>
         </ul>
     <li>Additional data wrangling tools for</li>
         <ul>
@@ -38,11 +48,23 @@ See documentation articles for a brief introduction.
             <li>In memory (as when called through jni)</li>
         </ul>
     </ul>
-<li>Examples are included</li>
+<li>A launch script and examples are included</li>
     <ul>
-    <li>A test workbook and launch .bat to run the AddIns without installing</li>
-    <li>A test set of the usual PMML cases</li>
+    <li>WDS-JniPMML-XLL-Launch.bat:  a script for launching a new Excel instance, running the AddIns without installing</li>
+    <li>WDS-JniPMML-XLL-Test-Launch.bat:  a script for running the AddIns and the example workbook WDS-JniPMML-XLL-Test.xlsm</li>
+    <li>test/data: A test set of the usual PMML cases</li>
     </ul>
+</ul>
+
+## A Few Project Organization Notes
+<ul>
+<li>JniPMML-[AAA]: Language specific libraries that directly related to project objectives</li>
+   <ul>
+   <li> Where-ever-possible and as-close-as-possible code naming conventions and structure is kept similar across languages.</li>
+   </ul>
+<li>WDS-[AAA]: Language specific utility libraries that can be used independently of the JniPMML-[AAA] libs</li>
+<li>lib: compiled final products which could be used directly</li>
+<li>scripts: make scripts, for cross-language documentation building in particular</li>
 </ul>
 
 
