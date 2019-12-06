@@ -46,13 +46,14 @@ Private Enum eTreatment
     None = 0                'Numeric, Note: missing or invalid values result in in-valid scores
     Constant = 1            'Numeric, all values are the same, such as for an intercept
     CodedMissings = 2       'Numeric, see docs, X0 is always a missing indicator
-    Discrete = 3            'Numeric
-    Hats = 4                'Numeric, piecewise linear continuous
-    iHats = 5               'Numeric, {\em Integrated Hats}
-    BSplineOrder2 = 6       'Numeric
-    BSplineOrder3 = 7       'Numeric
-    Categorical = 8         'Character/String, X1, ..., XN indicators, X0 indicates all others
-    CategoricalNumeric = 9  'Numeric, simple indicators for a finite set of values, X0 all others
+    DiscreteLC = 3          'Numeric
+    DiscreteRC = 4          'Numeric
+    Hats = 5                'Numeric, piecewise linear continuous
+    iHats = 6               'Numeric, {\em Integrated Hats}
+    BSplineOrder2 = 7       'Numeric
+    BSplineOrder3 = 8       'Numeric
+    Categorical = 9         'Character/String, X1, ..., XN indicators, X0 indicates all others
+    CategoricalNumeric = 10 'Numeric, simple indicators for a finite set of values, X0 all others
 End Enum
 
 'Arguments are parsed into an object to encapsulate information as needed.
@@ -158,8 +159,14 @@ Private Function fVariableMatter(ByVal Treatment As String _
         Case "hats", "bz1"
             rv.Treatment = Hats
             rv.nArtVars = rv.nCritVals + 1
-        Case "discrete", "discretize", "disc", "buckets", "levels", "intervals", "bz0"
-            rv.Treatment = Discrete
+        Case "discretelc", "discretizelc", "disclc", "bucketslc", "levelslc", "intervalslc", "bz0lc", "bso0LC", "caglad", "collor", "lcrl"
+            rv.Treatment = DiscreteLC
+            rv.nArtVars = rv.nCritVals + 2
+        Case "discreterc", "discretizerc", "discrc", "bucketsrc", "levelsrc", "intervalsrc", "bz0rc", "bso0rc", "cadlag", "corlol", "rcll"
+            rv.Treatment = DiscreteRC
+            rv.nArtVars = rv.nCritVals + 2
+        Case "discrete", "discretize", "disc", "buckets", "levels", "intervals", "bz0", "bso0"
+            rv.Treatment = DiscreteRC
             rv.nArtVars = rv.nCritVals + 2
         Case "ihats", "integratedhats"
             rv.Treatment = iHats
@@ -197,7 +204,7 @@ Private Function fVariableMatter(ByVal Treatment As String _
         Err.Raise Number:=WDSContextID + 1, Source:=twb.Name & WDSModuleName, Description:="Invalid Knots"
     ElseIf (rv.Treatment = BSplineOrder3) And rv.nCritVals <= 5 Then
         Err.Raise Number:=WDSContextID + 1, Source:=twb.Name & WDSModuleName, Description:="Invalid Knots"
-    ElseIf (rv.Treatment = Discrete Or rv.Treatment = Categorical Or rv.Treatment = CategoricalNumeric) And rv.nCritVals = 0 Then
+    ElseIf (rv.Treatment = DiscreteLC Or rv.Treatment = DiscreteRC Or rv.Treatment = Categorical Or rv.Treatment = CategoricalNumeric) And rv.nCritVals = 0 Then
         Err.Raise Number:=WDSContextID + 1, Source:=twb.Name & WDSModuleName, Description:="Invalid Knots"
     End If
     
@@ -258,7 +265,7 @@ Private Function fArtificialsCount_MacroOptions_Array() As Variant
     , "Returns the number of artificial variables for a given treatment and set of critical values" _
     , "http://WDataSci.com" _
     , "WDS" _
-    , Array(Array("Treatment", "One of [None|Constant|CodedMissings|Discrete|Hats|iHats|BSplineOrder2|BSO2|BSO3|Categorical|CategoricalNumeric] or an alias"), _
+    , Array(Array("Treatment", "One of [None|Constant|CodedMissings|DiscreteLC|DiscreteRC|Hats|iHats|BSplineOrder2|BSO2|BSO3|Categorical|CategoricalNumeric] or an alias"), _
     Array("CriticalValues", "A range of critical values") _
     ) _
     )
@@ -275,7 +282,7 @@ Private Function fArtificialsLabels_MacroOptions_Array() As Variant
     , "Returns the labels for artificial variables for a given treatment and set of critical values" _
     , "http://WDataSci.com" _
     , "WDS" _
-    , Array(Array("Treatment", "One of [None|Constant|CodedMissings|Discrete|Hats|iHats|BSplineOrder2|BSO2|BSO3|Categorical|CategoricalNumeric] or an alias"), _
+    , Array(Array("Treatment", "One of [None|Constant|CodedMissings|DiscreteLC|DiscreteRC|Hats|iHats|BSplineOrder2|BSO2|BSO3|Categorical|CategoricalNumeric] or an alias"), _
     Array("CriticalValues", "A range of critical values"), _
     Array("VariableNameBase", "Optional, defaults to X") _
     ) _
@@ -349,7 +356,7 @@ Private Function fArtificials_MacroOptions_Array() As Variant
     , "Returns an array-value of artificial variables for a range input given treatment and set of critical values." _
     , "http://WDataSci.com" _
     , "WDS" _
-    , Array(Array("Treatment", "One of [None|Constant|CodedMissings|Discrete|Hats|iHats|BSplineOrder2|BSO2|BSO3|Categorical|CategoricalNumeric] or an alias"), _
+    , Array(Array("Treatment", "One of [None|Constant|CodedMissings|DiscreteLC|DiscreteRC|Hats|iHats|BSplineOrder2|BSO2|BSO3|Categorical|CategoricalNumeric] or an alias"), _
     Array("Input", "An input value or column"), _
     Array("CriticalValues", "A range of critical values"), _
     Array("CleanLimitLeft", "Optional, left hand clean limit"), _
@@ -364,6 +371,7 @@ Function fArtificials(ByVal Treatment As String _
     , ByRef CriticalValues _
     , Optional CleanLimitLeftValue = Empty _
     , Optional CleanLimitRightValue = Empty _
+    , Optional eps = 0.00000001 _
     ) As Variant()
     
     Dim varm As tVariableMatter
@@ -461,7 +469,7 @@ Function fArtificials(ByVal Treatment As String _
                             Exit For
                         End If
                         If isTreatmentNumeric Then
-                            If Abs(tempval - CVs(j, i)) < 0.000001 Then
+                            If Abs(tempval - CVs(j, i)) < eps Then
                                 found = True
                                 Exit For
                             End If
@@ -513,22 +521,33 @@ Function fArtificials(ByVal Treatment As String _
 
                 rc(r, ia) = x
 
-            ElseIf x <= CVs(1, 1) Then
-                'all non-missing first artificials are 1 left of the first critical value, except iHats
+            ElseIf x <= CVs(1, 1) + eps Then
+
+                'all non-missing first artificials are 1 left of the first critical value, except iHats and DiscreteRC
                 i = 1
                 ia = 2
                 If varm.Treatment = iHats Then
-                    tempdouble = x - CVs(1, 1)
+
+                        tempdouble = x - CVs(1, 1)
 
                         rc(r, ia) = tempdouble
 
                 Else
 
+                        If (varm.Treatment = DiscreteRC) And (x >= CVs(1, 1) - eps) Then
+
+                            i = i + 1
+                            ia = ia + 1
+
+                        End If
+
                         rc(r, ia) = 1
 
                 End If
-            ElseIf x >= CVs(1, varm.nCritVals) Then
-                'all non-missing last artificials are 1 right of the last critical value, except iHats
+
+            ElseIf x >= CVs(1, varm.nCritVals) - eps Then
+
+                'all non-missing last artificials are 1 right of the last critical value, except iHats and DiscreteLC
                 i = varm.nCritVals
                 ia = varm.nArtVars
                 If varm.Treatment = iHats Then
@@ -544,6 +563,13 @@ Function fArtificials(ByVal Treatment As String _
                         rc(r, ia) = rc(r, ia) + dCVs(1, j) / 2
 
                 Else
+                
+                        If (varm.Treatment = DiscreteLC) And (x <= CVs(1, varm.nCritVals) + eps) Then
+
+                            i = i - 1
+                            ia = ia - 1
+
+                        End If
 
                         rc(r, ia) = 1
 
@@ -554,15 +580,32 @@ Function fArtificials(ByVal Treatment As String _
                 'main guts of the function.....
                 
                 'find the critical value interval.....
-                For i = varm.nCritVals - 1 To 1 Step -1
-                    If x >= CVs(1, i) Then
-                        Exit For
-                    End If
-                Next i
+                If varm.Treatment = DiscreteLC Then
+                    For i = varm.nCritVals - 1 To 1 Step -1
+                        If x > CVs(1, i) + eps Then
+                            Exit For
+                        End If
+                    Next i
+                    'Discrete cases are shifted one
+                    i = i + 1
+                ElseIf varm.Treatment = DiscreteRC Then
+                    For i = varm.nCritVals - 1 To 1 Step -1
+                        If x > CVs(1, i) - eps Then
+                            Exit For
+                        End If
+                    Next i
+                    i = i + 1
+                Else
+                    For i = varm.nCritVals - 1 To 1 Step -1
+                        If x >= CVs(1, i) Then
+                            Exit For
+                        End If
+                    Next i
+                End If
                 
                 'usual VBA index
                 ia = i + 1
-                If varm.Treatment = Discrete Then
+                If (varm.Treatment = DiscreteRC) Or (varm.Treatment = DiscreteLC) Then
 
                     rc(r, ia) = 1
 
@@ -797,7 +840,7 @@ Private Function fArtificialsScored_MacroOptions_Array() As Variant
     , "Returns an array-value of scored artificial variables for a range input given treatment and set of critical values" _
     , "http://WDataSci.com" _
     , "WDS" _
-    , Array(Array("Treatment", "One of [None|Constant|CodedMissings|Discrete|Hats|iHats|BSplineOrder2|BSO2|BSO3|Categorical|CategoricalNumeric] or an alias"), _
+    , Array(Array("Treatment", "One of [None|Constant|CodedMissings|DiscreteLC|DiscreteRC|Hats|iHats|BSplineOrder2|BSO2|BSO3|Categorical|CategoricalNumeric] or an alias"), _
     Array("Input", "An input value or column"), _
     Array("CriticalValues", "A range of critical values"), _
     Array("CoefficientValues", "A range of coefficients for which columns match the number of artificials and rows represent separate score sets"), _
@@ -814,6 +857,7 @@ Function fArtificialsScored(ByVal Treatment As String _
     , ByRef CoefficientValues _
     , Optional CleanLimitLeftVal = Empty _
     , Optional CleanLimitRightVal = Empty _
+    , Optional eps = 0.00000001 _
     ) As Variant()
     
     On Error GoTo Hey
@@ -916,7 +960,7 @@ Function fArtificialsScored(ByVal Treatment As String _
                             Exit For
                         End If
                         If isTreatmentNumeric Then
-                            If Abs(tempval - CVs(j, i)) < 0.000001 Then
+                            If Abs(tempval - CVs(j, i)) < eps Then
                                 found = True
                                 Exit For
                             End If
@@ -967,25 +1011,33 @@ Function fArtificialsScored(ByVal Treatment As String _
                 For k = 1 To nScores
                     rc(r, k) = Coef(k, 2) * x
                 Next k
-            ElseIf x <= CVs(1, 1) Then
-                'all non-missing first artificials are 1 left of the first critical value, except iHats
+            ElseIf x <= CVs(1, 1) + eps Then
+                'all non-missing first artificials are 1 left of the first critical value, except iHats and DiscreteRC
                 i = 1
                 ia = 2
                 If varm.Treatment = iHats Then
                     tempdouble = x - CVs(1, 1)
                     For k = 1 To nScores
-                        rc(r, k) = Coef(k, 2) * tempdouble
+                        rc(r, k) = Coef(k, ia) * tempdouble
                     Next
                 Else
+
+                        If (varm.Treatment = DiscreteRC) And (x >= CVs(1, 1) - eps) Then
+
+                            i = i + 1
+                            ia = ia + 1
+
+                        End If
+
                     For k = 1 To nScores
-                        rc(r, k) = Coef(k, 2)
+                        rc(r, k) = Coef(k, ia)
                     Next
                 End If
-            ElseIf x >= CVs(1, varm.nCritVals) Then
-                'all non-missing last artificials are 1 right of the last critical value, except iHats
+            ElseIf x >= CVs(1, varm.nCritVals) - eps Then
+                'all non-missing last artificials are 1 right of the last critical value, except iHats and DiscreteLC
+                i = varm.nCritVals
+                ia = varm.nArtVars
                 If varm.Treatment = iHats Then
-                    i = varm.nCritVals
-                    ia = varm.nArtVars
                     tempdouble = (x - CVs(1, i) + (CVs(1, i) - CVs(1, i - 1)) / 2)
                     For k = 1 To nScores
                         rc(r, k) = Coef(k, ia) * tempdouble
@@ -1000,8 +1052,16 @@ Function fArtificialsScored(ByVal Treatment As String _
                         rc(r, k) = rc(r, k) + Coef(k, ia) * (CVs(1, 2) - CVs(1, 1)) / 2
                     Next k
                 Else
+                
+                        If (varm.Treatment = DiscreteLC) And (x <= CVs(1, varm.nCritVals) + eps) Then
+
+                            i = i - 1
+                            ia = ia - 1
+
+                        End If
+
                     For k = 1 To nScores
-                        rc(r, k) = Coef(k, varm.nArtVars)
+                        rc(r, k) = Coef(k, ia)
                     Next k
                 End If
             Else
@@ -1009,15 +1069,32 @@ Function fArtificialsScored(ByVal Treatment As String _
                 'main guts of the function.....
                 
                 'find the critical value interval.....
-                For i = varm.nCritVals - 1 To 1 Step -1
-                    If x >= CVs(1, i) Then
-                        Exit For
-                    End If
-                Next i
+                If varm.Treatment = DiscreteLC Then
+                    For i = varm.nCritVals - 1 To 1 Step -1
+                        If x > CVs(1, i) + eps Then
+                            Exit For
+                        End If
+                    Next i
+                    'Discrete cases are shifted one
+                    i = i + 1
+                ElseIf varm.Treatment = DiscreteRC Then
+                    For i = varm.nCritVals - 1 To 1 Step -1
+                        If x > CVs(1, i) - eps Then
+                            Exit For
+                        End If
+                    Next i
+                    i = i + 1
+                Else
+                    For i = varm.nCritVals - 1 To 1 Step -1
+                        If x >= CVs(1, i) Then
+                            Exit For
+                        End If
+                    Next i
+                End If
                 
                 'usual VBA index
                 ia = i + 1
-                If varm.Treatment = Discrete Then
+                If (varm.Treatment = DiscreteRC) Or (varm.Treatment = DiscreteLC) Then
                     For k = 1 To nScores
                         rc(r, k) = Coef(k, ia)
                     Next k
