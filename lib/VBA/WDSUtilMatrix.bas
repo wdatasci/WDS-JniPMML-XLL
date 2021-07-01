@@ -180,9 +180,82 @@ MatrixMult = rv
 
 End Function
 
+Function mPanelData(ByRef arg As Range, ofset As Long) As Variant
+
+nrows = arg.Rows.Count
+
+Dim rv As Variant
+ReDim rv(1 To nrows, 1 To 6) As Long
 
 
 
+
+For i = 1 To nrows
+    iM1 = i - 1
+    If i = 1 Or arg(i, 1) <> 0 Then
+        rv(i, 1) = 1
+        rv(i, 3) = 1
+        rv(i, 5) = i + ofset
+    Else
+        rv(i, 1) = 0
+        rv(i, 3) = rv(iM1, 3) + 1
+        rv(i, 5) = rv(iM1, 5)
+    End If
+Next i
+For i = nrows To 1 Step -1
+    iP1 = i + 1
+    If i = nrows Then
+        rv(i, 2) = 1
+        rv(i, 4) = 1
+        rv(i, 6) = i + ofset
+    ElseIf rv(iP1, 1) <> 0 Then
+        rv(i, 2) = 1
+        rv(i, 4) = 1
+        rv(i, 6) = i + ofset
+    Else
+        rv(i, 2) = 0
+        rv(i, 4) = rv(iP1, 4) + 1
+        rv(i, 6) = rv(iP1, 6)
+    End If
+Next i
+
+
+mPanelData = rv
+
+
+
+End Function
+
+Sub subPanelize()
+
+calc_at_start = Application.Calculation
+On Error GoTo ElseIt
+
+Application.Calculation = xlCalculationManual
+Application.ScreenUpdating = False
+
+Dim r As Range
+Dim r2 As Range
+Set r = Selection
+
+Range(r.Offset(1, 0), r.Offset(r.SpecialCells(xlCellTypeLastCell).Row - r.Row, 0)).Clear
+
+r.Copy
+For Each r2 In Range(r.Offset(1, -6), r.Offset(1, -6).End(xlDown))
+
+    If r2.Value <> 0 And r2.Offset(0, 3) <> 1 Then
+        
+        r2.Offset(0, 6).PasteSpecial (xlPasteFormulas)
+    End If
+    
+Next
+        
+ElseIt:
+Application.Calculation = calc_at_start
+Application.ScreenUpdating = True
+
+
+End Sub
 
 Sub test1()
 
@@ -279,7 +352,7 @@ mget = rv
 End Function
 
 
-Function RFScheduled(PanelInd, LoanAgeMos, PrinBal, IntRatePct, TermMos, Optional PmtAmt = Nothing)
+Function RFScheduled(PanelInd, LoanAgeMos, PrinBal, IntRatePct, TermMos, Optional PmtAmt = Nothing, Optional stoprow = 0)
 
 
 lPanelInd = deRange(PanelInd)
@@ -289,7 +362,7 @@ lIntRatePct = deRange(IntRatePct)
 lTermMos = deRange(TermMos)
 
 Dim rv As Variant
-Dim startrow, stoprow, startcol, stopcol, nrows, ncols, i, j As Integer
+Dim startrow, startcol, stopcol, nrows, ncols, i, j As Integer
 Dim s, p, pp, pi As Double
 
 ir = mget(lIntRatePct, 1, 1)
@@ -316,7 +389,9 @@ End If
 
 
 startrow = 1
-stoprow = lLoanAgeMos(2)
+If stoprow = 0 Then
+    stoprow = lLoanAgeMos(2)
+End If
 startcol = 1
 stopcol = 4
 
@@ -329,7 +404,7 @@ rv(startrow, 1) = bal
 For i = startrow + 1 To stoprow
     pind = mget(lPanelInd, i, 1)
     On Error GoTo CatchIt
-    If pind > 0 Then
+    If pind <> 0 Then
         If i < stoprow Then
             ir = mget(lIntRatePct, i, 1)
             If ir > 1 Then

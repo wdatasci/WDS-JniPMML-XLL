@@ -1138,9 +1138,9 @@ Function sum_acrosscolumns(ByRef arg As Range, Optional r1 = 0, Optional r2 = 0,
         s = 0
         For i = r1 To r2
            s = s + arg(i, j).Value
-        Next j
+        Next i
         rv(1, j) = s
-    Next i
+    Next j
     
     sum_acrosscolumns = rv
 

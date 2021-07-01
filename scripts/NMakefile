@@ -22,6 +22,12 @@ TestWorkbook=$(SolutionDir)\WDS-JniPMML-XLL-Test.xlsm
 run:
 	$(EXCEL) /p "$(SolutionDir)" /x "$(SolutionDir)\lib\WDS-JniPMML-x64.xll" "$(SolutionDir)\lib\WDS-JniPMML-VB-x64.xll" "$(TestWorkbook)"  /o:WDS:hey
 
+run_just_Cs:
+	$(EXCEL) /p "$(SolutionDir)" /x "$(SolutionDir)\lib\WDS-x64.xll" "$(TestWorkbook)"  /o:WDS:hey
+
+run_just_VB:
+	$(EXCEL) /p "$(SolutionDir)" /x "$(SolutionDir)\lib\WDS-JniPMML-VB-x64.xll" "$(TestWorkbook)"  /o:WDS:hey
+
 run_build:
 	$(EXCEL) /p "$(SolutionDir)" /x "$(SolutionDir)\JniPMML-Cs\bin\$(Configuration)\JniPMML-Cs-x64-packed.xll" "$(SolutionDir)\JniPMML-VB\bin\$(Configuration)\JniPMML-VB-x64-packed.xll" "$(SolutionDir)\WDS-JniPMML-XLL-Test.xlsm"  /o:WDS:hey
 
