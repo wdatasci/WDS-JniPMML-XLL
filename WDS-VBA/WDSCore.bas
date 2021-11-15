@@ -630,6 +630,98 @@ Function fDate2MonthID(arg As Date) As Integer
 
 End Function
 
+Function fDateText2Date(ByVal arg As String, Optional arg2 = "MM/DD/YYYY", Optional dlm = "/", Optional Error_Value = 0) As Date
+    On Error GoTo CatchIt
+    Dim y, m, d, i, common As Integer
+
+    common = 1
+    
+TryIt:
+    
+    If arg2 <> "MM/DD/YYYY" Or dlm <> "/" Then
+        If arg2 = "MM-DD-YYYY" Then
+            dlm = "-"
+        ElseIf arg2 = "YYYY/MM/DD" And dlm = "/" Then
+            common = 2
+        ElseIf arg2 = "YYYY-MM-DD" And dlm = "/" Then
+            common = 2
+            dlm = "-"
+        ElseIf arg2 = "YYYYMMDD" Then
+            common = 3
+        Else
+            GoTo CatchIt
+        End If
+    End If
+    
+            
+    If common = 1 Then
+        
+        i = Val(InStr(arg, dlm))
+        m = Val(Left(arg, i - 1))
+        arg = Mid(arg, i + 1)
+        i = Val(InStr(arg, dlm))
+        d = Val(Left(arg, i - 1))
+        arg = Mid(arg, i + 1)
+        y = Val(arg)
+        
+    ElseIf common = 2 Then
+    
+        i = Val(InStr(arg, dlm))
+        y = Val(Left(arg, i - 1))
+        arg = Mid(arg, i + 1)
+        m = Val(Left(arg, i - 1))
+        arg = Mid(arg, i + 1)
+        d = Val(arg)
+        
+    Else
+        
+        y = Val(Left(arg, 4))
+        m = Val(Mid(arg, 5, 2))
+        d = Val(Mid(arg, 7, 2))
+        
+    End If
+        
+    fDateText2Date = DateSerial(y, m, d)
+    
+    GoTo ElseIt
+    
+CatchIt:
+
+    fDateText2Date = Error_Value
+    
+ElseIt:
+
+End Function
+
+Sub wds_RangeConvert_DateText2Date()
+
+Dim r, c As Range
+
+Set r = Selection
+
+Dim s As String
+Dim x As Date
+
+For Each c In r
+
+    If Excel.WorksheetFunction.IsText(c.Value) Then
+        s = c.Value
+        On Error GoTo CatchIt
+        If Len(s) > 0 Then
+            x = fDateText2Date(s, "MM/DD/YYYY", "/", -1)
+            If x > 0 Then
+                c.Value = x
+                c.NumberFormat = "YYYY-MM-DD"
+            End If
+        End If
+    
+CatchIt:
+
+    End If
+Next c
+        
+End Sub
+
 Private Function fMonthID2Date_MacroOptions_Array() As Variant
     fMonthID2Date_MacroOptions_Array = Array("fMonthID2Date" _
     , "Returns an Excel date (first of the month) from a MonthID value" _
@@ -1035,10 +1127,39 @@ Next
 Concat_Dlm_MultiRange = rv
 End Function
 
+'See WDSUtilMatrix
+Private Function WDSCore_deRange(arg) As Variant
+Dim rv(1 To 3) As Variant
+If TypeOf arg Is Range Then
+    rv(1) = arg.Value
+    rv(2) = arg.Rows.Count
+    rv(3) = arg.Columns.Count
+    If rv(2) = 1 And rv(3) = 1 Then
+        rv(2) = 0
+        rv(3) = 0
+    End If
+Else
+    rv(1) = arg
+    Dim d(1 To 4) As Variant
+    n = zfNDims(arg)
+    If n(1) = 0 Then
+        rv(2) = 0
+        rv(3) = 0
+    ElseIf n(1) = 1 Then
+        rv(2) = n(2)
+        rv(3) = 0
+    ElseIf n(1) = 2 Then
+        rv(2) = n(2)
+        rv(3) = n(3)
+    End If
+End If
+WDSCore_deRange = rv
+End Function
+
 Function sum_across_matrix_rows(arg, Optional c1 = 0, Optional c2 = 0) As Variant
 
     Dim varg
-    varg = deRange(arg)
+    varg = WDSCore_deRange(arg)
     
     If c1 <= 0 Then
         c1 = 1
