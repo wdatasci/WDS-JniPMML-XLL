@@ -156,8 +156,9 @@ namespace com.WDataSci.JniPMML
                 /* <<< Java */
                 /* C# >>> */
                 this.__StreamReader = new StreamReader(aPathAndName);
-                this.__CSV = new CsvParser(this.__StreamReader);
-                String[] inputLine = this.__CSV.Read();
+                this.__CSV = new CsvParser(this.__StreamReader,System.Globalization.CultureInfo.CurrentCulture);
+                this.__CSV.Read();
+                String[] inputLine = this.__CSV.Record;
                 /* <<< C# */
 
                 //Java int xnlLength = inputLine.size();
@@ -361,7 +362,7 @@ namespace com.WDataSci.JniPMML
                     //Java this.__CSV = new CSVParser(new FileReader(aPathAndName), CSVFormat.EXCEL);
                     //Java this.__CSVParserIterator = this.__CSVParser.iterator();
                     //C#
-                    this.__CSV = new CsvParser(new StreamReader(aPathAndName));
+                    this.__CSV = new CsvParser(new StreamReader(aPathAndName),System.Globalization.CultureInfo.CurrentCulture);
                 }
 
                 if ( aInputRecordSet.isEmpty() ) {
@@ -379,10 +380,12 @@ namespace com.WDataSci.JniPMML
 
                 //Java if ( hasHeaderRow && this.__CSVParser.getCurrentLineNumber() == 0 ) 
                 //C#
-                if ( hasHeaderRow && this.__CSV.Context.Row < 1 ) {
+                if ( hasHeaderRow && this.__CSV.Context.Parser.Row < 1 ) {
                     //Java inputLine = this.__CSVParserIterator.next();
                     //C#
-                    inputLine = this.__CSV.Read();
+                    //inputLine = this.__CSV.Read();
+                    this.__CSV.Read();
+                    inputLine = this.__CSV.Record;
                 }
                 int row = -1;
 
@@ -392,7 +395,9 @@ namespace com.WDataSci.JniPMML
                 while ( true ) {
                     //Java inputLine = this.__CSVParserIterator.next();
                     //C#
-                    inputLine = this.__CSV.Read();
+                    //inputLine = this.__CSV.Read();
+                    this.__CSV.Read();
+                    inputLine = this.__CSV.Record;
 
                     if ( inputLine == null ) break;
 
@@ -523,14 +528,14 @@ namespace com.WDataSci.JniPMML
                            outCSV = new CSVPrinter(outBW, CSVFormat.DEFAULT.withHeader(hr).withDelimiter(aOutputRecordSetMD.FileMatter.Dlm.charAt(0)));
                         /* <<< Java */
                         /* C# >>> */
-                        outCSV = new CsvWriter(outBW);
+                        outCSV = new CsvWriter(outBW,System.Globalization.CultureInfo.CurrentCulture);
                         outCSV.printRecord(hr);
                         /* <<< C# */
                     }
                     else {
                         //Java outCSV = new CSVPrinter(outBW, CSVFormat.DEFAULT.withDelimiter(aOutputRecordSetMD.FileMatter.Dlm.charAt(0)));
                         //C#
-                        outCSV = new CsvWriter(outBW);
+                        outCSV = new CsvWriter(outBW,System.Globalization.CultureInfo.CurrentCulture);
                     }
                     outCSV.flush();
 
@@ -609,14 +614,14 @@ namespace com.WDataSci.JniPMML
                            outCSV = new CSVPrinter(outBW, CSVFormat.DEFAULT.withHeader(hr).withDelimiter(aOutputRecordSetMD.FileMatter.Dlm.charAt(0)));
                         /* <<< Java */
                         /* C# >>> */
-                        outCSV = new CsvWriter(outBW);
+                        outCSV = new CsvWriter(outBW,System.Globalization.CultureInfo.CurrentCulture);
                         outCSV.printRecord(hr);
                         /* <<< C# */
                     }
                     else {
                         //Java outCSV = new CSVPrinter(outBW, CSVFormat.DEFAULT.withDelimiter(aOutputRecordSetMD.FileMatter.Dlm.charAt(0)));
                         //C#
-                        outCSV = new CsvWriter(outBW);
+                        outCSV = new CsvWriter(outBW,System.Globalization.CultureInfo.CurrentCulture);
                     }
                     outCSV.flush();
 
@@ -677,11 +682,11 @@ namespace com.WDataSci.JniPMML
                     if ( aOutputRecordSetMD.FileMatter.hasHeaderRow ) {
                         String[] hr = new String[nColumns];
                         for ( k = 0 ; k < nColumns ; k++ ) hr[k] = aOutputRecordSetMD.Column[k].Name;
-                        outCSV = new CsvWriter(outBW);
+                        outCSV = new CsvWriter(outBW,System.Globalization.CultureInfo.CurrentCulture);
                         outCSV.printRecord(hr);
                     }
                     else {
-                        outCSV = new CsvWriter(outBW);
+                        outCSV = new CsvWriter(outBW,System.Globalization.CultureInfo.CurrentCulture);
                     }
                     outCSV.flush();
 

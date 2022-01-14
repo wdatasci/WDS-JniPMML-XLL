@@ -20,7 +20,7 @@
     <!--
       Enable/Disable setting the debug options when building the project
     -->
-    <RunExcelDnaSetDebuggerOptions Condition="'$(RunExcelDnaSetDebuggerOptions)' == ''">false</RunExcelDnaSetDebuggerOptions>
+    <RunExcelDnaSetDebuggerOptions Condition="'$(RunExcelDnaSetDebuggerOptions)' == ''">true</RunExcelDnaSetDebuggerOptions>
 
     <!--
       Override the path of EXCEL.EXE used for debugging the project, if you need
@@ -42,21 +42,21 @@
     <!--
       Enable/Disable automatic generation of platform-specific versions of .dna files
     -->
-    <ExcelDnaCreate32BitAddIn Condition="'$(ExcelDnaCreate32BitAddIn)' == ''">false</ExcelDnaCreate32BitAddIn>
+    <ExcelDnaCreate32BitAddIn Condition="'$(ExcelDnaCreate32BitAddIn)' == ''">true</ExcelDnaCreate32BitAddIn>
     <ExcelDnaCreate64BitAddIn Condition="'$(ExcelDnaCreate64BitAddIn)' == ''">true</ExcelDnaCreate64BitAddIn>
 
     <!--
       Define the suffix used for each platform-specific file e.g. MyAddIn64.dna
     -->
-    <ExcelDna32BitAddInSuffix Condition="'$(ExcelDna32BitAddInSuffix)' == ''">-x32</ExcelDna32BitAddInSuffix>
-    <ExcelDna64BitAddInSuffix Condition="'$(ExcelDna64BitAddInSuffix)' == ''">-x64</ExcelDna64BitAddInSuffix>
+    <ExcelDna32BitAddInSuffix Condition="'$(ExcelDna32BitAddInSuffix)' == ''"></ExcelDna32BitAddInSuffix>
+    <ExcelDna64BitAddInSuffix Condition="'$(ExcelDna64BitAddInSuffix)' == ''">64</ExcelDna64BitAddInSuffix>
   </PropertyGroup>
 
   <PropertyGroup>
     <!--
       Enable/Disable using Excel-DNA with PackageReference projects (not officially supported)
-    <ExcelDnaAllowPackageReferenceProjectStyle Condition="'$(ExcelDnaAllowPackageReferenceProjectStyle)' == ''">false</ExcelDnaAllowPackageReferenceProjectStyle>
     -->
+    <ExcelDnaAllowPackageReferenceProjectStyle Condition="'$(ExcelDnaAllowPackageReferenceProjectStyle)' == ''">false</ExcelDnaAllowPackageReferenceProjectStyle>
   </PropertyGroup>
 
   <!--

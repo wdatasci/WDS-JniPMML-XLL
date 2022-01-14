@@ -7,11 +7,11 @@
   <Reference Path="ExcelDna.Utilities.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
   <Reference Path="NetOffice.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
   <Reference Path="OfficeApi.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
-  <Reference Path="VBIDEApi.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  <!--<Reference Path="VBIDEApi.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />-->
   <Reference Path="ExcelApi.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
-  <Reference Path="System.Collections.Immutable.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  <!--<Reference Path="System.Collections.Immutable.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />-->
   <Reference Path="stdole.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
-  <Reference Path="Microsoft.Office.Interop.Excel.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  <!--<Reference Path="Microsoft.Office.Interop.Excel.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />-->
   <!--
   <Reference Path="ExcelDna.IntelliSense.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
   -->

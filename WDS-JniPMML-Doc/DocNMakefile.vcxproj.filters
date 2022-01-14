@@ -28,6 +28,9 @@
     <Filter Include="doc\templates\WDS\styles">
       <UniqueIdentifier>{94efcd6a-834b-4417-afb3-8eb8faaecb0c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Properties">
+      <UniqueIdentifier>{08bcec82-0a8c-46d0-a5a3-3d29b7874953}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="doc\index.md">
@@ -82,6 +85,11 @@
     <None Include="..\WDS-Cs\src\WDSJavaXCs.md">
       <Filter>doc\articles</Filter>
     </None>
+    <None Include="Properties\ExcelDna.Build.props">
+      <Filter>Properties</Filter>
+    </None>
+    <None Include="ExcelDna-Template.dna" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="doc\templates\WDS\WDataSci-Mark1-50x50.ico">
