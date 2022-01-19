@@ -2,14 +2,14 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LocalDebuggerCommand>C:\Program Files\Microsoft Office\Root\Office16\EXCEL.EXE</LocalDebuggerCommand>
-    <LocalDebuggerCommandArguments>/x $(SolutionDir)bin\$(Configuration)\WDS-JniPMML-x64.xll $(SolutionDir)bin\$(Configuration)\WDS-JniPMML-Ribbon-x64.xll $(SolutionDir)WDS-JniPMML-XLL-Test.xlsm  /o:WDS:hey</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>/x $(SolutionDir)lib\WDS-JniPMML-VB-x64-dbg.xll $(SolutionDir)JniPMML-Cs\bin\$(Configuration)\JniPMML-Cs-x64.xll $(SolutionDir)WDS-JniPMML-XLL-Test.xlsm  /o:WDS:hey</LocalDebuggerCommandArguments>
     <LocalDebuggerWorkingDirectory>$(SolutionDir)</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerAttach>false</LocalDebuggerAttach>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LocalDebuggerCommand>C:\Program Files\Microsoft Office\Root\Office16\EXCEL.EXE</LocalDebuggerCommand>
-    <LocalDebuggerCommandArguments>/x $(SolutionDir)bin\$(Configuration)\WDS-JniPMML-x64.xll $(SolutionDir)bin\$(Configuration)\WDS-JniPMML-Ribbon-x64.xll $(SolutionDir)WDS-JniPMML-XLL-Test.xlsm  /o:WDS:hey</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>/x $(SolutionDir)lib\WDS-JniPMML-VB-x64.xll $(SolutionDir)lib\WDS-JniPMML-x64.xll $(SolutionDir)WDS-JniPMML-XLL-Test.xlsm  /o:WDS:hey</LocalDebuggerCommandArguments>
     <LocalDebuggerWorkingDirectory>$(SolutionDir)</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerAttach>false</LocalDebuggerAttach>

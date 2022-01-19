@@ -10,9 +10,9 @@
 
   <Image Name="WDataSciMark1300x240" Path="..\\WDS-Resources\\images\\WDataSci-Mark1-300x240.png" Pack="true" />
   <Image Name="WDataSciMark150x50" Path="..\\WDS-Resources\\images\\WDataSci-Mark1-50x50.png" Pack="true" />
-  <!--
   <Image Name="WDataSciMark1300x240" Path="..\\WDS-Resources\\images\\WDataSci-Mark1-300x240.png" Pack="true" />
   <Image Name="WDataSciMark150x50" Path="..\\WDS-Resources\\images\\WDataSci-Mark1-50x50.png" Pack="true" />
+  <!--
   -->
 
 

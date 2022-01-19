@@ -19,7 +19,8 @@ namespace JNI
 {
     public unsafe class JavaNativeInterface : IDisposable
     {
-        private const string JRE_REGISTRY_KEY = @"HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Runtime Environment";
+        //private const string JRE_REGISTRY_KEY = @"HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Runtime Environment";
+        private const string JRE_REGISTRY_KEY = @"HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\JDK";
 
         private IntPtr javaClass;
         private IntPtr javaObject;
@@ -35,7 +36,9 @@ namespace JNI
             string jreVersion = (string) Registry.GetValue(JRE_REGISTRY_KEY, "CurrentVersion", null);
             string keyName = Path.Combine(JRE_REGISTRY_KEY, jreVersion);
 
-            string jvmDir = (string) Registry.GetValue(keyName, "RuntimeLib", null);
+            //string jvmDir = (string) Registry.GetValue(keyName, "RuntimeLib", null);
+            string JavaHome = (string) Registry.GetValue(keyName, "JavaHome", null);
+            string jvmDir = Path.Combine(Path.Combine(Path.Combine(JavaHome, "bin"), "server"), "jvm.dll");
 
             if ((jvmDir.Length == 0) || (!File.Exists(jvmDir)))
                 throw new Exception("Error determining the location of the Java Runtime Environment");
@@ -49,6 +52,10 @@ namespace JNI
             int jrev = 0;
             if (jreVersion.StartsWith("1."))
                 jrev = Convert.ToInt32((decimal.Parse(jreVersion.Substring(0, 3)) - 1) / 2 * 10);
+            else if (jreVersion.StartsWith("12."))
+                jrev = 12;
+            else if (jreVersion.StartsWith("17."))
+                jrev = 17;
             else
                 jrev = Convert.ToInt32(jreVersion);
 
@@ -71,6 +78,9 @@ namespace JNI
                     break;
                 case 9:
                     args.version = JNIVersion.JNI_VERSION_9;
+                    break;
+                case 12:
+                    args.version = JNIVersion.JNI_VERSION_12;
                     break;
                 default:
                     args.version = JNIVersion.JNI_VERSION_10;

@@ -7,7 +7,13 @@ Public Module AddInExcelDna
         Implements IExcelAddIn
 
         Public Sub AutoOpen() Implements IExcelAddIn.AutoOpen
-            PerformDefaultRegistration()
+            Try
+                PerformDefaultRegistration()
+            Catch
+                MsgBox("In AutoOpen")
+            Finally
+
+            End Try
             'MsgBox("In AutoOpen")
             ExcelIntegration.RegisterUnhandledExceptionHandler(AddressOf WDSExceptionHandler)
         End Sub

@@ -13,9 +13,12 @@
 -->
   
   
-  <Reference Path="ExcelDna.Registration.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
-  <Reference Path="ExcelDna.Utilities.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
-  <Reference Path="ExcelDna.IntelliSense.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  <!--
+  -->
+  <Reference Path="ExcelDna.Registration.dll" Pack="true" />
+  <Reference Path="ExcelDna.Utilities.dll" Pack="true" />
+  <Reference Path="ExcelDna.IntelliSense.dll" Pack="true" />
+	
   <Reference Path="CsvHelper.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
   <Reference Path="System.Memory.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
   <Reference Path="System.Runtime.CompilerServices.Unsafe.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
