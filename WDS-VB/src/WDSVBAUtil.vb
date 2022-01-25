@@ -42,21 +42,24 @@ Public Module VBAUtil
             Dim i, j As Integer
             i = 3
             j = i
-            For Each o In twb.VBProject.VBComponents
-                If o.Type = 1 Then
-                    i = i + 1
-                    tws.Cells(i, 1).Value = o.Name
-                End If
-            Next
-            If Microsoft.VisualBasic.FileIO.FileSystem.DirectoryExists(tws.Cells(2, 2).Value) Then
-                Dim f As String
-                For Each f In Microsoft.VisualBasic.FileIO.FileSystem.GetFiles(tws.Cells(2, 2).Value)
-                    j = j + 1
-                    tws.Cells(j, 2).Value = f
-                Next
+        For Each o In twb.VBProject.VBComponents
+            If o.Type = 1 Then
+                i = i + 1
+                tws.Cells(i, 1).Value = o.Name
+            ElseIf o.Type = 2 Then
+                i = i + 1
+                tws.Cells(i, 1).Value = o.Name
             End If
+        Next
+        If Microsoft.VisualBasic.FileIO.FileSystem.DirectoryExists(tws.Cells(2, 2).Value) Then
+            Dim f As String
+            For Each f In Microsoft.VisualBasic.FileIO.FileSystem.GetFiles(tws.Cells(2, 2).Value)
+                j = j + 1
+                tws.Cells(j, 2).Value = f
+            Next
+        End If
 
-            tws.Cells.Columns.AutoFit()
+        tws.Cells.Columns.AutoFit()
             tws.Cells(1, 1).Activate()
         End Sub
 

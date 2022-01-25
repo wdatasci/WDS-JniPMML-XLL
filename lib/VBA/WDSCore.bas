@@ -155,6 +155,7 @@ End Function
 Private Function zfNDims(ByRef arg As Variant) As Variant
     On Error GoTo CatchIt
 TryIt:
+    Dim n As Integer
     Dim rv(1 To 4) As Variant
     If TypeOf arg Is Range Then
         If arg.Areas.Count = 1 Then
@@ -177,9 +178,11 @@ CatchIt:
     On Error GoTo 0
 End Function
 Private Function zfArrayCount(ByRef arg As Variant) As Integer
+    Dim d As Variant
     d = zfNDims(arg)
+    Dim n, i, j, k As Integer
     n = 0
-    Select Case d
+    Select Case d(1)
         Case 0
             If IsArray(arg) Then
                 n = zfArrayCount(arg)
@@ -222,6 +225,7 @@ End Function
 
 Function fArray(ParamArray arg() As Variant) As Variant
     Dim rv As Variant
+    Dim n, i, j, k As Integer
     n = 0
     Dim rng As Range
     Dim cllctn As Collection
@@ -269,8 +273,10 @@ Function fArray(ParamArray arg() As Variant) As Variant
                 rv(n) = V
             Next V
         Else
+            Dim d As Variant
+            Dim jj As Integer
             d = zfNDims(arg(j))
-            Select Case d
+            Select Case d(1)
                 Case 0
                     n = n + 1
                     rv(n) = arg(j)
@@ -300,14 +306,97 @@ Function fArray(ParamArray arg() As Variant) As Variant
     Next j
     fArray = rv
 End Function
+Function fArrayAsColumn(ParamArray arg() As Variant) As Variant
+    Dim rv As Variant
+    Dim n, i, j, k As Integer
+    n = 0
+    Dim rng As Range
+    Dim cllctn As Collection
+    For j = LBound(arg) To UBound(arg)
+        If TypeOf arg(j) Is Range Then
+            Set rng = arg(j)
+            If rng.Areas.Count > 1 Then
+                For k = 1 To rng.Areas.Count
+                    n = n + rng.Areas.Item(k).Cells.Count
+                Next k
+            Else
+                n = n + rng.Cells.Count
+            End If
+        ElseIf TypeOf arg(j) Is Collection Then
+            Set cllctn = arg(j)
+            n = n + cllctn.Count
+        Else
+            n = n + zfArrayCount(arg(j))
+        End If
+    Next j
+    ReDim rv(1 To n, 1) As Variant
+    Dim c As Range
+    Dim V As Variant
+    n = 0
+    For j = LBound(arg) To UBound(arg)
+        If TypeOf arg(j) Is Range Then
+            Set rng = arg(j)
+            If rng.Areas.Count > 1 Then
+                For k = 1 To rng.Areas.Count
+                    For Each c In rng.Cells
+                        n = n + 1
+                        rv(n, 1) = c.Value2
+                    Next c
+                Next k
+            Else
+                For Each c In rng.Cells
+                    n = n + 1
+                    rv(n, 1) = c.Value2
+                Next c
+            End If
+        ElseIf TypeOf arg(j) Is Collection Then
+            Set cllctn = arg(j)
+            For Each V In cllctn
+                n = n + 1
+                rv(n, 1) = V
+            Next V
+        Else
+            Dim d As Variant
+            Dim jj As Integer
+            d = zfNDims(arg(j))
+            Select Case d(1)
+                Case 0
+                    n = n + 1
+                    rv(n, 1) = arg(j)
+                Case 1
+                    For i = LBound(arg(j), 1) To UBound(arg(j), 1)
+                        n = n + 1
+                        rv(n, 1) = arg(j)(i)
+                    Next i
+                Case 2
+                    For i = LBound(arg(j), 1) To UBound(arg(j), 1)
+                        For jj = LBound(arg(j), 2) To UBound(arg(j), 2)
+                            n = n + 1
+                            rv(n, 1) = arg(j)(i, jj)
+                        Next jj
+                    Next i
+                Case Else
+                    For i = LBound(arg(j), 1) To UBound(arg(j), 1)
+                        For jj = LBound(arg(j), 2) To UBound(arg(j), 2)
+                            For k = LBound(arg(j), 3) To UBound(arg(j), 3)
+                                n = n + 1
+                                rv(n, 1) = arg(j)(i, jj, k)
+                            Next k
+                        Next jj
+                    Next i
+            End Select
+        End If
+    Next j
+    fArrayAsColumn = rv
+End Function
 
 Private Function fKeyValuePairs_MacroOptions_Array() As Variant
     fKeyValuePairs_MacroOptions_Array = Array("fKeyValuePairs" _
-    , "Returns a VBA array of Scripting.Dictionary object from vararg inputs of the form {""Key1"",Value1} or Key1,Value1,Key2,Value2, etc." _
+    , "Returns a VBA array of Scripting.Dictionary object from vararg inputs of the form {Key1 (string),Value1} or Key1,Value1,Key2,Value2, etc." _
     , "http://WDataSci.com" _
     , "WDS" _
     , Array(Array("Input1", "Either a pair or a key followed by a value.") _
-    , Array("Input2", "A value associated with an Input1 key or a {""Key"", Value} pair") _
+    , Array("Input2", "A value associated with an Input1 key or a {Key (string), Value} pair") _
     ) _
     )
 End Function
@@ -317,6 +406,9 @@ Function fKeyValuePairs(ParamArray arg() As Variant) As Variant
     Dim d As Dictionary
     Set d = zfKeyValuePairs(args)
     Dim rv
+    Dim nrows, ncols As Integer
+    Dim ky
+    Dim ndims
     If d.Exists("SquareUp") Then
         nrows = 0
         ncols = 1
@@ -340,6 +432,8 @@ Function fKeyValuePairs(ParamArray arg() As Variant) As Variant
         Next ky
         ReDim rv(1 To nrows, 1 To 1 + ncols) As Variant
         nrows = 0
+        Dim V
+        Dim i, j, k As Integer
         For Each ky In d.Keys()
             ndims = rvndims.Item(ky)
             V = d.Item(ky)
@@ -389,15 +483,22 @@ End Function
 
 Function zfKeyValuePairs(arg) As Dictionary
     
+    Dim twb As Workbook
+    Set twb = ActiveWorkbook
+    
     'Dim rv As Dictionary
     Set zfKeyValuePairs = CreateObject("Scripting.Dictionary")
     
+    Dim n, ncols, i, j, k, jj As Integer
     n = 0
     ncols = 2
+    Dim key_value
+    Dim ky
     key_value = -1
     ky = "Unk"
     
     'returning to Excel requires a squaring up
+    Dim square_up As Boolean
     square_up = False
     
     Dim rng As Range
@@ -409,13 +510,13 @@ Function zfKeyValuePairs(arg) As Dictionary
                 If rng.Areas.Count > 1 Then
                     For k = 1 To rng.Areas.Count
                         If rng.Areas.Item(k).Columns.Count < 2 Then GoTo CatchIt
-                        ky = rng.Areas.Item(k).Cells(1, 1).Value
-                        zfKeyValuePairs.Add Key:=ky, Item:=Range(rng.Areas.Item(k).Cells(1, 2), rng.Areas.Item(k).SpecialCells(xlCellTypeLastCell)).Value
+                        ky = rng.Areas.Item(k).Cells(1, 1).value
+                        zfKeyValuePairs.Add Key:=ky, Item:=Range(rng.Areas.Item(k).Cells(1, 2), rng.Areas.Item(k).SpecialCells(xlCellTypeLastCell)).value
                     Next k
                     key_value = -1
                 Else
                     If rng.Columns.Count = 1 And rng.Rows.Count = 1 Then
-                        ky = rng.Cells(1, 1).Value
+                        ky = rng.Cells(1, 1).value
                         key_value = 0
                     Else
                         If rng.Columns.Count < 2 Then GoTo CatchIt
@@ -423,7 +524,7 @@ Function zfKeyValuePairs(arg) As Dictionary
                             For jj = 1 To rng.Columns.Count - 1
                                 If IsEmpty(rng.Cells(k, jj + 1)) Then: Exit For
                             Next jj
-                            zfKeyValuePairs.Add Key:=rng.Cells(k, 1).Value, Item:=Range(rng.Cells(k, 2), rng.Cells(k, jj)).Value
+                            zfKeyValuePairs.Add Key:=rng.Cells(k, 1).value, Item:=Range(rng.Cells(k, 2), rng.Cells(k, jj)).value
                         Next k
                         key_value = -1
                     End If
@@ -432,7 +533,7 @@ Function zfKeyValuePairs(arg) As Dictionary
                 For jj = 1 To rng.Columns.Count - 1
                     If IsEmpty(rng.Cells(1, jj + 1)) Then: Exit For
                 Next jj
-                zfKeyValuePairs.Add Key:=ky, Item:=Range(rng.Cells(1, 1), rng.Cells(rng.Rows.Count, jj)).Value
+                zfKeyValuePairs.Add Key:=ky, Item:=Range(rng.Cells(1, 1), rng.Cells(rng.Rows.Count, jj)).value
                 key_value = -1
             End If
         ElseIf TypeOf arg(j) Is Collection Then
@@ -452,6 +553,7 @@ Function zfKeyValuePairs(arg) As Dictionary
             End If
             key_value = -1
         Else
+            Dim d As Variant
             d = zfNDims(arg(j))
             If key_value = 0 Then
                 zfKeyValuePairs.Add Key:=ky, Item:=arg(j)
@@ -506,7 +608,7 @@ Function zfKeyValuePairs(arg) As Dictionary
     End If
     GoTo ElseIt
 CatchIt:
-    Err.Raise Number:=WDSContextID + 1, Source:=twb.Name & WDSModuleName, Description:="Error in input format, should be (key1,value1) {key1, value1} or KeyValues (a Nx2 range)"
+    Err.Raise Number:=WDSCoreContextID + 1, Source:=twb.Name & WDSVBAModuleName, Description:="Error in input format, should be (key1,value1) {key1, value1} or KeyValues (a Nx2 range)"
     Exit Function
 ElseIt:
 End Function
@@ -549,11 +651,11 @@ Function fColumnFromCode(arg As Integer) As String
     y = Int((arg - 1) / 26)
     x = arg - y * 26 - z * 676
     If z > 0 Then
-        fColumnFromCode = Chr(z + 64) + Chr(y + 64) & Chr(x + 64)
+        fColumnFromCode = Application.WorksheetFunction.Unichar(z + 64) + Application.WorksheetFunction.Unichar(y + 64) & Application.WorksheetFunction.Unichar(x + 64)
     ElseIf y > 0 Then
-        fColumnFromCode = Chr(y + 64) & Chr(x + 64)
+        fColumnFromCode = Application.WorksheetFunction.Unichar(y + 64) & Application.WorksheetFunction.Unichar(x + 64)
     Else
-        fColumnFromCode = Chr(y + 64)
+        fColumnFromCode = Application.WorksheetFunction.Unichar(x + 64)
     End If
 End Function
 
@@ -704,13 +806,13 @@ Dim x As Date
 
 For Each c In r
 
-    If Excel.WorksheetFunction.IsText(c.Value) Then
-        s = c.Value
+    If Excel.WorksheetFunction.IsText(c.value) Then
+        s = c.value
         On Error GoTo CatchIt
         If Len(s) > 0 Then
             x = fDateText2Date(s, "MM/DD/YYYY", "/", -1)
             If x > 0 Then
-                c.Value = x
+                c.value = x
                 c.NumberFormat = "YYYY-MM-DD"
             End If
         End If
@@ -966,7 +1068,7 @@ End Sub
 
 Function fNVBlock(ByRef corner As Range, ByRef dep As Range, Optional nrows = 1, Optional ncols = 1) As Variant
 
-    fNVBlock = Range(corner.Cells(1, 1), corner.Cells(1, 1).Offset(nrows - 1, ncols - 1)).Value
+    fNVBlock = Range(corner.Cells(1, 1), corner.Cells(1, 1).Offset(nrows - 1, ncols - 1)).value
 
 End Function
 
@@ -983,9 +1085,9 @@ Function fNVBlockColumn(ByRef corner As Range, Optional ncol = 1, Optional nrows
     End If
     
     If shift = 0 Then
-        fNVBlockColumn = Range(corner.Cells(1, ncol), corner.Cells(nrows, 1).Offset(0, ncol - 1)).Value
+        fNVBlockColumn = Range(corner.Cells(1, ncol), corner.Cells(nrows, 1).Offset(0, ncol - 1)).value
     Else
-        fNVBlockColumn = Range(corner.Cells(1, ncol).Offset(shift, 0), corner.Cells(nrows, 1).Offset(0, ncol - 1).Offset(shift, 0)).Value
+        fNVBlockColumn = Range(corner.Cells(1, ncol).Offset(shift, 0), corner.Cells(nrows, 1).Offset(0, ncol - 1).Offset(shift, 0)).value
     End If
 
 End Function
@@ -1029,9 +1131,9 @@ Function fNVBlockSub(ByRef corner As Range, Optional r1 = 0, Optional c1 = 0, Op
     End If
         
     If shift = 0 Then
-        fNVBlockSub = Range(corner.Cells(r1, 1).Offset(0, c1 - 1), corner.Cells(r2, 1).Offset(0, c2 - 1)).Value
+        fNVBlockSub = Range(corner.Cells(r1, 1).Offset(0, c1 - 1), corner.Cells(r2, 1).Offset(0, c2 - 1)).value
     Else
-        fNVBlockSub = Range(corner.Cells(r1, 1).Offset(0, c1 - 1).Offset(shift, 0), corner.Cells(r1, 1).Offset(0, c2 - 1).Offset(shift, 0)).Value
+        fNVBlockSub = Range(corner.Cells(r1, 1).Offset(0, c1 - 1).Offset(shift, 0), corner.Cells(r1, 1).Offset(0, c2 - 1).Offset(shift, 0)).value
     End If
 
 End Function
@@ -1062,6 +1164,11 @@ Function fNVFormula(ByRef r As Range) As String
 
 End Function
 
+Function fNVIndirect(ByVal s As String, Optional offsetr = 0, Optional offsetc = 0) As Variant
+    
+    fNVIndirect = Range(s).Offset(offsetr, offsetc).value
+
+End Function
 
 Function fNVNamedRangeFormula(ByVal s As String) As String
     
@@ -1082,10 +1189,10 @@ Function fNV3DLookup(col, ByRef rws As Range, ByRef shts As Range) As Variant
     Dim ws As Worksheet
     
     For j = 1 To shts.Columns.Count
-        If IsEmpty(shts.Cells(1, j)) Or (shts.Cells(1, j).Value = "") Then GoTo Next_j
-        Set ws = Sheets(shts.Cells(1, j).Value)
+        If IsEmpty(shts.Cells(1, j)) Or (shts.Cells(1, j).value = "") Then GoTo Next_j
+        Set ws = Sheets(shts.Cells(1, j).value)
         For i = 1 To rws.Rows.Count
-            rv(i, j) = ws.Cells(rws.Cells(i, 1).Value, col).Value
+            rv(i, j) = ws.Cells(rws.Cells(i, 1).value, col).value
         Next i
 Next_j:
     Next j
@@ -1131,7 +1238,7 @@ End Function
 Private Function WDSCore_deRange(arg) As Variant
 Dim rv(1 To 3) As Variant
 If TypeOf arg Is Range Then
-    rv(1) = arg.Value
+    rv(1) = arg.value
     rv(2) = arg.Rows.Count
     rv(3) = arg.Columns.Count
     If rv(2) = 1 And rv(3) = 1 Then
@@ -1222,7 +1329,7 @@ Function sum_acrossrows(ByRef arg As Range, Optional c1 = 0, Optional c2 = 0, Op
     For i = 1 To arg.Rows.Count
         s = 0
         For j = c1 To c2
-           s = s + arg(i, j).Value
+           s = s + arg(i, j).value
         Next j
         rv(i, 1) = s
     Next i
@@ -1258,7 +1365,7 @@ Function sum_acrosscolumns(ByRef arg As Range, Optional r1 = 0, Optional r2 = 0,
     For j = 1 To arg.Columns.Count
         s = 0
         For i = r1 To r2
-           s = s + arg(i, j).Value
+           s = s + arg(i, j).value
         Next i
         rv(1, j) = s
     Next j
@@ -1279,10 +1386,38 @@ Function bIn(arg, ParamArray args() As Variant) As Boolean
     
 End Function
 
+Sub utl_CopyFormulas()
+
+    Dim x, y, z As Range
+    
+    Set x = Selection
+    
+    If x.Areas.Count = 2 Then
+        Set y = x.Areas(1)
+        Set z = x.Areas(2)
+        If z.Cells.Count > 1 Then
+        Set z = z.SpecialCells(xlTopLeftCell)
+        End If
+
+        m = y.Rows.Count
+        n = y.Columns.Count
+        For i = 1 To m
+        For j = 1 To n
+            s = y(i, j).Formula
+            z.Offset(i - 1, j - 1) = s
+        Next j
+        Next i
+    End If
+            
+
+End Sub
+
 Sub wds_Workbook_Overview()
     
     Dim twb As Workbook
-    Dim tws, nws, ows As Worksheet
+    Dim tws As Worksheet
+    Dim nws As Worksheet
+    Dim ows As Worksheet
     
     Set twb = ActiveWorkbook
     Set tws = ActiveSheet
@@ -1320,14 +1455,14 @@ Sub wds_Workbook_Overview()
         i = i + 1
         nws.Cells(i, 1) = nmrng.Name
         nws.Cells(i, 2) = "Workbook Level"
-        nws.Cells(i, 3) = "'" & nmrng.Value
+        nws.Cells(i, 3) = "'" & nmrng.value
     Next nmrng
     For Each ows In twb.Sheets
         For Each nmrng In ows.Names
             i = i + 1
             nws.Cells(i, 1) = nmrng.Name
             nws.Cells(i, 2) = ows.Name
-            nws.Cells(i, 3) = nmrng.Value
+            nws.Cells(i, 3) = nmrng.value
         Next nmrng
     Next ows
     
@@ -1338,7 +1473,70 @@ Sub wds_Workbook_Overview()
     For Each wdc In twb.Connections
         i = i + 1
         nws.Cells(i, 1) = wdc.Name
-        nws.Cells(i, 1) = wdc.Description
+        nws.Cells(i, 2) = wdc.Description
+    Next
+    
+    i = i + 1
+    i = i + 1
+    nws.Cells(i, 1) = "Theme"
+    Dim wtheme As ThemeColor
+    Dim ind
+    Dim j, j1, j2, j3 As Long
+    j = 0
+    For Each ind In Array(msoThemeDark1, msoThemeLight1, msoThemeDark2, msoThemeLight2, msoThemeAccent1, msoThemeAccent2, msoThemeAccent3, msoThemeAccent4, msoThemeAccent5, msoThemeAccent6)
+        Set wtheme = twb.Theme.ThemeColorScheme.Colors(ind)
+        i = i + 1
+        nws.Cells(i, 1) = ind
+        nws.Cells(i, 2) = Array("msoThemeDark1", "msoThemeLight1", "msoThemeDark1", "msoThemeDark2", "msoThemeLight2", "msoThemeAccent1", "msoThemeAccent2", "msoThemeAccent3", "msoThemeAccent4", "msoThemeAccent5", "msoThemeAccent6")(ind)
+        nws.Cells(i, 3) = ind
+        Dim r As Range
+        Set r = nws.Cells(i, 7)
+        r.Borders.LineStyle = xlSolid
+        r.Borders.Value = 0
+        r.Borders.Weight = 3
+        r.Interior.ThemeColor = wtheme.ThemeColorSchemeIndex
+        r.Borders.ThemeColor = wtheme.ThemeColorSchemeIndex
+        j = wtheme.RGB
+        j1 = j Mod (RGB(255, 0, 0) + 1)
+        j2 = (j - j1) Mod (RGB(0, 255, 0) + 256)
+        j3 = (j - j1 - j2)
+        j2 = j2 / 256
+        j3 = j3 / 256 / 256
+        nws.Cells(i, 3) = 255 - j3
+        nws.Cells(i, 4) = 255 - j2
+        nws.Cells(i, 5) = 255 - j1
+        nws.Cells(i, 6) = Application.WorksheetFunction.Dec2Hex(j3 + j2 * 256 + j1 * 256 * 256)
+    Next
+
+    i = i + 1
+    i = i + 1
+    nws.Cells(i, 1) = "Styles"
+    Dim wstyle As Style
+    For Each wstyle In twb.Styles
+        i = i + 1
+        nws.Cells(i, 1) = wstyle.Name
+        nws.Cells(i, 2) = wstyle.NameLocal
+    Next
+
+    i = i + 1
+    i = i + 1
+    nws.Cells(i, 1) = "Modules"
+    Dim wmod
+    For Each wmod In twb.VBProject.VBComponents
+    If wmod.Type = 1 Or wmod.Type = 2 Then
+        i = i + 1
+        nws.Cells(i, 1) = wmod.Name
+        On Error Resume Next
+        Select Case wmod.Type
+        Case 1
+            nws.Cells(i, 2) = "VBAModule"
+        Case 2
+            nws.Cells(i, 2) = "VBAClass"
+        Case Else
+            nws.Cells(i, 2) = "Other"
+        End Select
+    End If
+    Next
     Next
     
     i = i + 1
@@ -1347,7 +1545,7 @@ Sub wds_Workbook_Overview()
     For Each wvbref In twb.VBProject.References
         i = i + 1
         nws.Cells(i, 1) = wvbref.Name
-        nws.Cells(i, 1) = wvbref.Description
+        nws.Cells(i, 2) = wvbref.Description
     Next
 
 End Sub
@@ -1365,14 +1563,14 @@ Sub wds_Workbook_CleanNamedRangesWithRefError()
     Dim nmrng As Name
     For i = twb.Names.Count To 1 Step -1
         Set nmrng = twb.Names(i)
-        If InStr(nmrng.Value, "#REF") Then
+        If InStr(nmrng.value, "#REF") Then
             nmrng.Delete
         End If
     Next i
     For Each ows In twb.Sheets
         For i = ows.Names.Count To 1 Step -1
             Set nmrng = ows.Names(i)
-            If InStr(nmrng.Value, "#REF") Then
+            If InStr(nmrng.value, "#REF") Then
                 nmrng.Delete
             End If
         Next i
@@ -1399,11 +1597,11 @@ Sub wds_Workbook_CleanNamedRangesSelected()
     Dim r, c As Range
     Set r = Selection
     For Each c In r.Cells
-        If c.Offset(0, 1).Value = "Workbook Level" Then
-            twb.Names(c.Value).Delete
+        If c.Offset(0, 1).value = "Workbook Level" Then
+            twb.Names(c.value).Delete
         Else
-            If fIsASheetName(c.Offset(0, 1).Value, c) Then
-                twb.Sheets(c.Offset(0, 1).Value).Names(c.Value).Delete
+            If fIsASheetName(c.Offset(0, 1).value, c) Then
+                twb.Sheets(c.Offset(0, 1).value).Names(c.value).Delete
             End If
         End If
     Next c
@@ -1648,12 +1846,12 @@ Public Sub WDSCore_SetMacroOptions(functioninfoarrays)
         Dim mx
         ReDim mx(1 To nx) As String
 
-            s = s + "<Function Name=""" + x(1) + """ Description=""" + x(2) + """ HelpTopic=""" + x(3) + """ Category=""" + x(4) + """ >"
+            s = s + "<Function Name=""" + x(1) + """ Description=""" + x(2) + """ HelpTopic=""" + x(3) + """ Category=""" + x(4) + """ >" & Application.WorksheetFunction.Unichar(10)
         For j = 1 To nx
-            s = s + "<Argument Name=""" + x(5)(j)(1) + """ Description=""" + x(5)(j)(2) + """ />"
+            s = s + "<Argument Name=""" + x(5)(j)(1) + """ Description=""" + x(5)(j)(2) + """ />" & Application.WorksheetFunction.Unichar(10)
             mx(j) = x(5)(j)(2)
         Next j
-        s = s + "</Function>"
+        s = s + "</Function>" & Application.WorksheetFunction.Unichar(10)
 
         Application.MacroOptions Macro:=x(1), Description:=x(2), HelpFile:=x(3), Category:=x(4), ArgumentDescriptions:=mx
 
