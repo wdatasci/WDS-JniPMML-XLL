@@ -52,6 +52,9 @@ Sub xsql_SetUpODBCNamedRanges()
         nws.Cells(i, 1) = "Driver"
         nws.Parent.Names.Add Name:="ODBC" & nws.Cells(i, 1).Value, RefersTo:=nws.Cells(i, 2)
         i = i + 1
+        nws.Cells(i, 1) = "UserID"
+        nws.Parent.Names.Add Name:="ODBC" & nws.Cells(i, 1).Value, RefersTo:=nws.Cells(i, 2)
+        i = i + 1
         nws.Cells(i, 1) = "UserName"
         nws.Parent.Names.Add Name:="ODBC" & nws.Cells(i, 1).Value, RefersTo:=nws.Cells(i, 2)
         i = i + 1
@@ -88,6 +91,10 @@ TryIt:
             If s <> "" Then
                 ss = ss & "USER=" & s & ";"
             End If
+            s = [ODBCUserID]
+            If s <> "" Then
+                ss = ss & "USER ID=" & s & ";"
+            End If
             s = [ODBCPassword]
             If s <> "" Then
                 ss = ss & "PASSWORD=" & s & ";"
@@ -111,8 +118,21 @@ Sub sql_QueryResultsBelow()
     Dim r As Range
     Set r = Selection
     Set r = r.Cells(1, 1)
+    Dim rValue As String
+    rValue = r.Value
     Dim out As Range
     Set out = r.Cells(1, 1).Offset(1, 0)
+    On Error Resume Next
+        Dim nm As String
+        nm = out.ListObject.Name
+        If Len(nm) > 0 Then
+            Dim r2 As Range
+            Set r2 = out.ListObject.Range
+            out.ListObject.Delete
+            r2.Clear
+        End If
+    On Error GoTo 0
+    
     Dim con As ADODB.Connection
     Dim rs As ADODB.Recordset
     
@@ -122,6 +142,10 @@ Sub sql_QueryResultsBelow()
     Call xsql_ProcessODBCConnectionString
     Dim s As String
     s = [ODBCConnectionString]
+    If InStr(s, "ASK") > 0 Then
+        answer = InputBox("Requesting ASK for " & s)
+        s = Replace(s, "ASK", answer)
+    End If
     con.Open ConnectionString:=s
     
     
@@ -132,13 +156,19 @@ Sub sql_QueryResultsBelow()
     On Error GoTo CatchIt
     Application.Calculation = xlCalculationManual
     Application.ScreenUpdating = False
-    rs.Open r.Value, ActiveConnection:=con
+    rs.Open rValue, ActiveConnection:=con
     j = -1
     For Each fld In rs.Fields
         j = j + 1
         out.Offset(0, j) = fld.Name
     Next
-    out.Offset(1, 0).CopyFromRecordset rs
+    j = rs.Fields.Count
+    jj = out.Offset(1, 0).CopyFromRecordset(rs)
+    
+    If (Not IsEmpty(out.Offset(0, 1))) And (Not IsEmpty(out.Offset(1, 0))) Then
+        Set out = Range(out, out.Offset(jj, j - 1))
+        out.Parent.ListObjects.Add(xlSrcRange, out, , xlYes).Name = "Table" & (ActiveSheet.ListObjects.Count + 1)
+    End If
     
     rs.Close
     con.Close
@@ -338,7 +368,7 @@ CatchIt:
 
 End Sub
 
-Sub sql_SchemaTableSummary()
+Sub sql_VerticaSchemaTableSummary()
     Call xsql_ProcessODBCConnectionString
     Dim s As String
     s = [ODBCConnectionString]
@@ -354,6 +384,46 @@ Sub sql_SchemaTableSummary()
     
     Application.CutCopyMode = False
     With ActiveSheet.ListObjects.Add(SourceType:=0, Source:="ODBC;" & s, Destination:=Range("$A$9")).QueryTable
+        .CommandText = Array( _
+        "SELECT tables.table_schema, tables.table_name" & Chr(13) & "" & Chr(10) & "FROM v_catalog.tables tables" & Chr(13) & "" & Chr(10) & "WHERE (tables.table_schema='" & lSchema & "')" _
+        )
+        .RowNumbers = False
+        .FillAdjacentFormulas = False
+        .PreserveFormatting = True
+        .RefreshOnFileOpen = False
+        .BackgroundQuery = True
+        .RefreshStyle = xlInsertDeleteCells
+        .SavePassword = False
+        .SaveData = True
+        .AdjustColumnWidth = True
+        .RefreshPeriod = 0
+        .PreserveColumnInfo = True
+        .ListObject.DisplayName = "Table_Summary_Of_" & lSchema
+        .Refresh BackgroundQuery:=False
+    End With
+
+End Sub
+
+Sub sql_MSSQLSchemaTableSummary()
+    Call xsql_ProcessODBCConnectionString
+    Dim s As String
+    s = [ODBCConnectionString]
+    If InStr(s, "ASK") > 0 Then
+        answer = InputBox("Requesting ASK for " & s)
+        s = Replace(s, "ASK", answer)
+    End If
+ 
+    Dim lSchema As String
+    lSchema = InputBox("Schema to examine:")
+    
+    Dim nws As Worksheet
+    Call ActivateOrAddSheet(lSchema)
+    Set nws = ActiveSheet
+        
+    nws.Range("A9").Activate
+    
+    Application.CutCopyMode = False
+    With ActiveSheet.ListObjects.Add(SourceType:=0, Source:=s, Destination:=Range("$A$9")).QueryTable
         .CommandText = Array( _
         "SELECT tables.table_schema, tables.table_name" & Chr(13) & "" & Chr(10) & "FROM v_catalog.tables tables" & Chr(13) & "" & Chr(10) & "WHERE (tables.table_schema='" & lSchema & "')" _
         )

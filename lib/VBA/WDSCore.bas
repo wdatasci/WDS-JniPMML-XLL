@@ -1537,7 +1537,6 @@ Sub wds_Workbook_Overview()
         End Select
     End If
     Next
-    Next
     
     i = i + 1
     i = i + 1

@@ -58,3 +58,4 @@ __pycache__
 /**/build/
 /**/test/output
 ~*
+test.bat

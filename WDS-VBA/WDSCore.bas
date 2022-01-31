@@ -392,11 +392,11 @@ End Function
 
 Private Function fKeyValuePairs_MacroOptions_Array() As Variant
     fKeyValuePairs_MacroOptions_Array = Array("fKeyValuePairs" _
-    , "Returns a VBA array of Scripting.Dictionary object from vararg inputs of the form {""Key1"",Value1} or Key1,Value1,Key2,Value2, etc." _
+    , "Returns a VBA array of Scripting.Dictionary object from vararg inputs of the form {Key1 (string),Value1} or Key1,Value1,Key2,Value2, etc." _
     , "http://WDataSci.com" _
     , "WDS" _
     , Array(Array("Input1", "Either a pair or a key followed by a value.") _
-    , Array("Input2", "A value associated with an Input1 key or a {""Key"", Value} pair") _
+    , Array("Input2", "A value associated with an Input1 key or a {Key (string), Value} pair") _
     ) _
     )
 End Function
@@ -1415,7 +1415,9 @@ End Sub
 Sub wds_Workbook_Overview()
     
     Dim twb As Workbook
-    Dim tws, nws, ows As Worksheet
+    Dim tws As Worksheet
+    Dim nws As Worksheet
+    Dim ows As Worksheet
     
     Set twb = ActiveWorkbook
     Set tws = ActiveSheet
@@ -1471,7 +1473,69 @@ Sub wds_Workbook_Overview()
     For Each wdc In twb.Connections
         i = i + 1
         nws.Cells(i, 1) = wdc.Name
-        nws.Cells(i, 1) = wdc.Description
+        nws.Cells(i, 2) = wdc.Description
+    Next
+    
+    i = i + 1
+    i = i + 1
+    nws.Cells(i, 1) = "Theme"
+    Dim wtheme As ThemeColor
+    Dim ind
+    Dim j, j1, j2, j3 As Long
+    j = 0
+    For Each ind In Array(msoThemeDark1, msoThemeLight1, msoThemeDark2, msoThemeLight2, msoThemeAccent1, msoThemeAccent2, msoThemeAccent3, msoThemeAccent4, msoThemeAccent5, msoThemeAccent6)
+        Set wtheme = twb.Theme.ThemeColorScheme.Colors(ind)
+        i = i + 1
+        nws.Cells(i, 1) = ind
+        nws.Cells(i, 2) = Array("msoThemeDark1", "msoThemeLight1", "msoThemeDark1", "msoThemeDark2", "msoThemeLight2", "msoThemeAccent1", "msoThemeAccent2", "msoThemeAccent3", "msoThemeAccent4", "msoThemeAccent5", "msoThemeAccent6")(ind)
+        nws.Cells(i, 3) = ind
+        Dim r As Range
+        Set r = nws.Cells(i, 7)
+        r.Borders.LineStyle = xlSolid
+        r.Borders.Value = 0
+        r.Borders.Weight = 3
+        r.Interior.ThemeColor = wtheme.ThemeColorSchemeIndex
+        r.Borders.ThemeColor = wtheme.ThemeColorSchemeIndex
+        j = wtheme.RGB
+        j1 = j Mod (RGB(255, 0, 0) + 1)
+        j2 = (j - j1) Mod (RGB(0, 255, 0) + 256)
+        j3 = (j - j1 - j2)
+        j2 = j2 / 256
+        j3 = j3 / 256 / 256
+        nws.Cells(i, 3) = 255 - j3
+        nws.Cells(i, 4) = 255 - j2
+        nws.Cells(i, 5) = 255 - j1
+        nws.Cells(i, 6) = Application.WorksheetFunction.Dec2Hex(j3 + j2 * 256 + j1 * 256 * 256)
+    Next
+
+    i = i + 1
+    i = i + 1
+    nws.Cells(i, 1) = "Styles"
+    Dim wstyle As Style
+    For Each wstyle In twb.Styles
+        i = i + 1
+        nws.Cells(i, 1) = wstyle.Name
+        nws.Cells(i, 2) = wstyle.NameLocal
+    Next
+
+    i = i + 1
+    i = i + 1
+    nws.Cells(i, 1) = "Modules"
+    Dim wmod
+    For Each wmod In twb.VBProject.VBComponents
+    If wmod.Type = 1 Or wmod.Type = 2 Then
+        i = i + 1
+        nws.Cells(i, 1) = wmod.Name
+        On Error Resume Next
+        Select Case wmod.Type
+        Case 1
+            nws.Cells(i, 2) = "VBAModule"
+        Case 2
+            nws.Cells(i, 2) = "VBAClass"
+        Case Else
+            nws.Cells(i, 2) = "Other"
+        End Select
+    End If
     Next
     
     i = i + 1
@@ -1480,7 +1544,7 @@ Sub wds_Workbook_Overview()
     For Each wvbref In twb.VBProject.References
         i = i + 1
         nws.Cells(i, 1) = wvbref.Name
-        nws.Cells(i, 1) = wvbref.Description
+        nws.Cells(i, 2) = wvbref.Description
     Next
 
 End Sub
@@ -1781,12 +1845,12 @@ Public Sub WDSCore_SetMacroOptions(functioninfoarrays)
         Dim mx
         ReDim mx(1 To nx) As String
 
-            s = s + "<Function Name=""" + x(1) + """ Description=""" + x(2) + """ HelpTopic=""" + x(3) + """ Category=""" + x(4) + """ >"
+            s = s + "<Function Name=""" + x(1) + """ Description=""" + x(2) + """ HelpTopic=""" + x(3) + """ Category=""" + x(4) + """ >" & Application.WorksheetFunction.Unichar(10)
         For j = 1 To nx
-            s = s + "<Argument Name=""" + x(5)(j)(1) + """ Description=""" + x(5)(j)(2) + """ />"
+            s = s + "<Argument Name=""" + x(5)(j)(1) + """ Description=""" + x(5)(j)(2) + """ />" & Application.WorksheetFunction.Unichar(10)
             mx(j) = x(5)(j)(2)
         Next j
-        s = s + "</Function>"
+        s = s + "</Function>" & Application.WorksheetFunction.Unichar(10)
 
         Application.MacroOptions Macro:=x(1), Description:=x(2), HelpFile:=x(3), Category:=x(4), ArgumentDescriptions:=mx
 
