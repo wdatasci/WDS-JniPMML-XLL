@@ -40,29 +40,29 @@ Sub xsql_SetUpODBCNamedRanges()
         Range(nws.Cells(i, 1), nws.Cells(i, 2)).Merge (True)
         i = i + 1
         nws.Cells(i, 1) = "ConnectionString"
-        nws.Parent.Names.Add Name:="ODBC" & nws.Cells(i, 1).Value, RefersTo:=nws.Cells(i, 2)
+        nws.Parent.Names.Add Name:="ODBC" & nws.Cells(i, 1).value, RefersTo:=nws.Cells(i, 2)
         i = i + 1
         nws.Cells(i, 1) = "Source"
         nws.Cells(i, 2) = "ODBC"
-        nws.Parent.Names.Add Name:="ODBC" & nws.Cells(i, 1).Value, RefersTo:=nws.Cells(i, 2)
+        nws.Parent.Names.Add Name:="ODBC" & nws.Cells(i, 1).value, RefersTo:=nws.Cells(i, 2)
         i = i + 1
         nws.Cells(i, 1) = "DSN"
-        nws.Parent.Names.Add Name:="ODBC" & nws.Cells(i, 1).Value, RefersTo:=nws.Cells(i, 2)
+        nws.Parent.Names.Add Name:="ODBC" & nws.Cells(i, 1).value, RefersTo:=nws.Cells(i, 2)
         i = i + 1
         nws.Cells(i, 1) = "Driver"
-        nws.Parent.Names.Add Name:="ODBC" & nws.Cells(i, 1).Value, RefersTo:=nws.Cells(i, 2)
+        nws.Parent.Names.Add Name:="ODBC" & nws.Cells(i, 1).value, RefersTo:=nws.Cells(i, 2)
         i = i + 1
         nws.Cells(i, 1) = "UserID"
-        nws.Parent.Names.Add Name:="ODBC" & nws.Cells(i, 1).Value, RefersTo:=nws.Cells(i, 2)
+        nws.Parent.Names.Add Name:="ODBC" & nws.Cells(i, 1).value, RefersTo:=nws.Cells(i, 2)
         i = i + 1
         nws.Cells(i, 1) = "UserName"
-        nws.Parent.Names.Add Name:="ODBC" & nws.Cells(i, 1).Value, RefersTo:=nws.Cells(i, 2)
+        nws.Parent.Names.Add Name:="ODBC" & nws.Cells(i, 1).value, RefersTo:=nws.Cells(i, 2)
         i = i + 1
         nws.Cells(i, 1) = "Password"
-        nws.Parent.Names.Add Name:="ODBC" & nws.Cells(i, 1).Value, RefersTo:=nws.Cells(i, 2)
+        nws.Parent.Names.Add Name:="ODBC" & nws.Cells(i, 1).value, RefersTo:=nws.Cells(i, 2)
         i = i + 1
         nws.Cells(i, 1) = "Additional"
-        nws.Parent.Names.Add Name:="ODBC" & nws.Cells(i, 1).Value, RefersTo:=nws.Cells(i, 2)
+        nws.Parent.Names.Add Name:="ODBC" & nws.Cells(i, 1).value, RefersTo:=nws.Cells(i, 2)
     End If
     
 End Sub
@@ -119,7 +119,7 @@ Sub sql_QueryResultsBelow()
     Set r = Selection
     Set r = r.Cells(1, 1)
     Dim rValue As String
-    rValue = r.Value
+    rValue = r.value
     Dim out As Range
     Set out = r.Cells(1, 1).Offset(1, 0)
     On Error Resume Next
@@ -225,7 +225,7 @@ Sub sql_TableFieldSummaries()
     
     Dim whr As String
     If Not IsEmpty(tws.Cells(8, 1)) Then
-        whr = tws.Cells(8, 1).Value
+        whr = tws.Cells(8, 1).value
     Else
         whr = ""
     End If
@@ -233,41 +233,41 @@ Sub sql_TableFieldSummaries()
     
     For Each c In r
         
-        s = "select count(" & c.Value & ") as cnt"
-        s = s & ",count(distinct " & c.Value & ") as cntdistinct"
-        s = s & ",sum(if10(" & c.Value & " is not null)) as cntnonmissing"
+        s = "select count(" & c.value & ") as cnt"
+        s = s & ",count(distinct " & c.value & ") as cntdistinct"
+        s = s & ",sum(if10(" & c.value & " is not null)) as cntnonmissing"
         
-        If InStr(c.Offset(0, 1).Value, "char") > 0 Then
-        ElseIf InStr(c.Offset(0, 1).Value, "date") > 0 Then
+        If InStr(c.Offset(0, 1).value, "char") > 0 Then
+        ElseIf InStr(c.Offset(0, 1).value, "date") > 0 Then
             s = s & ",NULL as avg"
-            s = s & ",min(" & c.Value & ") as mn"
+            s = s & ",min(" & c.value & ") as mn"
             s = s & ",NULL as d1"
             s = s & ",NULL as q1"
             s = s & ",NULL as q2"
             s = s & ",NULL as q3"
             s = s & ",NULL as d9"
-            s = s & ",max(" & c.Value & ") as mx"
-        ElseIf InStr(c.Offset(0, 1).Value, "time") > 0 Then
+            s = s & ",max(" & c.value & ") as mx"
+        ElseIf InStr(c.Offset(0, 1).value, "time") > 0 Then
             s = s & ",NULL as avg"
-            s = s & ",min(" & c.Value & ") as mn"
+            s = s & ",min(" & c.value & ") as mn"
             s = s & ",NULL as d1"
             s = s & ",NULL as q1"
             s = s & ",NULL as q2"
             s = s & ",NULL as q3"
             s = s & ",NULL as d9"
-            s = s & ",max(" & c.Value & ") as mx"
+            s = s & ",max(" & c.value & ") as mx"
         Else
-            s = s & ",avg(" & c.Value & ") as avg"
-            s = s & ",min(" & c.Value & ") as mn"
+            s = s & ",avg(" & c.value & ") as avg"
+            s = s & ",min(" & c.value & ") as mn"
             s = s & ",NULL as d1"
             s = s & ",NULL as q1"
             s = s & ",NULL as q2"
             s = s & ",NULL as q3"
             s = s & ",NULL as d9"
-            s = s & ",max(" & c.Value & ")  as mx"
+            s = s & ",max(" & c.value & ")  as mx"
         End If
             
-        s = s & " from " & c.Parent.Cells(2, 2).Value & "." & c.Parent.Cells(3, 2).Value
+        s = s & " from " & c.Parent.Cells(2, 2).value & "." & c.Parent.Cells(3, 2).value
         
         s = s & " " & whr
         
@@ -278,30 +278,30 @@ Sub sql_TableFieldSummaries()
         
         rs.Close
     
-        If InStr(c.Offset(0, 1).Value, "char") > 0 Then
-        ElseIf InStr(c.Offset(0, 1).Value, "date") > 0 Or InStr(c.Offset(0, 1).Value, "time") > 0 Then
-        ElseIf InStr(c.Offset(0, 1).Value, "int") > 0 Or InStr(c.Offset(0, 1).Value, "long") > 0 Then
-            s = "select distinct min(" & c.Value & ") over () as mn"
-            s = s & ",percentile_disc(0.1) within group (order by " & c.Value & ") over() as decile1"
-            s = s & ",percentile_disc(0.25) within group (order by " & c.Value & ") over() as quartile1"
-            s = s & ",percentile_disc(0.5) within group (order by " & c.Value & ") over() as quartile2"
-            s = s & ",percentile_disc(0.75) within group (order by " & c.Value & ") over() as quartile3"
-            s = s & ",percentile_disc(0.9) within group (order by " & c.Value & ") over() as decile9"
-            s = s & ",max(" & c.Value & ") over() as mx"
-            s = s & " from " & c.Parent.Cells(2, 2).Value & "." & c.Parent.Cells(3, 2).Value
+        If InStr(c.Offset(0, 1).value, "char") > 0 Then
+        ElseIf InStr(c.Offset(0, 1).value, "date") > 0 Or InStr(c.Offset(0, 1).value, "time") > 0 Then
+        ElseIf InStr(c.Offset(0, 1).value, "int") > 0 Or InStr(c.Offset(0, 1).value, "long") > 0 Then
+            s = "select distinct min(" & c.value & ") over () as mn"
+            s = s & ",percentile_disc(0.1) within group (order by " & c.value & ") over() as decile1"
+            s = s & ",percentile_disc(0.25) within group (order by " & c.value & ") over() as quartile1"
+            s = s & ",percentile_disc(0.5) within group (order by " & c.value & ") over() as quartile2"
+            s = s & ",percentile_disc(0.75) within group (order by " & c.value & ") over() as quartile3"
+            s = s & ",percentile_disc(0.9) within group (order by " & c.value & ") over() as decile9"
+            s = s & ",max(" & c.value & ") over() as mx"
+            s = s & " from " & c.Parent.Cells(2, 2).value & "." & c.Parent.Cells(3, 2).value
             s = s & " " & whr
             rs.Open s, ActiveConnection:=con
             c.Offset(0, i - 1 + 4).CopyFromRecordset rs
             rs.Close
         Else
-            s = "select distinct min(" & c.Value & ") over () as mx"
-            s = s & ",percentile_cont(0.1) within group (order by " & c.Value & ") over () as decile1"
-            s = s & ",percentile_cont(0.25) within group (order by " & c.Value & ") over () as quartile1"
-            s = s & ",percentile_cont(0.5) within group (order by " & c.Value & ") over() as quartile2"
-            s = s & ",percentile_cont(0.75) within group (order by " & c.Value & ") over()  as quartile3"
-            s = s & ",percentile_cont(0.9) within group (order by " & c.Value & ") over() as decile9"
-            s = s & ",max(" & c.Value & ") over() as mx"
-            s = s & " from " & c.Parent.Cells(2, 2).Value & "." & c.Parent.Cells(3, 2).Value
+            s = "select distinct min(" & c.value & ") over () as mx"
+            s = s & ",percentile_cont(0.1) within group (order by " & c.value & ") over () as decile1"
+            s = s & ",percentile_cont(0.25) within group (order by " & c.value & ") over () as quartile1"
+            s = s & ",percentile_cont(0.5) within group (order by " & c.value & ") over() as quartile2"
+            s = s & ",percentile_cont(0.75) within group (order by " & c.value & ") over()  as quartile3"
+            s = s & ",percentile_cont(0.9) within group (order by " & c.value & ") over() as decile9"
+            s = s & ",max(" & c.value & ") over() as mx"
+            s = s & " from " & c.Parent.Cells(2, 2).value & "." & c.Parent.Cells(3, 2).value
             s = s & " " & whr
             rs.Open s, ActiveConnection:=con
             c.Offset(0, i - 1 + 4).CopyFromRecordset rs
@@ -314,13 +314,13 @@ Sub sql_TableFieldSummaries()
     
         Range(c.Offset(0, i - 1), c.Offset(0, i + 11)).NumberFormat = "#,###,###,###,##0"
         
-        If InStr(c.Offset(0, 1).Value, "char") > 0 Then
+        If InStr(c.Offset(0, 1).value, "char") > 0 Then
             
             s = "select x,n from (select " _
-                    & c.Value & " as x, count(*) as n " _
-                    & " from " & c.Parent.Cells(2, 2).Value & "." & c.Parent.Cells(3, 2).Value _
+                    & c.value & " as x, count(*) as n " _
+                    & " from " & c.Parent.Cells(2, 2).value & "." & c.Parent.Cells(3, 2).value _
                     & " " & whr _
-                    & " group by " & c.Value _
+                    & " group by " & c.value _
                     & ") a order by n desc limit 10"
             rs.Open s, ActiveConnection:=con
             
@@ -329,7 +329,7 @@ Sub sql_TableFieldSummaries()
                 If ii < 24 Then
                     For Each fld In rs.Fields
                         ii = ii + 1
-                        c.Offset(0, i + ii) = Trim(fld.Value)
+                        c.Offset(0, i + ii) = Trim(fld.value)
                         If IsEmpty(c.Offset(0, i + ii)) Then
                             c.Offset(0, i) = "<empty>"
                         End If
@@ -341,16 +341,16 @@ Sub sql_TableFieldSummaries()
             rs.Close
         
         End If
-        If InStr(c.Offset(0, 1).Value, "date") > 0 Then
+        If InStr(c.Offset(0, 1).value, "date") > 0 Then
             Range(c.Offset(0, i + 3), c.Offset(0, i + 12)).NumberFormat = "yyyy-mm-dd"
         End If
-        If InStr(c.Offset(0, 1).Value, "datetime") > 0 Then
+        If InStr(c.Offset(0, 1).value, "datetime") > 0 Then
             Range(c.Offset(0, i + 3), c.Offset(0, i + 12)).NumberFormat = "yyyy-mm-dd HH:MM:SS"
         End If
-        If InStr(c.Offset(0, 1).Value, "int") > 0 Then
+        If InStr(c.Offset(0, 1).value, "int") > 0 Then
             Range(c.Offset(0, i + 3), c.Offset(0, i + 12)).NumberFormat = "#,###,###,###,##0"
         End If
-        If InStr(c.Offset(0, 1).Value, "float") > 0 Then
+        If InStr(c.Offset(0, 1).value, "float") > 0 Then
             Range(c.Offset(0, i + 3), c.Offset(0, i + 12)).NumberFormat = "#,###,###,###,##0.00"
         End If
     
@@ -464,17 +464,17 @@ Sub sql_ColumnsFromSelectedTables()
     Dim fld As ADODB.Field
     
     For Each c In r
-        rs.Open "select count(*) as n from " & c.Offset(0, -1).Value & "." & c.Value, ActiveConnection:=con
+        rs.Open "select count(*) as n from " & c.Offset(0, -1).value & "." & c.value, ActiveConnection:=con
         Set fld = rs.Fields(0)
-        c.Offset(0, 2) = fld.Value
+        c.Offset(0, 2) = fld.value
         rs.Close
-        rs.Open "select column_name from v_catalog.columns where table_name='" & c.Value & "' order by ordinal_position", ActiveConnection:=con
+        rs.Open "select column_name from v_catalog.columns where table_name='" & c.value & "' order by ordinal_position", ActiveConnection:=con
         n = rs.RecordCount
         i = 2
         Do Until rs.EOF
             i = i + 1
             For Each fld In rs.Fields
-                c.Offset(0, i) = fld.Value
+                c.Offset(0, i) = fld.value
             Next fld
             rs.MoveNext
         Loop
@@ -511,25 +511,25 @@ Sub sql_TableSummariesForSelected()
     For Each c In r
     
         
-        Call ActivateOrAddSheet(twsn & "." & c.Value, ActiveWorkbook.Sheets.Count, 0)
+        Call ActivateOrAddSheet(twsn & "." & c.value, ActiveWorkbook.Sheets.Count, 0)
         Set nws = ActiveSheet
         
         nws.Cells(1, 1) = "Table Summary"
         nws.Cells(2, 1) = "Schema"
         nws.Cells(2, 2) = twsn
         nws.Cells(3, 1) = "Table"
-        nws.Cells(3, 2) = c.Value
+        nws.Cells(3, 2) = c.value
         nws.Cells(4, 1) = "NRows"
         
-        rs.Open "select count(*) as n from " & c.Offset(0, -1).Value & "." & c.Value, ActiveConnection:=con
+        rs.Open "select count(*) as n from " & c.Offset(0, -1).value & "." & c.value, ActiveConnection:=con
         Set fld = rs.Fields(0)
-        nws.Cells(4, 2) = fld.Value
+        nws.Cells(4, 2) = fld.value
         rs.Close
         
 
         
         Dim q As String
-        q = "SELECT ordinal_position, column_name, data_type, data_type_length, character_maximum_length, is_nullable, column_default from v_catalog.columns where table_schema='" & twsn & "' and table_name='" & c.Value & "' order by ordinal_position"
+        q = "SELECT ordinal_position, column_name, data_type, data_type_length, character_maximum_length, is_nullable, column_default from v_catalog.columns where table_schema='" & twsn & "' and table_name='" & c.value & "' order by ordinal_position"
             
         nws.Cells(5, 1) = "Column Query"
         Range(nws.Cells(6, 1), nws.Cells(6, 4)).Merge

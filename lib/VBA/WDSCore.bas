@@ -690,7 +690,62 @@ End Function
 Function mxmn(arg1, arg2, arg3)
     mxmn = lMax(arg1, lMin(arg2, arg3))
 End Function
-
+Function fArrayMaxWith(ByRef arg1 As Variant, arg2 As Double) As Variant
+Dim rv As Variant
+ReDim rv(LBound(arg1, 1) To UBound(arg1, 1), LBound(arg1, 2) To UBound(arg1, 2)) As Variant
+For j = LBound(arg1, 2) To UBound(arg1, 2)
+For i = LBound(arg1, 1) To UBound(arg1, 1)
+    If arg1(i, j) < arg2 Then
+        rv(i, j) = arg2
+    Else
+        rv(i, j) = arg1(i, j)
+    End If
+Next i
+Next j
+fArrayMaxWith = rv
+End Function
+Function fArrayMaxWithArray(ByRef arg1 As Variant, ByRef arg2 As Variant) As Variant
+Dim rv As Variant
+ReDim rv(LBound(arg1, 1) To UBound(arg1, 1), LBound(arg1, 2) To UBound(arg1, 2)) As Variant
+For j = LBound(arg1, 2) To UBound(arg1, 2)
+For i = LBound(arg1, 1) To UBound(arg1, 1)
+    If arg1(i, j) < arg2(i, j) Then
+        rv(i, j) = arg2(i, j)
+    Else
+        rv(i, j) = arg1(i, j)
+    End If
+Next i
+Next j
+fArrayMaxWithArray = rv
+End Function
+Function fArrayMinWith(ByRef arg1 As Variant, arg2 As Double) As Variant
+Dim rv As Variant
+ReDim rv(LBound(arg1, 1) To UBound(arg1, 1), LBound(arg1, 2) To UBound(arg1, 2)) As Variant
+For j = LBound(arg1, 2) To UBound(arg1, 2)
+For i = LBound(arg1, 1) To UBound(arg1, 1)
+    If arg1(i, j) > arg2 Then
+        rv(i, j) = arg2
+    Else
+        rv(i, j) = arg1(i, j)
+    End If
+Next i
+Next j
+fArrayMinWith = rv
+End Function
+Function fArrayMinWithArray(ByRef arg1 As Variant, ByRef arg2 As Variant) As Variant
+Dim rv As Variant
+ReDim rv(LBound(arg1, 1) To UBound(arg1, 1), LBound(arg1, 2) To UBound(arg1, 2)) As Variant
+For j = LBound(arg1, 2) To UBound(arg1, 2)
+For i = LBound(arg1, 1) To UBound(arg1, 1)
+    If arg1(i, j) > arg2(i, j) Then
+        rv(i, j) = arg2(i, j)
+    Else
+        rv(i, j) = arg1(i, j)
+    End If
+Next i
+Next j
+fArrayMinWithArray = rv
+End Function
 Private Function fCleanLimits_MacroOptions_Array() As Variant
     fCleanLimits_MacroOptions_Array = Array("fCleanLimits" _
     , "Checks argument against left and right clean limits and returns default if out of limits" _
@@ -1028,30 +1083,35 @@ Private Function FlipSumProduct_MacroOptions_Array() As Variant
     )
 End Function
 
-Function FlipSumProduct(ByRef r As Range, ByRef s As Range) As Variant
+Function FlipSumProduct(ByRef r As Range, ByRef s As Range, Optional outrows = 1) As Variant
 
     Dim rv
-    ReDim rv(1, 1 To s.Columns.Count)
+    ReDim rv(outrows, 1 To s.Columns.Count)
     
-    Dim i, j, k, n As Integer
+    Dim i, j, k, l, n As Integer
     
     n = r.Rows.Count
+    If outrows < n Then
+        n = outrows
+    End If
     
-    If n <= s.Rows.Count Then
-        For i = 1 To n
-            j = n - i + 1
+    For l = 1 To outrows
+    If l <= s.Rows.Count Then
+        For i = 1 To l
+            j = l - i + 1
             For k = 1 To s.Columns.Count
-                rv(1, k) = rv(1, k) + s(j, k) * r(i, 1)
+                rv(l, k) = rv(l, k) + s(j, k) * r(i, 1)
             Next k
         Next i
     Else
-        For i = n - s.Rows.Count + 1 To n
-            j = n - i + 1
+        For i = n - s.Rows.Count + l To n
+            j = l - i + 1
             For k = 1 To s.Columns.Count
-                rv(1, k) = rv(1, k) + s(j, k) * r(i, 1)
+                rv(l, k) = rv(l, k) + s(j, k) * r(i, 1)
             Next k
         Next i
     End If
+    Next l
     
     FlipSumProduct = rv
 

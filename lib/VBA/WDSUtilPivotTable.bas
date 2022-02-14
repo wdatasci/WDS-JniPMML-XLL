@@ -35,36 +35,36 @@ End Sub
 
 Sub pvt_LoadPivotTableODBCSpecProtoType()
     WDSCore.ActivateOrAddSheet ("PivotTableODBCSpec")
-    Range("A1").Value = "DSN or 'Existing'"
-    Range("A2").Value = "Database or SourceSheet.Name"
-    Range("A3").Value = "Table or SourcePivotTableName"
+    Range("A1").value = "DSN or 'Existing'"
+    Range("A2").value = "Database or SourceSheet.Name"
+    Range("A3").value = "Table or SourcePivotTableName"
     
-    Range("E1").Value = "Server"
+    Range("E1").value = "Server"
     Range("E1").AddComment
     Range("E1").Comment.Visible = True
     Range("E1").Comment.Text Text:="If using a pre-defined DSN (system or user)," & Chr(10) & "clear this block"
     Application.DisplayCommentIndicator = xlCommentIndicatorOnly
        
-    Range("F1").Value = "localhost"
-    Range("E2").Value = "Port"
-    Range("F2").Value = 3306
-    Range("G1").Value = "user"
-    Range("H1").Value = "root"
-    Range("G2").Value = "password"
-    Range("H2").Value = "??"
+    Range("F1").value = "localhost"
+    Range("E2").value = "Port"
+    Range("F2").value = 3306
+    Range("G1").value = "user"
+    Range("H1").value = "root"
+    Range("G2").value = "password"
+    Range("H2").value = "??"
     
     
-    Range("A4").Value = "TargetTable"
-    Range("A5").Value = "TargetSheet"
-    Range("A6").Value = "TargetCell (in R#C# format)"
-    Range("A7").Value = "Pages"
-    Range("A8").Value = "RowFields"
-    Range("A9").Value = "ColumnFields"
-    Range("A10").Value = "DataFields"
-    Range("A11").Value = "Where Clause"
+    Range("A4").value = "TargetTable"
+    Range("A5").value = "TargetSheet"
+    Range("A6").value = "TargetCell (in R#C# format)"
+    Range("A7").value = "Pages"
+    Range("A8").value = "RowFields"
+    Range("A9").value = "ColumnFields"
+    Range("A10").value = "DataFields"
+    Range("A11").value = "Where Clause"
     Range("B11", "E11").Merge
-    Range("A12").Value = "CalculatedField"
-    Range("B12").Value = "Formula"
+    Range("A12").value = "CalculatedField"
+    Range("B12").value = "Formula"
     Range("A1:A12").Cells.Font.Bold = True
     Range("A12:B12").Cells.Font.Bold = True
     Range("A12:B12").Cells.Font.Underline = True
@@ -159,16 +159,22 @@ Private Sub xxx_LoadPivotTableODBCSpecSub()
     Dim c, d As Range
     
     Dim tws, nws As Worksheet
-    Set tws = ActiveWorkbook.Sheets(vLPT_SpecPage)
+    WDSCore.ActivateOrAddSheet (vLPT_SpecPage)
+    
+    Set tws = ActiveSheet
     
     Dim con As ADODB.Connection
     Dim rs As ADODB.Recordset
+    
+    If Not bIn(Range(vLPT_SpecPage & "!B1").Text, "Existing", "Range") Then
     
     Set con = New ADODB.Connection
     Set rs = New ADODB.Recordset
     
     Call xsql_ProcessODBCConnectionString
     con.Open ConnectionString:=[ODBCConnectionString]
+
+    End If
 
     calcprior = Application.Calculation
     On Error GoTo CatchIt
@@ -218,7 +224,10 @@ Private Sub xxx_LoadPivotTableODBCSpecSub()
         "PWD=" & thisUID & ";" & _
         "OPTION=0"
 
-    If Range(vLPT_SpecPage & "!B1").Text <> "Existing" Then
+    Dim pvt As PivotTable
+
+
+    If Not bIn(Range(vLPT_SpecPage & "!B1").Text, "Existing", "Range") Then
         
         Dim q1, q2, q3, q4 As String
         Dim lrng As Range
@@ -281,8 +290,8 @@ BreakNxt00:
             
         Do Until rs.EOF
             For Each fld In rs.Fields
-                If Left(fld.Value, 1) = "_" Then
-                    q4 = q4 & ", sum(" & fld.Value & ") as " & fld.Value
+                If Left(fld.value, 1) = "_" Then
+                    q4 = q4 & ", sum(" & fld.value & ") as " & fld.value
                 End If
             Next fld
             rs.MoveNext
@@ -303,6 +312,49 @@ BreakNxt00:
             .CreatePivotTable TableDestination:=Range(vLPT_SpecPage & "!B5").Text & "!" & Range(vLPT_SpecPage & "!B6").Text, TableName:=Range(vLPT_SpecPage & "!B4").Text, DefaultVersion:=xlPivotTableVersion10
         End With
     
+    ElseIf Range(vLPT_SpecPage & "!B1").Text = "Range" Then
+
+        ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:=Range(vLPT_SpecPage & "!B3").Text, _
+            Version:=6).CreatePivotTable Range(vLPT_SpecPage & "!B5").Text & "!" & Range(vLPT_SpecPage & "!B6").Text, _
+            TableName:=Range(vLPT_SpecPage & "!B4").Text, DefaultVersion:=6
+        With ActiveSheet.PivotTables(Range(vLPT_SpecPage & "!B4").Text)
+  '          .ColumnGrand = True
+            .HasAutoFormat = True
+            .DisplayErrorString = False
+            .DisplayNullString = True
+            .EnableDrilldown = True
+            .ErrorString = ""
+            .MergeLabels = False
+            .NullString = ""
+            .PageFieldOrder = 2
+            .PageFieldWrapCount = 0
+            .PreserveFormatting = True
+ '           .RowGrand = True
+            .SaveData = True
+            .PrintTitles = False
+            .RepeatItemsOnEachPrintedPage = True
+            .TotalsAnnotation = False
+            .CompactRowIndent = 1
+            .InGridDropZones = False
+            .DisplayFieldCaptions = True
+            .DisplayMemberPropertyTooltips = False
+            .DisplayContextTooltips = True
+            .ShowDrillIndicators = True
+            .PrintDrillIndicators = False
+            .AllowMultipleFilters = False
+            .SortUsingCustomLists = True
+            .FieldListSortAscending = False
+            .ShowValuesRow = False
+            .CalculatedMembersInFilters = False
+'            .RowAxisLayout xlCompactRow
+        
+        .ColumnGrand = False
+        .RowGrand = False
+        .InGridDropZones = True
+        .RowAxisLayout xlTabularRow
+        
+        End With
+
     Else
 
         ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:=Range(vLPT_SpecPage & "!B3").Text, _
@@ -478,8 +530,8 @@ BreakNxt4:
         End If
 
         With ActiveSheet.PivotTables(Range(vLPT_SpecPage & "!B4").Text).PivotFields(xs)
-            .ShowAllItems = False
             .Orientation = xlRowField
+            .ShowAllItems = False
             .Subtotals = Array(False, False, False, False, False, False, False, False, False, False, False, False)
             '.ShowAllItems = True
         End With
@@ -503,6 +555,8 @@ BreakNxt3:
     
     
     ActiveSheet.PivotTables(Range(vLPT_SpecPage & "!B4").Text).HasAutoFormat = False
+    ActiveSheet.PivotTables(Range(vLPT_SpecPage & "!B4").Text).InGridDropZones = True
+
     ActiveSheet.PivotTables(Range(vLPT_SpecPage & "!B4").Text).PivotSelect "", xlDataAndLabel, True
     With Selection.Font
         .Name = "Courier New"
