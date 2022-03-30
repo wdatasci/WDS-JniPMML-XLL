@@ -19,8 +19,10 @@ namespace JNI
 {
     public unsafe class JavaNativeInterface : IDisposable
     {
-        //private const string JRE_REGISTRY_KEY = @"HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Runtime Environment";
-        private const string JRE_REGISTRY_KEY = @"HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\JDK";
+        private const string JRE_REGISTRY_KEY1 = @"HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\JDK";
+        private const string JRE_REGISTRY_KEY2 = @"HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Runtime Environment";
+        private const string JRE_REGISTRY_KEY3 = @"HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\Java Development Kit";
+        private const string JRE_REGISTRY_KEY4 = @"HKEY_LOCAL_MACHINE\SOFTWARE\JavaSoft\JRE";
 
         private IntPtr javaClass;
         private IntPtr javaObject;
@@ -33,12 +35,65 @@ namespace JNI
         public void LoadVM(Dictionary<string, string> options, bool AddToExistingJVM)
         {
             // Get the location of the current version of the JVM.dll          
-            string jreVersion = (string) Registry.GetValue(JRE_REGISTRY_KEY, "CurrentVersion", null);
-            string keyName = Path.Combine(JRE_REGISTRY_KEY, jreVersion);
+            string jreVersion = "";
+            string keyName = "";
+            string jvmDir = "";
+            string JavaHome = "";
+            try
+            {
+                jreVersion = (string)Registry.GetValue(JRE_REGISTRY_KEY1, "CurrentVersion", null);
+                keyName = Path.Combine(JRE_REGISTRY_KEY1, jreVersion);
+                try
+                {
+                    JavaHome = (string)Registry.GetValue(keyName, "JavaHome", null);
+                }
+                catch
+                {
+                    JavaHome = (string)Registry.GetValue(keyName, "RuntimeLib", null);
+                }
+                jvmDir = Path.Combine(Path.Combine(Path.Combine(JavaHome, "bin"), "server"), "jvm.dll");
+                if ((jvmDir.Length == 0) || (!File.Exists(jvmDir)))
+                    jvmDir = Path.Combine(Path.Combine(Path.Combine(Path.Combine(JavaHome, "jre"), "bin"), "server"), "jvm.dll");
+                if ((jvmDir.Length == 0) || (!File.Exists(jvmDir)))
+                    throw new Exception("No jvm.dll");
+            }
+            catch
+            {
+                try
+                {
+                    jreVersion = (string)Registry.GetValue(JRE_REGISTRY_KEY2, "CurrentVersion", null);
+                    keyName = Path.Combine(JRE_REGISTRY_KEY2, jreVersion);
+                    jvmDir = Path.Combine(Path.Combine(Path.Combine(JavaHome, "bin"), "server"), "jvm.dll");
+                    if ((jvmDir.Length == 0) || (!File.Exists(jvmDir)))
+                        jvmDir = Path.Combine(Path.Combine(Path.Combine(Path.Combine(JavaHome, "jre"), "bin"), "server"), "jvm.dll");
+                    if ((jvmDir.Length == 0) || (!File.Exists(jvmDir)))
+                        throw new Exception("No jvm.dll");
+                }
+                catch
+                {
+                    try
+                    {
+                        jreVersion = (string)Registry.GetValue(JRE_REGISTRY_KEY3, "CurrentVersion", null);
+                        keyName = Path.Combine(JRE_REGISTRY_KEY3, jreVersion);
+                        jvmDir = Path.Combine(Path.Combine(Path.Combine(JavaHome, "bin"), "server"), "jvm.dll");
+                        if ((jvmDir.Length == 0) || (!File.Exists(jvmDir)))
+                            jvmDir = Path.Combine(Path.Combine(Path.Combine(Path.Combine(JavaHome, "jre"), "bin"), "server"), "jvm.dll");
+                        if ((jvmDir.Length == 0) || (!File.Exists(jvmDir)))
+                            throw new Exception("No jvm.dll");
+                    }
+                    catch
+                    {
 
-            //string jvmDir = (string) Registry.GetValue(keyName, "RuntimeLib", null);
-            string JavaHome = (string) Registry.GetValue(keyName, "JavaHome", null);
-            string jvmDir = Path.Combine(Path.Combine(Path.Combine(JavaHome, "bin"), "server"), "jvm.dll");
+                        jreVersion = (string)Registry.GetValue(JRE_REGISTRY_KEY4, "CurrentVersion", null);
+                        keyName = Path.Combine(JRE_REGISTRY_KEY4, jreVersion);
+                        jvmDir = Path.Combine(Path.Combine(Path.Combine(JavaHome, "bin"), "server"), "jvm.dll");
+                        if ((jvmDir.Length == 0) || (!File.Exists(jvmDir)))
+                            jvmDir = Path.Combine(Path.Combine(Path.Combine(Path.Combine(JavaHome, "jre"), "bin"), "server"), "jvm.dll");
+                        if ((jvmDir.Length == 0) || (!File.Exists(jvmDir)))
+                            throw new Exception("No jvm.dll");
+                    }
+                }
+            }
 
             if ((jvmDir.Length == 0) || (!File.Exists(jvmDir)))
                 throw new Exception("Error determining the location of the Java Runtime Environment");
@@ -48,6 +103,7 @@ namespace JNI
             Directory.SetCurrentDirectory(Path.GetDirectoryName(jvmDir));
 
             var args = new JavaVMInitArgs();
+            
 
             int jrev = 0;
             if (jreVersion.StartsWith("1."))
@@ -79,9 +135,12 @@ namespace JNI
                 case 9:
                     args.version = JNIVersion.JNI_VERSION_9;
                     break;
-                case 12:
-                    args.version = JNIVersion.JNI_VERSION_12;
-                    break;
+                //case 12:
+                //    args.version = JNIVersion.JNI_VERSION_12;
+                //    break;
+                //case 17:
+                //    args.version = JNIVersion.JNI_VERSION_17;
+                //    break;
                 default:
                     args.version = JNIVersion.JNI_VERSION_10;
                     break;

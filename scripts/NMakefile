@@ -19,13 +19,15 @@ DBG=
 TestWorkbook=$(SolutionDir)\WDS-JniPMML-XLL-Test.xlsm
 !endif
 
+
 run:
 	$(EXCEL) /p "$(SolutionDir)" /x "$(SolutionDir)\lib\WDS-JniPMML-x64.xll" "$(SolutionDir)\lib\WDS-JniPMML-VB-x64.xll" "$(TestWorkbook)"  /o:WDS:hey
 
-
 run_dbg:
-	$(EXCEL) /p "$(SolutionDir)" /x "$(SolutionDir)\lib\WDS-JniPMML-VB-x64-dbg.xll" "$(SolutionDir)\lib\WDS-JniPMML-x64-dbg.xll" "$(TestWorkbook)"  /o:WDS:hey
+	$(EXCEL) /p "$(SolutionDir)" /x "$(SolutionDir)\lib\WDS-JniPMML-x64-dbg.xll" "$(SolutionDir)\lib\WDS-JniPMML-VB-x64-dbg.xll" "$(TestWorkbook)"  /o:WDS:hey
 
+run_new:
+	$(EXCEL) /x "$(SolutionDir)\lib\WDS-JniPMML-x64.xll" "$(SolutionDir)\lib\WDS-JniPMML-VB-x64.xll" /n
 
 run_just_Cs:
 	$(EXCEL) /p "$(SolutionDir)" /x "$(SolutionDir)\lib\WDS-x64.xll" "$(TestWorkbook)"  /o:WDS:hey

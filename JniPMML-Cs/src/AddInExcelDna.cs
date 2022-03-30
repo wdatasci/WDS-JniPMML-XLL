@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 
+using System.Windows.Forms;
+
 
 using ExcelDna.Registration;
 using ExcelDna.Integration;
@@ -200,6 +202,8 @@ namespace WDataSci.JniPMML
                 //if (!pair.ContainsKey("-D64")) pair.Add("-D64", "" );
                 if (!pair.ContainsKey("-Xcheck:jni ")) pair.Add("-Xcheck:jni ", "" );
 
+                //if (!pair.ContainsKey("-Xms64M ")) pair.Add("-Xms64M ", "" );
+
 
                 //initialize JNI object
                 Java = new JavaNativeInterface();
@@ -212,6 +216,7 @@ namespace WDataSci.JniPMML
 
             }
             catch ( Exception e ) {
+                MessageBox.Show("Yeah, here," + e.Message);
                 throw new com.WDataSci.WDS.WDSException("Error into AutoLoad", e);
             }
             GC.Collect();
