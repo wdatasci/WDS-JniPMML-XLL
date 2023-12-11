@@ -1,10 +1,10 @@
 Attribute VB_Name = "WDSCore"
-'''Wypasek Data Science, Inc., Copyright 2019
+'''Wypasek Data Science, Inc., Copyright 2019, 2020, 2021, 2022, 2023
 '''Author: Christian Wypasek
 '''
 '''MIT License
 '''
-'''Copyright (c) 2019 Wypasek Data Science, Inc. (WDataSci, WDS)
+'''Copyright (c) 2019, 2020, 2021, 2022, 2023 Wypasek Data Science, Inc. (WDataSci, WDS)
 '''
 '''Permission is hereby granted, free of charge, to any person obtaining a copy
 '''of this software and associated documentation files (the "Software"), to deal

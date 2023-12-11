@@ -1,5 +1,5 @@
 Attribute VB_Name = "WDSVBACommandBar"
-'''Wypasek Data Science, Inc., Copyright 2019
+'''Wypasek Data Science, Inc., Copyright 2019, 2020, 2021, 2022, 2023
 '''Author: Christian Wypasek
 Option Base 1
 Const WDSVBACommandBarContextID = 40001
