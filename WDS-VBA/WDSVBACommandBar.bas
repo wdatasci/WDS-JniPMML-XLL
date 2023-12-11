@@ -217,7 +217,7 @@ Private Sub VBAImportSelected(ByRef twb As Workbook, tws As Worksheet)
             If c.Row <= 3 Or c.Column <> 2 Then: Exit For
             fn = tws.Cells(2, 2).Value & "\" & c.Value
             If fso.FileExists(fn) Then
-                twb.VBProject.VBComponents.Import (vn)
+                twb.VBProject.VBComponents.Import (fn)
             End If
         Next
     End If

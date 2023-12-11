@@ -60,6 +60,7 @@
     <Reference Include="ExcelApi, Version=1.8.1.0, Culture=neutral, PublicKeyToken=9084b9221296229e, processorArchitecture=MSIL">
       <HintPath>..\packages\NetOfficeFw.Excel.1.8.1\lib\net40\ExcelApi.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>True</Private>
     </Reference>
     <Reference Include="ExcelDna.Integration, Version=1.1.0.0, Culture=neutral, PublicKeyToken=f225e9659857edbe, processorArchitecture=MSIL">
       <HintPath>..\packages\ExcelDna.Integration.1.5.1\lib\net452\ExcelDna.Integration.dll</HintPath>
@@ -76,28 +77,33 @@
     <Reference Include="ExcelDna.Utilities, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ExcelDna.Utilities.0.2.0\lib\net452\ExcelDna.Utilities.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <HintPath>..\packages\ExcelDna.Interop.14.0.1\lib\Microsoft.Office.Interop.Excel.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Vbe.Interop, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <HintPath>..\packages\ExcelDna.Interop.14.0.1\lib\Microsoft.Vbe.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NetOffice, Version=1.8.1.0, Culture=neutral, PublicKeyToken=297f57b43ae7c1de, processorArchitecture=MSIL">
       <HintPath>..\packages\NetOfficeFw.Core.1.8.1\lib\net40\NetOffice.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <HintPath>..\packages\ExcelDna.Interop.14.0.1\lib\Office.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
+      <Private>True</Private>
     </Reference>
     <Reference Include="OfficeApi, Version=1.8.1.0, Culture=neutral, PublicKeyToken=a39beb0835c43c8e, processorArchitecture=MSIL">
       <HintPath>..\packages\NetOfficeFw.Core.1.8.1\lib\net40\OfficeApi.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable, Version=1.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -107,6 +113,7 @@
     <Reference Include="VBIDEApi, Version=1.8.1.0, Culture=neutral, PublicKeyToken=931cec8882205047, processorArchitecture=MSIL">
       <HintPath>..\packages\NetOfficeFw.Core.1.8.1\lib\net40\VBIDEApi.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +165,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="JniPMML-VB-AddIn.dna" />
     <None Include="JniPMML-VB.dna" />
     <None Include="Properties\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>

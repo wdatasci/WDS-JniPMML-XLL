@@ -71,9 +71,6 @@
     <Reference Include="Microsoft.Office.Tools.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Microsoft.Office.Tools.Common.v4.0.Utilities, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Microsoft.Office.Tools.Excel, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
@@ -138,7 +135,9 @@
     -->
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <!--
     <Error Condition="!Exists('..\packages\docfx.console.2.42.0\build\docfx.console.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\docfx.console.2.42.0\build\docfx.console.targets'))" />
+    -->
     <Error Condition="!Exists('..\packages\ExcelDna.AddIn.1.5.1\build\ExcelDna.AddIn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ExcelDna.AddIn.1.5.1\build\ExcelDna.AddIn.targets'))" />
     <Error Condition="!Exists('..\packages\HDF.PInvoke.1.10.6.1\build\HDF.PInvoke.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\HDF.PInvoke.1.10.6.1\build\HDF.PInvoke.targets'))" />
   </Target>

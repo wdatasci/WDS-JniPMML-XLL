@@ -41,15 +41,17 @@
   <PropertyGroup>
     <!--
       Enable/Disable automatic generation of platform-specific versions of .dna files
-    -->
     <ExcelDnaCreate32BitAddIn Condition="'$(ExcelDnaCreate32BitAddIn)' == ''">false</ExcelDnaCreate32BitAddIn>
-    <ExcelDnaCreate64BitAddIn Condition="'$(ExcelDnaCreate64BitAddIn)' == ''">true</ExcelDnaCreate64BitAddIn>
+    -->
+    <ExcelDnaCreate32BitAddIn>false</ExcelDnaCreate32BitAddIn>
+    <ExcelDnaCreate64BitAddIn>true</ExcelDnaCreate64BitAddIn>
 
     <!--
       Define the suffix used for each platform-specific file e.g. MyAddIn64.dna
-    -->
     <ExcelDna32BitAddInSuffix Condition="'$(ExcelDna32BitAddInSuffix)' == ''">-x32</ExcelDna32BitAddInSuffix>
-    <ExcelDna64BitAddInSuffix Condition="'$(ExcelDna64BitAddInSuffix)' == ''">-x64</ExcelDna64BitAddInSuffix>
+    -->
+    <ExcelDna32BitAddInSuffix>-x32</ExcelDna32BitAddInSuffix>
+    <ExcelDna64BitAddInSuffix>-x64</ExcelDna64BitAddInSuffix>
   </PropertyGroup>
 
   <PropertyGroup>
