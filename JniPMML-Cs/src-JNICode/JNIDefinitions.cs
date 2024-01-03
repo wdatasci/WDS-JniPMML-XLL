@@ -16,6 +16,7 @@ namespace JNI
         public const int JNI_VERSION_11  = 0x000b0000;
         public const int JNI_VERSION_12  = 0x000c0000;
         public const int JNI_VERSION_17  = 0x00110000;
+        public const int JNI_VERSION_21  = 0x00150000;
     }
 
     public struct JNIBooleanValue

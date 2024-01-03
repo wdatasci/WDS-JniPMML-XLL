@@ -63,6 +63,14 @@ namespace JNI
                 {
                     jreVersion = (string)Registry.GetValue(JRE_REGISTRY_KEY2, "CurrentVersion", null);
                     keyName = Path.Combine(JRE_REGISTRY_KEY2, jreVersion);
+                try
+                {
+                    JavaHome = (string)Registry.GetValue(keyName, "JavaHome", null);
+                }
+                catch
+                {
+                    JavaHome = (string)Registry.GetValue(keyName, "RuntimeLib", null);
+                }
                     jvmDir = Path.Combine(Path.Combine(Path.Combine(JavaHome, "bin"), "server"), "jvm.dll");
                     if ((jvmDir.Length == 0) || (!File.Exists(jvmDir)))
                         jvmDir = Path.Combine(Path.Combine(Path.Combine(Path.Combine(JavaHome, "jre"), "bin"), "server"), "jvm.dll");
@@ -75,6 +83,14 @@ namespace JNI
                     {
                         jreVersion = (string)Registry.GetValue(JRE_REGISTRY_KEY3, "CurrentVersion", null);
                         keyName = Path.Combine(JRE_REGISTRY_KEY3, jreVersion);
+                try
+                {
+                    JavaHome = (string)Registry.GetValue(keyName, "JavaHome", null);
+                }
+                catch
+                {
+                    JavaHome = (string)Registry.GetValue(keyName, "RuntimeLib", null);
+                }
                         jvmDir = Path.Combine(Path.Combine(Path.Combine(JavaHome, "bin"), "server"), "jvm.dll");
                         if ((jvmDir.Length == 0) || (!File.Exists(jvmDir)))
                             jvmDir = Path.Combine(Path.Combine(Path.Combine(Path.Combine(JavaHome, "jre"), "bin"), "server"), "jvm.dll");
@@ -86,6 +102,14 @@ namespace JNI
 
                         jreVersion = (string)Registry.GetValue(JRE_REGISTRY_KEY4, "CurrentVersion", null);
                         keyName = Path.Combine(JRE_REGISTRY_KEY4, jreVersion);
+                try
+                {
+                    JavaHome = (string)Registry.GetValue(keyName, "JavaHome", null);
+                }
+                catch
+                {
+                    JavaHome = (string)Registry.GetValue(keyName, "RuntimeLib", null);
+                }
                         jvmDir = Path.Combine(Path.Combine(Path.Combine(JavaHome, "bin"), "server"), "jvm.dll");
                         if ((jvmDir.Length == 0) || (!File.Exists(jvmDir)))
                             jvmDir = Path.Combine(Path.Combine(Path.Combine(Path.Combine(JavaHome, "jre"), "bin"), "server"), "jvm.dll");
@@ -112,6 +136,8 @@ namespace JNI
                 jrev = 12;
             else if (jreVersion.StartsWith("17."))
                 jrev = 17;
+            else if (jreVersion.StartsWith("21."))
+                jrev = 21;
             else
                 jrev = Convert.ToInt32(jreVersion);
 
@@ -130,7 +156,7 @@ namespace JNI
                     args.version = JNIVersion.JNI_VERSION_1_6;
                     break;
                 case 4:
-                    args.version = JNIVersion.JNI_VERSION_1_6;
+                    args.version = JNIVersion.JNI_VERSION_1_8;
                     break;
                 case 9:
                     args.version = JNIVersion.JNI_VERSION_9;
@@ -141,6 +167,9 @@ namespace JNI
                 //case 17:
                 //    args.version = JNIVersion.JNI_VERSION_17;
                 //    break;
+                case 21:
+                    args.version = JNIVersion.JNI_VERSION_21;
+                    break;
                 default:
                     args.version = JNIVersion.JNI_VERSION_10;
                     break;
