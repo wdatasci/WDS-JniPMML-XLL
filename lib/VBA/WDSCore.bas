@@ -1605,6 +1605,12 @@ Sub wds_Workbook_Overview()
         i = i + 1
         nws.Cells(i, 1) = wvbref.Name
         nws.Cells(i, 2) = wvbref.Description
+        nws.Cells(i, 3) = wvbref.GUID
+        nws.Cells(i, 4) = wvbref.FullPath
+        nws.Cells(i, 5) = wvbref.Major
+        nws.Cells(i, 6) = wvbref.Minor
+        nws.Cells(i, 7) = "twb.VBProject.References.AddFromGuid GUID:=""" & wvbref.GUID & """, Major:=" & wvbref.Major & ", Minor:=" & wvbref.Minor & "   '" & wvbref.Name
+
     Next
 
 End Sub

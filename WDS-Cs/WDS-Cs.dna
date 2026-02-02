@@ -3,7 +3,9 @@
 
   <ExternalLibrary Path="WDS-Cs.dll" ExplicitRegistration="true" LoadFromBytes="false" Pack="true" />
 
+<!--
   <Reference Path="ExcelDna.Registration.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  -->
   <Reference Path="ExcelDna.Utilities.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
   <Reference Path="ExcelDna.IntelliSense.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
   <Reference Path="CsvHelper.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />

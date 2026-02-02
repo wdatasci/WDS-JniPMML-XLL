@@ -1,6 +1,6 @@
 package com.WDataSci.JniPMML;
 
-import org.dmg.pmml.FieldName;
+import org.dmg.pmml.Field;
 import org.w3c.dom.Document;
 
 import java.nio.ByteBuffer;
@@ -312,7 +312,7 @@ public class JniPMML
     }
 
     //CodeNote, CJW:  Most of this is just for error checking and un-doing the generic return
-    public List<Map<FieldName, Object>> PMMLEvaluate(RecordSet aInputRecordSet, boolean bAnySystemOut, boolean bVerboseOutput)
+    public List<Map<String, Object>> PMMLEvaluate(RecordSet aInputRecordSet, boolean bAnySystemOut, boolean bVerboseOutput)
     throws com.WDataSci.WDS.WDSException
     {
         synchronized (this) {
@@ -320,7 +320,7 @@ public class JniPMML
         }
     }
 
-    public List<Map<FieldName, Object>> PMMLEvaluate(int arg0, RecordSet aInputRecordSet, boolean bAnySystemOut, boolean bVerboseOutput)
+    public List<Map<String, Object>> PMMLEvaluate(int arg0, RecordSet aInputRecordSet, boolean bAnySystemOut, boolean bVerboseOutput)
     throws com.WDataSci.WDS.WDSException
     {
         synchronized (this) {

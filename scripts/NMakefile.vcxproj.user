@@ -6,6 +6,7 @@
     <LocalDebuggerWorkingDirectory>$(SolutionDir)</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerAttach>false</LocalDebuggerAttach>
+    <LocalDebuggerCommandArgumentsHistory>/x C:\WDS\dev\lib\github\WDataSci\WDS-JniPMML-XLL\master\JniPMML-VB\bin\Debug\JniPMML-VB-x64.xll C:\WDS\dev\lib\github\WDataSci\WDS-JniPMML-XLL\master\JniPMML-Cs\bin\Debug\JniPMML-Cs-x64.xll C:\WDS\dev\lib\github\WDataSci\WDS-JniPMML-XLL\master\WDS-JniPMML-XLL-Test.xlsm  /o:WDS:hey|</LocalDebuggerCommandArgumentsHistory>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LocalDebuggerCommand>C:\Program Files\Microsoft Office\Root\Office16\EXCEL.EXE</LocalDebuggerCommand>
@@ -13,6 +14,7 @@
     <LocalDebuggerWorkingDirectory>$(SolutionDir)</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerAttach>false</LocalDebuggerAttach>
+    <LocalDebuggerCommandArgumentsHistory>/x C:\WDS\dev\lib\github\WDataSci\WDS-JniPMML-XLL\master\lib\WDS-JniPMML-VB-x64.xll C:\WDS\dev\lib\github\WDataSci\WDS-JniPMML-XLL\master\lib\WDS-JniPMML-x64.xll C:\WDS\dev\lib\github\WDataSci\WDS-JniPMML-XLL\master\WDS-JniPMML-XLL-Test.xlsm  /o:WDS:hey|</LocalDebuggerCommandArgumentsHistory>
   </PropertyGroup>
   <PropertyGroup>
     <ShowAllFiles>true</ShowAllFiles>

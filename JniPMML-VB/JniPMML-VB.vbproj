@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\ExcelDna.AddIn.1.9.0\build\ExcelDna.AddIn.props" Condition="Exists('..\packages\ExcelDna.AddIn.1.9.0\build\ExcelDna.AddIn.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -10,7 +11,7 @@
     <AssemblyName>JniPMML-VB</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>Windows</MyType>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <Deterministic>true</Deterministic>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <SccLocalPath>Svn</SccLocalPath>
@@ -21,6 +22,7 @@
     <RunExcelDnaBuild>true</RunExcelDnaBuild>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -63,40 +65,31 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="ExcelDna.Integration, Version=1.1.0.0, Culture=neutral, PublicKeyToken=f225e9659857edbe, processorArchitecture=MSIL">
-      <HintPath>..\packages\ExcelDna.Integration.1.5.1\lib\net452\ExcelDna.Integration.dll</HintPath>
+      <HintPath>..\packages\ExcelDna.Integration.1.9.0\lib\net462\ExcelDna.Integration.dll</HintPath>
     </Reference>
-    <Reference Include="ExcelDna.IntelliSense, Version=1.5.1.0, Culture=neutral, PublicKeyToken=f225e9659857edbe, processorArchitecture=MSIL">
-      <HintPath>..\packages\ExcelDna.IntelliSense.1.5.1\lib\net452\ExcelDna.IntelliSense.dll</HintPath>
+    <Reference Include="ExcelDna.IntelliSense, Version=1.1.0.0, Culture=neutral, PublicKeyToken=f225e9659857edbe, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDna.IntelliSense.1.9.0\lib\net462\ExcelDna.IntelliSense.dll</HintPath>
     </Reference>
-    <Reference Include="ExcelDna.Registration, Version=1.1.0.0, Culture=neutral, PublicKeyToken=f225e9659857edbe, processorArchitecture=MSIL">
-      <HintPath>..\packages\ExcelDna.Registration.1.5.1\lib\net452\ExcelDna.Registration.dll</HintPath>
-    </Reference>
-    <Reference Include="ExcelDna.Registration.VisualBasic, Version=1.1.0.0, Culture=neutral, PublicKeyToken=f225e9659857edbe, processorArchitecture=MSIL">
-      <HintPath>..\packages\ExcelDna.Registration.VisualBasic.1.5.1\lib\net452\ExcelDna.Registration.VisualBasic.dll</HintPath>
-    </Reference>
-    <Reference Include="ExcelDna.Utilities, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ExcelDna.Utilities.0.2.0\lib\net452\ExcelDna.Utilities.dll</HintPath>
+    <Reference Include="ExcelDna.Utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDna.Utilities.0.3.0\lib\netstandard2.0\ExcelDna.Utilities.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <HintPath>..\packages\ExcelDna.Interop.14.0.1\lib\Microsoft.Office.Interop.Excel.dll</HintPath>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDna.Interop.15.0.1\lib\net452\Microsoft.Office.Interop.Excel.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Vbe.Interop, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <HintPath>..\packages\ExcelDna.Interop.14.0.1\lib\Microsoft.Vbe.Interop.dll</HintPath>
+    <Reference Include="Microsoft.Vbe.Interop, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDna.Interop.15.0.1\lib\net452\Microsoft.Vbe.Interop.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <Private>True</Private>
     </Reference>
     <Reference Include="NetOffice, Version=1.8.1.0, Culture=neutral, PublicKeyToken=297f57b43ae7c1de, processorArchitecture=MSIL">
       <HintPath>..\packages\NetOfficeFw.Core.1.8.1\lib\net40\NetOffice.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Office, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <HintPath>..\packages\ExcelDna.Interop.14.0.1\lib\Office.dll</HintPath>
+    <Reference Include="Office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelDna.Interop.15.0.1\lib\net452\Office.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <Private>True</Private>
     </Reference>
     <Reference Include="OfficeApi, Version=1.8.1.0, Culture=neutral, PublicKeyToken=a39beb0835c43c8e, processorArchitecture=MSIL">
       <HintPath>..\packages\NetOfficeFw.Core.1.8.1\lib\net40\OfficeApi.dll</HintPath>
@@ -141,6 +134,7 @@
     <Compile Include="Properties\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="src\JniPMMLUtil.vb" />
     <Compile Include="src\JniPMMLVBAConstructor.vb" />
@@ -165,7 +159,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="JniPMML-VB-AddIn.dna" />
     <None Include="JniPMML-VB.dna" />
     <None Include="Properties\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -187,14 +180,17 @@
     <Content Include="Note.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
-  <Import Project="..\packages\ExcelDna.AddIn.1.5.1\build\ExcelDna.AddIn.targets" Condition="Exists('..\packages\ExcelDna.AddIn.1.5.1\build\ExcelDna.AddIn.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\ExcelDna.AddIn.1.5.1\build\ExcelDna.AddIn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ExcelDna.AddIn.1.5.1\build\ExcelDna.AddIn.targets'))" />
+    <Error Condition="!Exists('..\packages\ExcelDna.Interop.15.0.1\build\ExcelDna.Interop.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ExcelDna.Interop.15.0.1\build\ExcelDna.Interop.targets'))" />
+    <Error Condition="!Exists('..\packages\ExcelDna.AddIn.1.9.0\build\ExcelDna.AddIn.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ExcelDna.AddIn.1.9.0\build\ExcelDna.AddIn.props'))" />
+    <Error Condition="!Exists('..\packages\ExcelDna.AddIn.1.9.0\build\ExcelDna.AddIn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ExcelDna.AddIn.1.9.0\build\ExcelDna.AddIn.targets'))" />
   </Target>
   <!--
   <Import Project="..\packages\docfx.console.2.42.0\build\docfx.console.targets" Condition="Exists('..\packages\docfx.console.2.42.0\build\docfx.console.targets')" />
   -->
+  <Import Project="..\packages\ExcelDna.Interop.15.0.1\build\ExcelDna.Interop.targets" Condition="Exists('..\packages\ExcelDna.Interop.15.0.1\build\ExcelDna.Interop.targets')" />
+  <Import Project="..\packages\ExcelDna.AddIn.1.9.0\build\ExcelDna.AddIn.targets" Condition="Exists('..\packages\ExcelDna.AddIn.1.9.0\build\ExcelDna.AddIn.targets')" />
 </Project>

@@ -3,18 +3,8 @@
   <ItemGroup>
     <None Include="clean_deep.bat" />
     <None Include="doc.bat" />
-    <None Include="Properties\ExcelDna.Build.props">
-      <Filter>Properties</Filter>
-    </None>
-    <None Include="ExcelDna-Template.dna" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="NMakefile" />
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="Properties">
-      <UniqueIdentifier>{5ae14732-9603-4f33-840c-a414ff2e049a}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
 </Project>

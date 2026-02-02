@@ -2,7 +2,7 @@
 package com.WDataSci.JniPMML;
 
 import com.WDataSci.WDS.WDSException;
-import org.dmg.pmml.FieldName;
+import org.dmg.pmml.Field;
 import org.dmg.pmml.Model;
 import org.w3c.dom.Document;
 
@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import static com.WDataSci.WDS.Util.MatchingNullity;
@@ -802,7 +803,7 @@ namespace com.WDataSci.JniPMML
         }
 
         //Java
-        public RecordSetMD mPrepForOutput(RecordSetMD aInputRecordSetMD, JniPMMLItem aJniPMML, List<Map<FieldName, Object>> Results)
+        public RecordSetMD mPrepForOutput(RecordSetMD aInputRecordSetMD, JniPMMLItem aJniPMML, List<Map<String, Object>> Results)
         //C# public RecordSetMD mPrepForOutput<T>(RecordSetMD aInputRecordSetMD, JniPMMLItem aJniPMML, List<Map<T, Object>> Results)
         throws Exception
         {
@@ -823,9 +824,9 @@ namespace com.WDataSci.JniPMML
             List<org.dmg.pmml.OutputField> mol = mo.getOutputFields();
 
             //Java
-            Set<FieldName> ks = Results.get(0).keySet();
+            Set<String> ks = Results.get(0).keySet();
             //Java
-            FieldName[] ksa = new FieldName[ks.size()];
+            String[] ksa = new String[ks.size()];
             //Java
             ks.toArray(ksa);
             //C# FieldName[] ksa = Results.get(0).keyArray();
@@ -853,7 +854,7 @@ namespace com.WDataSci.JniPMML
 
             for ( k = 0, j = jj; k < nResultColumns; k++, j++ ) {
                 this.Column[j] = new FieldMD();
-                this.Column[j].Name = ksa[k].toString();
+                this.Column[j].Name = ksa[k];//.toString();
                 this.Column[j].MapToMapKey(ksa[k]);
 
                 org.dmg.pmml.OutputField of = mol.get(k);
@@ -866,7 +867,7 @@ namespace com.WDataSci.JniPMML
                 boolean found = false;
                 if ( ofdtyp == null ) {
                     for ( i = 0; !found && i < nInputMap; i++ ) {
-                        if ( aInputRecordSetMD.Column[i].hasMapKey() && aInputRecordSetMD.Column[i].MapKey.getValue().equals(this.Column[j].Name) ) {
+                        if ( aInputRecordSetMD.Column[i].hasMapKey() && Objects.equals(aInputRecordSetMD.Column[i].MapKey,this.Column[j].Name) ) {
                             found = true;
                             this.Column[j].Copy(aInputRecordSetMD.Column[i]);
                             break;
@@ -885,7 +886,7 @@ namespace com.WDataSci.JniPMML
                         this.Column[j].DTyp = FieldMDEnums.eDTyp.Int;
                         //there may not be a long PMML output type, double check if field is named like an input long
                         for ( found = false, i = 0; !found && i < nInputMap; i++ ) {
-                            if ( this.Column[i].hasMapKey() && this.Column[i].MapKey.getValue().equals(this.Column[j].Name) ) {
+                            if ( this.Column[i].hasMapKey() && Objects.equals(this.Column[i].MapKey,this.Column[j].Name) ) {
                                 found = true;
                                 if ( this.Column[i].DTyp.equals(FieldMDEnums.eDTyp.Lng) ) {
                                     this.Column[j].DTyp = FieldMDEnums.eDTyp.Lng;
@@ -951,7 +952,7 @@ namespace com.WDataSci.JniPMML
             try {
 
                 /* Java >>> */
-                FieldName[] lFieldNames = aJniPMML.PMMLDataFieldNames();
+                String[] lFieldNames = aJniPMML.PMMLDataFieldNames();
                 String[] lFieldStringNames = aJniPMML.PMMLDataFieldStringNames();
                 int nDataFieldNames = lFieldNames.length;
 

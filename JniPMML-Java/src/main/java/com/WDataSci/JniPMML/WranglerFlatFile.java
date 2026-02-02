@@ -5,7 +5,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
-import org.dmg.pmml.FieldName;
+import org.dmg.pmml.Field;
 
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -130,7 +130,7 @@ namespace com.WDataSci.JniPMML
                     nDataFieldNames = lDataFields.length;
                     lFieldStringNames = new String[nDataFieldNames];
                     for (i = 0; i < nDataFieldNames; i++)
-                        lFieldStringNames[i] = lDataFields[i].getName().getValue();
+                        lFieldStringNames[i] = lDataFields[i].getName();
                     /* <<< Java */
                 }
 
@@ -138,7 +138,8 @@ namespace com.WDataSci.JniPMML
                 String aPathAndName = null;
                 aPathAndName = com.WDataSci.WDS.Util.PathAndName(this.Path, this.FileName);
                 /* Java >>> */
-                this.__CSVParser = new CSVParser(new FileReader(aPathAndName), CSVFormat.EXCEL);
+                //this.__CSVParser = new CSVParser(new FileReader(aPathAndName), CSVFormat.EXCEL);
+                this.__CSVParser = CSVFormat.EXCEL.parse(new FileReader(aPathAndName));
                 this.__CSVParserIterator = this.__CSVParser.iterator();
                 CSVRecord inputLine = this.__CSVParserIterator.next();
                 /* <<< Java */
@@ -347,7 +348,8 @@ namespace com.WDataSci.JniPMML
                 {
                     aPathAndName = com.WDataSci.WDS.Util.PathAndName(aPath, aFileName);
                     //Java
-                    this.__CSVParser = new CSVParser(new FileReader(aPathAndName), CSVFormat.EXCEL);
+                    //this.__CSVParser = new CSVParser(new FileReader(aPathAndName), CSVFormat.EXCEL);
+                    this.__CSVParser = CSVFormat.EXCEL.parse(new FileReader(aPathAndName));
                     //Java
                     this.__CSVParserIterator = this.__CSVParser.iterator();
                     //C# this.__CSV = new CsvParser(new StreamReader(aPathAndName));
@@ -397,7 +399,7 @@ namespace com.WDataSci.JniPMML
 
                     row++;
                     //Java
-                    Map<FieldName, Object> inputRow = new LinkedHashMap<>();
+                    Map<String, Object> inputRow = new LinkedHashMap<>();
                     //C# Map<FieldName, Object> inputRow = new Map<FieldName, Object>();
                     Object[] inputRow_orig = new Object[nInputMap];
                     for ( j = 0 ; j < nInputMap ; j++ ) {
@@ -513,7 +515,7 @@ namespace com.WDataSci.JniPMML
                             for ( k = 0; k < nColumns; k++, jj++ ) hr[jj] = aInputRecordSetMD.Column[k].Name;
                         for ( k = 0; k < nColumns; k++, jj++ ) hr[jj] = aOutputRecordSetMD.Column[k].Name;
                         /* Java >>> */
-                        outCSV = new CSVPrinter(outBW, CSVFormat.DEFAULT.withHeader(hr).withDelimiter(aOutputRecordSetMD.FileMatter.Dlm.charAt(0)));
+                        outCSV = new CSVPrinter(outBW, CSVFormat.Builder.create().setHeader(hr).setDelimiter(aOutputRecordSetMD.FileMatter.Dlm.charAt(0)).get());
                         /* <<< Java */
                         /* C# >>> *
                         outCSV = new CsvWriter(outBW);
@@ -522,7 +524,7 @@ namespace com.WDataSci.JniPMML
                     }
                     else {
                         //Java
-                        outCSV = new CSVPrinter(outBW, CSVFormat.DEFAULT.withDelimiter(aOutputRecordSetMD.FileMatter.Dlm.charAt(0)));
+                        outCSV = new CSVPrinter(outBW, CSVFormat.Builder.create().setDelimiter(aOutputRecordSetMD.FileMatter.Dlm.charAt(0)).get());
                         //C# outCSV = new CsvWriter(outBW);
                     }
                     outCSV.flush();
@@ -597,7 +599,7 @@ namespace com.WDataSci.JniPMML
                         String[] hr = new String[nColumns];
                         for ( k = 0 ; k < nColumns ; k++ ) hr[k] = aOutputRecordSetMD.Column[k].Name;
                         /* Java >>> */ 
-                        outCSV = new CSVPrinter(outBW, CSVFormat.DEFAULT.withHeader(hr).withDelimiter(aOutputRecordSetMD.FileMatter.Dlm.charAt(0)));
+                        outCSV = new CSVPrinter(outBW, CSVFormat.Builder.create().setHeader(hr).setDelimiter(aOutputRecordSetMD.FileMatter.Dlm.charAt(0)).get());
                         /* <<< Java */
                         /* C# >>> *
                         outCSV = new CsvWriter(outBW);
@@ -606,7 +608,7 @@ namespace com.WDataSci.JniPMML
                     }
                     else {
                         //Java 
-                        outCSV = new CSVPrinter(outBW, CSVFormat.DEFAULT.withDelimiter(aOutputRecordSetMD.FileMatter.Dlm.charAt(0)));
+                        outCSV = new CSVPrinter(outBW, CSVFormat.Builder.create().setDelimiter(aOutputRecordSetMD.FileMatter.Dlm.charAt(0)).get());
                         //C# outCSV = new CsvWriter(outBW);
                     }
                     outCSV.flush();

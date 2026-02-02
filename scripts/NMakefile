@@ -55,27 +55,27 @@ copy_docs:
 	copy "$(SolutionDir)\WDS-JniPMML-Doc\docfx_pdf\JniPMML-VB\WDS-JniPMML-VB.pdf" "$(SolutionDir)\lib"
 
 clean:
-	del /F /Q "$(SolutionDir)\scripts\obj"
+	-del /F /Q "$(SolutionDir)\scripts\obj"
 
 clean_all_but_lib:clean_doc clean_test_output
 
 clean_all:clean_doc
-	del /F /Q "$(SolutionDir)\lib"
+	-del /F /Q "$(SolutionDir)\lib"
 
 clean_bin:
-	del /F /Q "$(SolutionDir)\JniPMML-Cs\bin"
-	del /F /Q "$(SolutionDir)\JniPMML-VB\bin"
-	del /F /Q "$(SolutionDir)\WDS-Cs\bin"
-	del /F /Q "$(SolutionDir)\WDS-VB\bin"
+	-del /F /Q "$(SolutionDir)\JniPMML-Cs\bin"
+	-del /F /Q "$(SolutionDir)\JniPMML-VB\bin"
+	-del /F /Q "$(SolutionDir)\WDS-Cs\bin"
+	-del /F /Q "$(SolutionDir)\WDS-VB\bin"
 
 clean_obj:
-	del /F /Q "$(SolutionDir)\scripts\obj"
-	del /F /Q "$(SolutionDir)\JniPMML-Cs\obj"
-	del /F /Q "$(SolutionDir)\JniPMML-VB\obj"
-	del /F /Q "$(SolutionDir)\WDS-Cs\obj"
-	del /F /Q "$(SolutionDir)\WDS-VB\obj"
-	del /F /Q "$(SolutionDir)\scripts\obj"
-	del /F /Q "$(SolutionDir)\scripts\test"
+	-del /F /Q "$(SolutionDir)\scripts\obj"
+	-del /F /Q "$(SolutionDir)\JniPMML-Cs\obj"
+	-del /F /Q "$(SolutionDir)\JniPMML-VB\obj"
+	-del /F /Q "$(SolutionDir)\WDS-Cs\obj"
+	-del /F /Q "$(SolutionDir)\WDS-VB\obj"
+	-del /F /Q "$(SolutionDir)\scripts\obj"
+	-del /F /Q "$(SolutionDir)\scripts\test"
 
 clean_deep:clean_all clean_bin clean_obj
 
@@ -86,8 +86,8 @@ clean_test_output:
 	del /F /Q "$(SolutionDir)\test\output\*"
 
 clean_doc:
-	del /F /Q /S "$(SolutionDir)\WDS-JniPMML-Doc\docfx_pdf\*"
-	del /F /Q /S "$(SolutionDir)\WDS-JniPMML-Doc\obj\*"
+	-del /F /Q /S "$(SolutionDir)\WDS-JniPMML-Doc\docfx_pdf\*"
+	-del /F /Q /S "$(SolutionDir)\WDS-JniPMML-Doc\obj\*"
 
 doc:dirs
 	cd $(SolutionDir)\WDS-JniPMML-Doc

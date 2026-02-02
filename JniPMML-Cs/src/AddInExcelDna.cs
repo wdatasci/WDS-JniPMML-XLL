@@ -133,10 +133,29 @@ namespace WDataSci.JniPMML
                 if ( pHDFView.Equals("Unk") || pHDF5.Equals("Unk") ) {
                     //pull the locations for HDFView and HDF5 from the system path
                     String p = System.Environment.GetEnvironmentVariable("PATH");
-                    if ( pHDFView.Equals("Unk") )
-                        pHDFView = PathElementOf(p, "HDFView") + "\\lib";
-                    if ( pHDF5.Equals("Unk") )
-                        pHDF5 = PathElementOf(p, "HDF5\\1") + "\\lib";
+                    if (pHDFView.Equals("Unk"))
+                        try
+                        {
+                            pHDFView = PathElementOf(p, "HDFView\\app");
+                        } 
+                        catch
+                        {
+                            try
+                            {
+                                pHDFView = PathElementOf(p, "HDFView\\3") + "\\lib";
+                            }
+                            catch {
+                                pHDFView = "Unk";
+                            }
+                        }
+                    if (pHDF5.Equals("Unk"))
+                        try
+                        {
+                            pHDF5 = PathElementOf(p, "HDF5\\2"); // + "\\lib";
+                        } catch
+                        {
+                            pHDF5 = PathElementOf(p, "HDF5\\1"); // + "\\lib";
+                        }
                 }
                 if ( pWDSJniPMML == "" ) {
                     DirectoryInfo aDirectoryInfo = new DirectoryInfo(pAssemblyLocation);
@@ -197,7 +216,7 @@ namespace WDataSci.JniPMML
                     pair.Add("-Djava.module.path", java_module_path);
 
                 if ( !pair.ContainsKey("-Djava.library.path") )
-                    pair.Add("-Djava.library.path", pHDFView + ";" + pHDF5);
+                    pair.Add("-Djava.library.path", pHDFView + ";" + pHDF5 + "\\lib;" + pHDF5 + "\\bin");
 
                 //if (!pair.ContainsKey("-D64")) pair.Add("-D64", "" );
                 if (!pair.ContainsKey("-Xcheck:jni ")) pair.Add("-Xcheck:jni ", "" );

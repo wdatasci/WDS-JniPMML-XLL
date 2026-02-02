@@ -5,7 +5,7 @@ package com.WDataSci.JniPMML;
 import com.WDataSci.WDS.Util;
 import com.WDataSci.WDS.WDSException;
 import com.beust.jcommander.JCommander;
-import org.dmg.pmml.FieldName;
+import org.dmg.pmml.Field;
 import org.jpmml.evaluator.Evaluator;
 
 import java.util.Set;
@@ -118,10 +118,10 @@ public class Cmd
         //aJniPMMLItem.InputMatter.RecordSetMD=aInputRecordSetMD;
 
         //Short circuit if new inputs are provided.
-        if ( aInputRecordSet.Records.size() == 0 ) return;
+        if (aInputRecordSet.Records.isEmpty()) return;
 
         if ( args.verbose ) {
-            Set<FieldName> ks = aInputRecordSet.Records.get(0).keySet();
+            Set<String> ks = aInputRecordSet.Records.get(0).keySet();
             System.out.printf("Row Recap,\n%s\n", ks.toString());
             for (i = 0; i < aInputRecordSet.Records.size(); i++) {
                 System.out.printf("row %d, %s=%s\n", i, aInputRecordSet.Records.get(i).keySet(), aInputRecordSet.Records.get(i).values());

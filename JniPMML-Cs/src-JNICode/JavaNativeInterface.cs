@@ -138,6 +138,8 @@ namespace JNI
                 jrev = 17;
             else if (jreVersion.StartsWith("21."))
                 jrev = 21;
+            else if (jreVersion.StartsWith("25."))
+                jrev = 25;
             else
                 jrev = Convert.ToInt32(jreVersion);
 
@@ -169,6 +171,10 @@ namespace JNI
                 //    break;
                 case 21:
                     args.version = JNIVersion.JNI_VERSION_21;
+                    break;
+                case 25:
+                    args.version = JNIVersion.JNI_VERSION_24; // according to the docs for 25
+                    //https://docs.oracle.com/en/java/javase/25/docs/specs/jni/functions.html#return-codes
                     break;
                 default:
                     args.version = JNIVersion.JNI_VERSION_10;

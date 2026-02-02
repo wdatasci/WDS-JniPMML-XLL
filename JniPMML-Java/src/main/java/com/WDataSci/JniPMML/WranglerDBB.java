@@ -3,7 +3,7 @@ package com.WDataSci.JniPMML;
 
 
 import com.WDataSci.WDS.WDSException;
-import org.dmg.pmml.FieldName;
+import org.dmg.pmml.Field;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -309,7 +309,7 @@ namespace com.WDataSci.JniPMML {
 
                     Object[] inputRow_orig = new Object[nColumns];
                     //Java
-                    Map<FieldName, Object> inputRow = new LinkedHashMap<>();
+                    Map<String, Object> inputRow = new LinkedHashMap<>();
                     //C# Map<FieldName, Object> inputRow = new Map<FieldName, Object>();
                     for ( jj = 0; jj < nColumns; jj++ ) {
                         switch ( aInputRecordSetMD.Column[jj].DTyp ) {
@@ -422,7 +422,7 @@ namespace com.WDataSci.JniPMML {
                     buf.position(buf.ptr, bptr, buf.vlenptr);
                     buf.PutLayerVLenString(1, aRecordSetMD.Column[jj].Name, nColumnNameMaxByteLength, 2);
                     if ( aRecordSetMD.Column[jj].MapKey != null ) {
-                        buf.PutLayerVLenString(1, aRecordSetMD.Column[jj].MapKey.getValue(), nColumnNameMaxByteLength, 2);
+                        buf.PutLayerVLenString(1, aRecordSetMD.Column[jj].MapKey, nColumnNameMaxByteLength, 2);
                     }
                     else {
                         buf.PutLayerVLenString(1, "", nColumnNameMaxByteLength, 2);
@@ -603,7 +603,7 @@ namespace com.WDataSci.JniPMML {
                 for ( int i = 0; i < nRows; i++, bptr += (int) buf.nRecordFLenBytes ) {
                     buf.position(buf.ptr, bptr, buf.vlenptr);
 
-                    Map<FieldName, Object> outRow = aOutputRecordSet.Records.get(i);
+                    Map<String, Object> outRow = aOutputRecordSet.Records.get(i);
                     Object[] inRow = null;
 
                     if ( outRecordSetMD.ModeMatter.bRepeatInputFields )

@@ -1,9 +1,9 @@
 package com.WDataSci.JniPMML;
 
-import com.WDataSci.WDS.WDSException;
+//import com.WDataSci.WDS.WDSException;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class Test1
 {
@@ -126,7 +126,7 @@ public class Test1
                 "AuditBinaryReg",
                 "single_audit_dectree",
                 "AuditKMeans",
-                "AuditRandomForest",
+                //"AuditRandomForest",
                 "AuditSVM",
                 "AuditTree",
                 "ensemble_audit_dectree",

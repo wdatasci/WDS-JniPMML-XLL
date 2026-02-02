@@ -2,8 +2,10 @@
 <DnaLibrary Name="JniPMML-VB Add-In" RuntimeVersion="v4.0" xmlns="http://schemas.excel-dna.net/addin/2018/05/dnalibrary">
 
   <ExternalLibrary Path="JniPMML-VB.dll" ExplicitExports="true" LoadFromBytes="true" Pack="true" IncludePdb="false" />
+  <!--
   <Reference Path="ExcelDna.Registration.VisualBasic.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
   <Reference Path="ExcelDna.Registration.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
+  -->
   <Reference Path="ExcelDna.Utilities.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
   <Reference Path="NetOffice.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />
   <Reference Path="OfficeApi.dll" LoadFromBytes="false" ExplicitExports="false" Pack="true" />

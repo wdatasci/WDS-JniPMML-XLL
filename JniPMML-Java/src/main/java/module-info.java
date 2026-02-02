@@ -7,12 +7,13 @@ module com.WDataSci.JniPMML {
     requires jcommander;
     requires pmml.model;
     requires pmml.evaluator;
-    requires hdfobject;
+    requires org.hdfgroup.object;
     requires jdk.xml.dom;
-    requires commons.csv;
+    requires org.apache.commons.csv;
     requires java.sql;
     requires com.sun.istack.runtime;
     requires com.fasterxml.jackson.databind;
+    requires jakarta.xml.bind;
     opens com.WDataSci.JniPMML;
     exports com.WDataSci.JniPMML;
 }

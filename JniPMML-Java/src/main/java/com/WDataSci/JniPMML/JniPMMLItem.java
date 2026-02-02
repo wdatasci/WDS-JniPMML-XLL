@@ -5,7 +5,7 @@ import com.WDataSci.WDS.Util;
 import com.WDataSci.WDS.WDSException;
 import org.apache.commons.io.IOUtils;
 import org.dmg.pmml.DataField;
-import org.dmg.pmml.FieldName;
+import org.dmg.pmml.Field;
 import org.dmg.pmml.clustering.ClusteringModel;
 import org.jpmml.evaluator.clustering.ClusterAffinityDistribution;
 import org.jpmml.evaluator.clustering.ClusteringModelEvaluator;
@@ -20,6 +20,7 @@ import java.io.StringWriter;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.*;
+import jakarta.xml.bind.JAXBException;
 
 //
 // <p>JniPMMLItem is the main wrap class around a single PMML document and its evaluator.
@@ -328,16 +329,16 @@ public class JniPMMLItem
         }
     }
 
-    public FieldName[] PMMLDataFieldNames()
+    public String[] PMMLDataFieldNames()
     throws com.WDataSci.WDS.WDSException
     {
         synchronized ( this ) {
             try {
                 List<DataField> lDataFields = this.PMMLMatter.Doc.getDataDictionary().getDataFields();
                 int n = lDataFields.size();
-                FieldName[] rv = new FieldName[n];
+                String[] rv = new String[n];
                 for ( int i = 0; i < n; i++ ) {
-                    rv[i] = (FieldName) lDataFields.get(i).getName();
+                    rv[i] = (String) lDataFields.get(i).getName();
                 }
                 return rv;
             }
@@ -486,7 +487,7 @@ public class JniPMMLItem
                     FieldMD ic = this.InputMatter.RecordSetMD.Column[i];
                     pw.printf("Column[%d].Name=%s\n", i, ic.Name);
                     if ( ic.hasMapKey() )
-                        pw.printf("   Column[%d].PMMLFieldStringName=%s\n", i, ic.MapKey.getValue());
+                        pw.printf("   Column[%d].PMMLFieldStringName=%s\n", i, ic.MapKey);
                     else
                         pw.printf("   Column[%d] is not mapped to a PMML DataField\n", i);
                     pw.printf("   Column[%d].DTyp=%s\n", i, ic.DTyp);
@@ -519,19 +520,19 @@ public class JniPMMLItem
 
     //CodeNote, CJW:  Most of this is just for error checking and un-doing the generic return
 
-    public List<Map<FieldName, Object>> PMMLEvaluate(RecordSet aInputRecordSet, boolean bAnySystemOut, boolean bVerboseOutput)
+    public List<Map<String, Object>> PMMLEvaluate(RecordSet aInputRecordSet, boolean bAnySystemOut, boolean bVerboseOutput)
     throws com.WDataSci.WDS.WDSException
     {
         synchronized ( this ) {
 
             org.jpmml.evaluator.Evaluator aEvaluator = this.PMMLEvaluator();
 
-            List<Map<FieldName, ?>> output = new ArrayList<>(0);
+            List<Map<String, ?>> output = new ArrayList<>(0);
 
             try {
 
                 for ( int i = 0; i < aInputRecordSet.Records.size(); i++ ) {
-                    Map<FieldName,?> outrec=null;
+                    Map<String,?> outrec=null;
                     try {
                         outrec=aEvaluator.evaluate(aInputRecordSet.Records.get(i));
                     } catch (Exception e) {
@@ -550,7 +551,7 @@ public class JniPMMLItem
             if ( output.size() != aInputRecordSet.Records.size() )
                 throw new WDSException(String.format("Error in PMML evaluation, # of evaluated outputs does not match # of evaluated inputs! (%d<>%d)", output.size(), aInputRecordSet.Records.size()));
 
-            Set<FieldName> ks = null;
+            Set<String> ks = null;
             for ( int i=0; ks==null && i<output.size(); i++) {
                 if (output.get(i)!=null)
                     ks = output.get(i).keySet();
@@ -561,7 +562,7 @@ public class JniPMMLItem
 
             if ( bVerboseOutput && ks.size() > 0 && ks.toArray()[0] != null ) {
                 System.out.printf("Output\nFirst row has fields and types:\n");
-                for ( FieldName fn : ks ) {
+                for ( String fn : ks ) {
                     Object o = output.get(0).get(fn);
                     System.out.printf("        key=%s, type=%s\n", fn.toString(), o.getClass().getName());
                 }
@@ -569,7 +570,7 @@ public class JniPMMLItem
                 for ( int i = 0; i < output.size(); i++ ) {
                     System.out.printf("    row %d, %s=%s\n", i, output.get(i).keySet(), output.get(i).values());
                     if ( false ) {
-                        for ( FieldName fn : ks ) {
+                        for ( String fn : ks ) {
                             Object o = output.get(i).get(fn);
                             System.out.printf("        key=%s, type=%s, value=%s\n", fn.toString(), o, o.getClass().getName());
                         }
@@ -579,20 +580,20 @@ public class JniPMMLItem
 
             try {
                 //to get rid of List<Map<FieldName,?>>
-                List<Map<FieldName, Object>> rv = new ArrayList<>();
+                List<Map<String, Object>> rv = new ArrayList<>();
                 int nColumns = this.OutputMatter.RecordSetMD.nColumns();
                 for ( int i = 0; i < output.size(); i++ ) {
-                    Map<FieldName, Object> row = new LinkedHashMap<>();
+                    Map<String, Object> row = new LinkedHashMap<>();
                     if (output.get(i)==null){
                         if (ks==null) {
                             for (int j=0;j<this.OutputMatter.RecordSetMD.nColumns();j++)
                                 row.put(this.OutputMatter.RecordSetMD.Column[j].MapKey,null);
                         } else {
-                            for (FieldName fn : ks)
+                            for (String fn : ks)
                                 row.put(fn, null);
                         }
                     } else if ( ks.size() > 0 && ks.toArray()[0] != null ) {
-                        for ( FieldName fn : ks ) {
+                        for ( String fn : ks ) {
                             row.put(fn, output.get(i).get(fn));
                         }
                     }
@@ -745,7 +746,7 @@ public class JniPMMLItem
                         boolean found = false;
                         if ( ofdtyp == null ) {
                             for ( i = 0; !found && i < nInputMap; i++ ) {
-                                if ( this.InputMatter.RecordSetMD.Column[i].hasMapKey() && this.InputMatter.RecordSetMD.Column[i].MapKey.getValue().equals(this.OutputMatter.RecordSetMD.Column[j].Name) ) {
+                                if ( this.InputMatter.RecordSetMD.Column[i].hasMapKey() && Objects.equals(this.InputMatter.RecordSetMD.Column[i].MapKey, this.OutputMatter.RecordSetMD.Column[j].Name)) {
                                     found = true;
                                     this.OutputMatter.RecordSetMD.Column[j].Copy(this.InputMatter.RecordSetMD.Column[i]);
                                     break;
@@ -764,7 +765,7 @@ public class JniPMMLItem
                                 this.OutputMatter.RecordSetMD.Column[j].DTyp = FieldMDEnums.eDTyp.Int;
                                 //there may not be a long PMML output type, double check if field is named like an input long
                                 for ( found = false, i = 0; !found && i < nInputMap; i++ ) {
-                                    if ( this.OutputMatter.RecordSetMD.Column[i].hasMapKey() && this.OutputMatter.RecordSetMD.Column[i].MapKey.getValue().equals(this.OutputMatter.RecordSetMD.Column[j].Name) ) {
+                                    if ( this.OutputMatter.RecordSetMD.Column[i].hasMapKey() && Objects.equals(this.OutputMatter.RecordSetMD.Column[i].MapKey, this.OutputMatter.RecordSetMD.Column[j].Name) ) {
                                         found = true;
                                         if ( this.OutputMatter.RecordSetMD.Column[i].DTyp.equals(FieldMDEnums.eDTyp.Lng) ) {
                                             this.OutputMatter.RecordSetMD.Column[j].DTyp = FieldMDEnums.eDTyp.Lng;
@@ -807,8 +808,7 @@ public class JniPMMLItem
                         org.jpmml.evaluator.TargetField t = ksa[k];
                         String s = null;
                         try {
-                            org.dmg.pmml.FieldName fn = t.getFieldName();
-                            s = fn.getValue();
+                            s = t.getField().getName();
                             if ( s == null || s.length() == 0 ) s = t.getDisplayName();
                         }
                         catch ( Exception e ) {
@@ -836,7 +836,7 @@ public class JniPMMLItem
                         boolean found = false;
                         if ( ofdtyp == null ) {
                             for ( i = 0; !found && i < nInputMap; i++ ) {
-                                if ( this.InputMatter.RecordSetMD.Column[i].hasMapKey() && this.InputMatter.RecordSetMD.Column[i].MapKey.getValue().equals(this.OutputMatter.RecordSetMD.Column[j].Name) ) {
+                                if ( this.InputMatter.RecordSetMD.Column[i].hasMapKey() && Objects.equals(this.InputMatter.RecordSetMD.Column[i].MapKey, this.OutputMatter.RecordSetMD.Column[j].Name)) {
                                     found = true;
                                     this.OutputMatter.RecordSetMD.Column[j].Copy(this.InputMatter.RecordSetMD.Column[i]);
                                     break;
@@ -852,7 +852,7 @@ public class JniPMMLItem
                                 this.OutputMatter.RecordSetMD.Column[j].DTyp = FieldMDEnums.eDTyp.Int;
                                 //there may not be a long PMML output type, double check if field is named like an input long
                                 for ( found = false, i = 0; !found && i < nColumns; i++ ) {
-                                    if ( this.OutputMatter.RecordSetMD.Column[i].hasMapKey() && this.OutputMatter.RecordSetMD.Column[i].MapKey.getValue().equals(this.OutputMatter.RecordSetMD.Column[j].Name) ) {
+                                    if ( this.OutputMatter.RecordSetMD.Column[i].hasMapKey() && Objects.equals(this.OutputMatter.RecordSetMD.Column[i].MapKey,this.OutputMatter.RecordSetMD.Column[j].Name) ) {
                                         found = true;
                                         if ( this.OutputMatter.RecordSetMD.Column[i].DTyp.equals(FieldMDEnums.eDTyp.Lng) ) {
                                             this.OutputMatter.RecordSetMD.Column[j].DTyp = FieldMDEnums.eDTyp.Lng;

@@ -7,9 +7,12 @@ import com.sun.istack.Nullable;
 import hdf.object.Attribute;
 import hdf.object.Datatype;
 import hdf.object.FileFormat;
+import hdf.object.HObject;
+import hdf.object.h5.H5CompoundAttr;
 import hdf.object.h5.H5CompoundDS;
 import hdf.object.h5.H5File;
-import org.dmg.pmml.FieldName;
+import hdf.object.h5.H5ScalarAttr;
+import org.dmg.pmml.Field;
 
 import java.io.PrintWriter;
 import java.util.*;
@@ -52,6 +55,7 @@ namespace com.WDataSci.JniPMML
 /* <<< C# */
 
 
+
     public class WranglerHDF5
     {
 
@@ -84,11 +88,13 @@ namespace com.WDataSci.JniPMML
             }
         }
 
+        /*
         protected void finalize()
         throws com.WDataSci.WDS.WDSException
         {
             this.Dispose();
         }
+        */
         /* <<< Java */
         /* C# >>> *
            public void Dispose()
@@ -251,7 +257,7 @@ namespace com.WDataSci.JniPMML
                         if ( bUsesAttribues ) {
                             natt = metadata.size();
                             for ( i = 0; i < natt; i++ )
-                                attNames.add(metadata.get(i).getName());
+                                attNames.add(metadata.get(i).getAttributeName());
                         }
                     }
                     /* <<< Java */
@@ -460,7 +466,7 @@ namespace com.WDataSci.JniPMML
                             /* Java >>> */
                             i = metadata.indexOf(cm.Name + "/@DTyp");
                             if ( i >= 0 ) {
-                                String rep = metadata.get(i).getData().toString();
+                                String rep = metadata.get(i).getAttributeData().toString();
                                 int[] l = {-1};
                                 com.WDataSci.JniPMML.FieldMDEnums.eDTyp dtyp = com.WDataSci.JniPMML.FieldMDEnums.eDTyp.FromAlias(rep, l);
                                 if ( l[0] > 0 ) cm.StringMaxLength = l[0];
@@ -471,7 +477,7 @@ namespace com.WDataSci.JniPMML
                                 }
                             }
                             i = metadata.indexOf(cm.Name + "/@StringMaxLength");
-                            if ( i >= 0 ) cm.StringMaxLength = (int) (metadata.get(i).getData());
+                            if ( i >= 0 ) cm.StringMaxLength = (int) (metadata.get(i).getAttributeData());
                             /* <<< Java */
                             /* C# >>> *
                                int i = attNames.IndexOf(cm.Name + "/@DTyp");
@@ -806,7 +812,7 @@ namespace com.WDataSci.JniPMML
 
                 for ( i = 0; i < nRows; i++ ) {
                     Object[] inputRow_orig = new Object[nInputColumns];
-                    Map<org.dmg.pmml.FieldName, Object> inputRow = new LinkedHashMap<>();
+                    Map<String, Object> inputRow = new LinkedHashMap<>();
                     for ( j = 0; j < nInputColumns; j++ ) {
                         switch ( aInputRecordSetMD.Column[j].DTyp ) {
                             case Dbl: {
@@ -1223,30 +1229,32 @@ namespace com.WDataSci.JniPMML
                 String[] attvs = {""};
                 for ( j = 0; j < nColumns; j++ ) {
                     attvs[0] = aOutputRecordSetMD.Column[j].DTyp.ToString();
-                    Attribute att = new Attribute(outputCDS2
+                    attvl[0]=1;
+                    hdf.object.h5.H5Datatype dtyplength = new hdf.object.h5.H5Datatype(Datatype.CLASS_STRING,attvs[0].length()+1,-1,-1);
+                    Attribute att = new H5ScalarAttr(outputCDS2
                             , aOutputRecordSetMD.Column[j].Name + "/@DTyp"
-                            , lVLenStringDataType
-                            , single
-                            , attvs);
+                            , dtyplength
+                            , single);
+                    att.setAttributeData(attvs);
                     outputCDS2.writeMetadata(att);
                     switch ( aOutputRecordSetMD.Column[j].DTyp ) {
                         case VLS:
                         case Str:
                             attvl[0] = aOutputRecordSetMD.Column[j].StringMaxLength;
-                            att = new Attribute(outputCDS2
+                            att = new H5ScalarAttr(outputCDS2
                                     , aOutputRecordSetMD.Column[j].Name + "/@StringMaxLength"
                                     , lLongDataType
-                                    , single
-                                    , attvl);
+                                    , single);
+                            att.setAttributeData(attvl);
                             outputCDS2.writeMetadata(att);
                             break;
                         case Byt:
                             attvl[0] = aOutputRecordSetMD.Column[j].ByteMaxLength;
-                            att = new Attribute(outputCDS2
+                            att = new H5ScalarAttr(outputCDS2
                                     , aOutputRecordSetMD.Column[j].Name + "/@ByteMaxLength"
                                     , lLongDataType
-                                    , single
-                                    , attvl);
+                                    , single);
+                            att.setAttributeData(attvl);
                             outputCDS2.writeMetadata(att);
                             break;
                         default:

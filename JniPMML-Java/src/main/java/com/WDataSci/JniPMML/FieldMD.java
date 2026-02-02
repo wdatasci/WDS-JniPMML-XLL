@@ -2,7 +2,7 @@
 package com.WDataSci.JniPMML;
 
 import com.WDataSci.WDS.Util;
-import org.dmg.pmml.FieldName;
+import org.dmg.pmml.Field;
 
 /* <<< Java */
 /* C# >>> *
@@ -19,17 +19,18 @@ namespace com.WDataSci.JniPMML
 
 
     //Java 
-    public class FieldMD extends FieldBaseMD implements FieldMDIKey<FieldName>
+    public class FieldMD extends FieldBaseMD implements FieldMDIKey<String>
     //C# public class FieldMD : FieldBaseMD, FieldMDIKey<FieldName>
     {
 
-        public FieldName MapKey = null;
+        public String MapKey = null;
 
-        public FieldName MappedKey() { return this.MapKey; }
+        public String MappedKey() { return this.MapKey; }
 
         public String MappedKeyValue() {
             if (this.hasMapKey())
-                return this.MapKey.getValue();
+                //return this.MapKey.getValue();
+                return this.MapKey;
             else
                 return null;
         }
@@ -39,17 +40,19 @@ namespace com.WDataSci.JniPMML
             return (this.MapKey != null);
         }
 
-        public void MapToMapKey(FieldName aFieldName)
+        public void MapToMapKey(String aFieldName)
         throws com.WDataSci.WDS.WDSException
         {
-            this.MapKey = new FieldName(new String(aFieldName.getValue()));
+            this.MapKey = aFieldName;
         }
 
+        /*
         public FieldMD MapToMapKey(String aFieldStringName)
         {
-            this.MapKey = new FieldName(new String(aFieldStringName));
+            this.MapKey = aFieldStringName;
             return this;
         }
+         */
 
         public FieldMD()
         //C# : base()
@@ -65,7 +68,7 @@ namespace com.WDataSci.JniPMML
             //Java
             super(arg);
             if ( arg.MapKey != null )
-                this.MapKey = new FieldName(new String(arg.MapKey.getValue()));
+                this.MapKey = arg.MapKey;
         }
 
         /* Java >>> */
@@ -82,7 +85,7 @@ namespace com.WDataSci.JniPMML
             //Java
             if ( !super.Equals(arg) ) return false;
             if ( !Util.MatchingNullity(this.MapKey, arg.MapKey) ) return false;
-            if ( this.MapKey != null && !this.MapKey.getValue().equals(arg.MapKey.getValue()) )
+            if ( this.MapKey != null && this.MapKey!=arg.MapKey )
                 return false;
             return true;
         }
@@ -94,7 +97,7 @@ namespace com.WDataSci.JniPMML
             //Java
             super.Copy(arg);
             if ( arg.MapKey == null ) this.MapKey = null;
-            else this.MapKey = new FieldName(new String(arg.MapKey.getValue()));
+            else this.MapKey = MapKey;
         }
 
     }

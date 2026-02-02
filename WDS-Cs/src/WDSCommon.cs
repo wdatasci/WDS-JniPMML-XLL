@@ -130,7 +130,7 @@ namespace com.WDataSci.WDS
                     nelem = nrows * ncols;
                 }
             }
-            catch ( SystemException e ) {
+            catch {
                 ndim = 0;
                 nelem = 0;
                 nrows = 0;
@@ -165,7 +165,7 @@ namespace com.WDataSci.WDS
                 ncols = 1;
                 return;
             }
-            catch ( SystemException e ) {
+            catch {
                 ndim = 0;
                 nelem = 0;
                 nrows = 0;

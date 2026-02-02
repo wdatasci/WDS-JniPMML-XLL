@@ -1,7 +1,7 @@
 /* Java >>> */
 package com.WDataSci.JniPMML;
 
-import org.dmg.pmml.FieldName;
+import org.dmg.pmml.Field;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +29,12 @@ namespace com.WDataSci.JniPMML
 public class RecordSet
 {
 
-    public List<Map<FieldName, Object>> Records = null;
+    public List<Map<String, Object>> Records = null;
     public List<Object[]> Records_Orig = null;
     public Boolean isInput = false;
     public RecordSet() { }
 
-    public RecordSet(List<Map<FieldName, Object>> _Records)
+    public RecordSet(List<Map<String, Object>> _Records)
     {
         this.Records = _Records;
     }
@@ -82,7 +82,7 @@ public class RecordSet
         return this;
     }
 
-    public RecordSet cAsOutput(List<Map<FieldName, Object>> _Records)
+    public RecordSet cAsOutput(List<Map<String, Object>> _Records)
     {
         this.isInput = false;
         this.Records = _Records;

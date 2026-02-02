@@ -1,8 +1,8 @@
 package com.WDataSci.JniPMML;
 
-import com.WDataSci.WDS.WDSException;
+//import com.WDataSci.WDS.WDSException;
 import com.beust.jcommander.JCommander;
-import org.dmg.pmml.FieldName;
+import org.dmg.pmml.Field;
 import org.jpmml.evaluator.Evaluator;
 import org.junit.Test;
 
@@ -115,7 +115,7 @@ public class Test2
 
 
                 //Evaluate the PMML on each row of the input set and returns a non-generic
-                List<Map<FieldName, Object>> Results = aJniPMMLItem.PMMLEvaluate(aInputRecordSet, true, args.verbose);
+                List<Map<String, Object>> Results = aJniPMMLItem.PMMLEvaluate(aInputRecordSet, true, args.verbose);
 
                 RecordSetMD aOutputRecordSetMD = new RecordSetMD(RecordSetMDEnums.eMode.Output)
                         .cAs(RecordSetMDEnums.eType.DBB)
@@ -152,21 +152,22 @@ public class Test2
                 CheckII(aOutputRecordSet.Records.get(0).keySet().size(), aTestRecordSet.Records.get(0).keySet().size(), "nFields");
                 for (i = 0; i < aOutputRecordSet.Records.size(); i++) {
                     for (j = 0; j < aOutputRecordSetMD.nColumns(); j++) {
-                        FieldName Afn = aOutputRecordSetMD.Column[j].MapKey;
+                        String Afn = aOutputRecordSetMD.Column[j].MapKey;
                         Object A = aOutputRecordSet.Records.get(i).get(Afn);
-                        FieldName Bfn = aTestMap2.Column[j].MapKey;
+                        String Bfn = aTestMap2.Column[j].MapKey;
                         Object B = aTestRecordSet.Records.get(i).get(Bfn);
-                        if ( CheckJJ(A, B, "Row " + i + " " + Afn.getValue() + " " + Bfn.getValue()) ) {
+                        if ( CheckJJ(A, B, "Row " + i + " " + Afn + " " + Bfn) ) {
                             if (args.verbose)
-                                System.out.println("Test: Row " + i + " " + Afn.getValue() + ":" + A.toString() + ", " + Bfn.toString() + ":" + B.toString());
+                                System.out.println("Test: Row " + i + " " + Afn + ":" + A.toString() + ", " + Bfn + ":" + B.toString());
                         }
                     }
                 }
 
 
             } catch (Exception e) {
-                WDSException je = new WDSException("Test1 Error", e);
-                System.out.print(je.getMessage());
+                //WDSException je = new WDSException("Test1 Error", e);
+                System.out.print("Test1 Error"+e.getMessage());
+                //System.out.print(je.getMessage());
                 fail();
             }
             assertTrue(true);

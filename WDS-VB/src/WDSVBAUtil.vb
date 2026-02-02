@@ -10,8 +10,8 @@ Public Module VBAUtil
 
         Public Const WDSVBAModuleCheckSheetName = "VBA_Modules_Check"
 
-        <ExcelCommand(IsHidden:=True, ExplicitRegistration:=True)>
-        Public Sub WDSVBAImportExport_Guts()
+    <ExcelCommand(ExplicitRegistration:=True)>
+    Public Sub WDSVBAImportExport_Guts()
             Dim tapp As MOIE.Application
             tapp = ExcelDnaUtil.Application
             Dim twb As MOIE.Workbook = tapp.ActiveWorkbook

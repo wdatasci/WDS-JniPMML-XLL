@@ -218,7 +218,7 @@ namespace com.WDataSci.JniPMML
                         typl[0] = l;
                         return rc;
                     }
-                    catch ( Exception e ) {
+                    catch {
                         typl[0] = -1;
                         return rc;
                     }

@@ -16,7 +16,7 @@ namespace com.WDataSci.JniPMML
 /**
  * <p>FieldBaseMD contains the cross-package data field information.</p>
  * <p>It holds cached information for input and output processing and
- * provides the any simplifications, for example, numeric types that are
+ * provides any simplifications, for example, numeric types that are
  * not int, long, byte, or boolean, are taken as double.</p>
  * <p>On purpose, the enumerated type names are only 3 characters to
  * make the use explicit and not cause any confusion with XSD, PMML, SQL, or HDF5
@@ -49,7 +49,7 @@ public class FieldBaseMD
 
     public FieldBaseMD(String _Name, FieldMDEnums.eDTyp _DTyp)
     {
-        this.Name = new String(_Name);
+        this.Name = _Name;
         this.DTyp = _DTyp;
         if ( this.DTyp.bIn(FieldMDEnums.eDTyp.VLS, FieldMDEnums.eDTyp.Str) ) {
             this.StringMaxLength = Default.StringMaxLength;
@@ -59,11 +59,11 @@ public class FieldBaseMD
 
     public FieldBaseMD(String Name, FieldMDEnums.eDTyp DTyp, int StringMaxLength)
     {
-        this.Name = new String(Name);
+        this.Name = Name;
         this.DTyp = DTyp;
         if ( StringMaxLength > 0 ) {
             this.StringMaxLength = StringMaxLength;
-            this.ByteMaxLength = 2 * ByteMaxLength;
+            this.ByteMaxLength = 2L * StringMaxLength;
         }
         else if ( this.DTyp.bIn(FieldMDEnums.eDTyp.VLS, FieldMDEnums.eDTyp.Str) ) {
             this.StringMaxLength = Default.StringMaxLength;
@@ -74,28 +74,33 @@ public class FieldBaseMD
     public FieldBaseMD(FieldBaseMD arg)
     throws com.WDataSci.WDS.WDSException, Exception
     {
-        this.Name = new String(arg.Name);
+        this.Name = arg.Name;
         this.DTyp = arg.DTyp;
+        this.RTyp = arg.RTyp;
         this.StringMaxLength = arg.StringMaxLength;
         this.ByteMaxLength = arg.ByteMaxLength;
         if ( arg.HDF5DataType != null )
             this.HDF5DataType = new WranglerHDF5().new_HDF5DataType(arg);
+        this.ExternalDTyp = arg.ExternalDTyp;
+        this.ByteMemOffset = arg.ByteMemOffset;
+        this.ByteMemLength = arg.ByteMemLength;
+        this.Format = arg.Format;
     }
 
     public FieldBaseMD(String Name, int hclass, int hlength, int horder, int hsign)
     throws com.WDataSci.WDS.WDSException, Exception
     {
-        this.Name = new String(Name);
+        this.Name = Name;
         WranglerHDF5 tmp = new WranglerHDF5();
         this.HDF5DataType = tmp.new_HDF5DataType(hclass, hlength, horder, hsign);
         this.DTyp = this.HDF5DataType.eDTyp();
         if ( this.DTyp.equals(FieldMDEnums.eDTyp.Str) ) {
             this.StringMaxLength = hlength;
-            this.ByteMaxLength = 2 * hlength;
+            this.ByteMaxLength = 2L * hlength;
         }
         else if ( this.DTyp.equals(FieldMDEnums.eDTyp.VLS) ) {
             this.StringMaxLength = Default.StringMaxLength;
-            this.ByteMaxLength = 2 * hlength;
+            this.ByteMaxLength = 2L * hlength;
         }
         else if ( this.DTyp.equals(FieldMDEnums.eDTyp.Byt) ) {
             this.ByteMaxLength = hlength;
@@ -115,21 +120,19 @@ public class FieldBaseMD
         //return false;
 
         if ( !Util.MatchingNullity(this.HDF5DataType, arg.HDF5DataType) ) return false;
-        if ( this.HDF5DataType != null && !this.HDF5DataType.Equals(arg.HDF5DataType) ) return false;
-
-        return true;
+        return this.HDF5DataType == null || this.HDF5DataType.Equals(arg.HDF5DataType);
     }
 
     public void Copy(FieldBaseMD arg)
     throws com.WDataSci.WDS.WDSException, Exception
     {
-        this.Name = new String(arg.Name);
+        this.Name = arg.Name;
         this.DTyp = arg.DTyp;
         this.StringMaxLength = arg.StringMaxLength;
         this.ByteMaxLength = arg.ByteMaxLength;
         this.ByteMemLength = arg.ByteMemLength;
         this.ByteMemOffset = arg.ByteMemOffset;
-        this.Format = new String(arg.Format);
+        this.Format = arg.Format;
         if ( arg.HDF5DataType == null ) this.HDF5DataType = null;
         else
             this.HDF5DataType = new WranglerHDF5().new_HDF5DataType(arg);
@@ -139,33 +142,28 @@ public class FieldBaseMD
     throws com.WDataSci.WDS.WDSException
     {
         if ( this.ByteMemLength > 0 ) return this.ByteMaxLength;
-        switch ( this.DTyp ) {
-            case Dbl:
-                //case FieldMDEnums.eDTyp.Dbl:
-            case Dte:
-                //case FieldMDEnums.eDTyp.Dte:
-            case DTm:
-                //case FieldMDEnums.eDTyp.DTm:
-            case Lng:
-                //case FieldMDEnums.eDTyp.Lng:
-            case VLS:
+        return switch (this.DTyp) {
+            //case FieldMDEnums.eDTyp.Dbl:
+            //case FieldMDEnums.eDTyp.Dte:
+            //case FieldMDEnums.eDTyp.DTm:
+            //case FieldMDEnums.eDTyp.Lng:
+            case Dbl, Dte, DTm, Lng, VLS ->
                 //case FieldMDEnums.eDTyp.VLS:
-                return 8;
-            case Int:
+                    8;
+            case Int ->
                 //case FieldMDEnums.eDTyp.Int:
-                return 4;
-            case Str:
+                    4;
+            case Str ->
                 //case FieldMDEnums.eDTyp.Str:
-                return this.ByteMaxLength;
-            case Byt:
+                    this.ByteMaxLength;
+            case Byt ->
                 //case FieldMDEnums.eDTyp.Byt:
-                return this.ByteMaxLength;
-            case Bln:
+                    this.ByteMaxLength;
+            case Bln ->
                 //case FieldMDEnums.eDTyp.Bln:
-                return 1;
-            default:
-                throw new com.WDataSci.WDS.WDSException("Error, un-implemented OutputColumn DataType !");
-        }
+                    1;
+            default -> throw new com.WDataSci.WDS.WDSException("Error, un-implemented OutputColumn DataType !");
+        };
     }
 
     public boolean isVLen()
@@ -227,9 +225,9 @@ public class FieldBaseMD
                         this.StringMaxLength = (int) (this.ByteMaxLength / 2);
                 }
                 else if ( this.ByteMaxLength <= 0 )
-                    this.ByteMaxLength = 2 * this.StringMaxLength;
-                if ( this.ByteMaxLength == 0 && this.StringMaxLength > 0 )
-                    this.ByteMaxLength = 2 * this.StringMaxLength;
+                    this.ByteMaxLength = 2L * this.StringMaxLength;
+                //if ( this.ByteMaxLength == 0 && this.StringMaxLength > 0 )
+                //    this.ByteMaxLength = 2L * this.StringMaxLength;
                 this.Format = "";
                 if ( this.DTyp.equals(FieldMDEnums.eDTyp.Str) )
                     this.ByteMemLength = this.ByteMaxLength;

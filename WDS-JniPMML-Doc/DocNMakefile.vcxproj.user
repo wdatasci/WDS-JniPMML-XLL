@@ -13,5 +13,6 @@
     <LocalDebuggerWorkingDirectory>$(SolutionDir)</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerAttach>false</LocalDebuggerAttach>
+    <LocalDebuggerCommandArgumentsHistory>C:\WDS\dev\lib\github\WDataSci\WDS-JniPMML-XLL\master\\WDS-JniPMML-Doc\docfx_site\index.html|</LocalDebuggerCommandArgumentsHistory>
   </PropertyGroup>
 </Project>
