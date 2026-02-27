@@ -63,6 +63,10 @@ other evalutaors as added, a common Excel based interface than provides a basis 
    <li> Where-ever-possible and as-close-as-possible code naming conventions and structure is kept similar across languages.</li>
    </ul>
 <li>WDS-[AAA]: Language specific utility libraries that can be used independently of the JniPMML-[AAA] libs</li>
+   <ul>
+   <li> To consolidate XLL functions which are not related to JniPMML, WDS-Cs is now actively maintained in WDS-ModelSpec/WDS-Cs, so that
+   only that XLL needs to be added without redundancy.
+   </ul>
 <li>lib: compiled final products which could be used directly</li>
 <li>scripts: make scripts, for cross-language documentation building in particular</li>
 </ul>

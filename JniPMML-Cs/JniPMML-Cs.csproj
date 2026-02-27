@@ -30,7 +30,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;HDF5_VER1_13</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>0</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <RegisterForComInterop>false</RegisterForComInterop>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
@@ -178,6 +178,7 @@
     <None Include="app.config" />
     <None Include="Properties\ExcelDna.Build.props" />
     <None Include="src-JNICode\JNI.md" />
+    <None Include="src\AddInCmds.FlatFile.content.md" />
     <None Include="src\AddInCmds.HDF5.content.md">
       <Generator>MSBuild:Compile</Generator>
     </None>
